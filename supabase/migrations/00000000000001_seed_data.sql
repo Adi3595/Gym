@@ -25,28 +25,28 @@ INSERT INTO subscriptions (member_id, plan_id, start_date, end_date, amount_paid
 
 -- 4. Insert Product Categories & Brands
 INSERT INTO product_categories (id, name, description) VALUES
-  ('cat11111-1111-1111-1111-111111111111', 'Supplements', 'Protein, Creatine, Pre-workouts'),
-  ('cat22222-2222-2222-2222-222222222222', 'Apparel', 'T-shirts, Shakers, Gym Bags');
+  ('c1111111-1111-1111-1111-111111111111', 'Supplements', 'Protein, Creatine, Pre-workouts'),
+  ('c2222222-2222-2222-2222-222222222222', 'Apparel', 'T-shirts, Shakers, Gym Bags');
 
 INSERT INTO brands (id, name) VALUES
-  ('brand111-1111-1111-1111-111111111111', 'Optimum Nutrition'),
-  ('brand222-2222-2222-2222-222222222222', 'MuscleTech');
+  ('b1111111-1111-1111-1111-111111111111', 'Optimum Nutrition'),
+  ('b2222222-2222-2222-2222-222222222222', 'MuscleTech');
 
 -- 5. Insert Products
 INSERT INTO products (id, name, category_id, brand_id, sku, purchase_price, selling_price, mrp, current_stock) VALUES
-  ('prod1111-1111-1111-1111-111111111111', 'ON Gold Standard Whey 2kg', 'cat11111-1111-1111-1111-111111111111', 'brand111-1111-1111-1111-111111111111', 'WHEY-ON-2KG', 4500.00, 5500.00, 6000.00, 25),
-  ('prod2222-2222-2222-2222-222222222222', 'MuscleTech Creatine 400g', 'cat11111-1111-1111-1111-111111111111', 'brand222-2222-2222-2222-222222222222', 'CREA-MT-400G', 800.00, 1200.00, 1500.00, 40),
-  ('prod3333-3333-3333-3333-333333333333', 'Aura Gym Premium Shaker', 'cat22222-2222-2222-2222-222222222222', NULL, 'SHAKER-01', 150.00, 350.00, 450.00, 100);
+  ('d1111111-1111-1111-1111-111111111111', 'ON Gold Standard Whey 2kg', 'c1111111-1111-1111-1111-111111111111', 'b1111111-1111-1111-1111-111111111111', 'WHEY-ON-2KG', 4500.00, 5500.00, 6000.00, 25),
+  ('d2222222-2222-2222-2222-222222222222', 'MuscleTech Creatine 400g', 'c1111111-1111-1111-1111-111111111111', 'b2222222-2222-2222-2222-222222222222', 'CREA-MT-400G', 800.00, 1200.00, 1500.00, 40),
+  ('d3333333-3333-3333-3333-333333333333', 'Aura Gym Premium Shaker', 'c2222222-2222-2222-2222-222222222222', NULL, 'SHAKER-01', 150.00, 350.00, 450.00, 100);
 
 -- 6. Insert POS Sales (To generate dashboard MRR/Revenue data)
 INSERT INTO sales (id, member_id, total_amount, final_amount, payment_method) VALUES
-  ('sale1111-1111-1111-1111-111111111111', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 5500.00, 5500.00, 'UPI'),
-  ('sale2222-2222-2222-2222-222222222222', NULL, 1550.00, 1550.00, 'Cash'); -- Walk-in customer
+  ('e1111111-1111-1111-1111-111111111111', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 5500.00, 5500.00, 'UPI'),
+  ('e2222222-2222-2222-2222-222222222222', NULL, 1550.00, 1550.00, 'Cash'); -- Walk-in customer
 
 INSERT INTO sale_items (sale_id, product_id, quantity, price, total) VALUES
-  ('sale1111-1111-1111-1111-111111111111', 'prod1111-1111-1111-1111-111111111111', 1, 5500.00, 5500.00),
-  ('sale2222-2222-2222-2222-222222222222', 'prod2222-2222-2222-2222-222222222222', 1, 1200.00, 1200.00),
-  ('sale2222-2222-2222-2222-222222222222', 'prod3333-3333-3333-3333-333333333333', 1, 350.00, 350.00);
+  ('e1111111-1111-1111-1111-111111111111', 'd1111111-1111-1111-1111-111111111111', 1, 5500.00, 5500.00),
+  ('e2222222-2222-2222-2222-222222222222', 'd2222222-2222-2222-2222-222222222222', 1, 1200.00, 1200.00),
+  ('e2222222-2222-2222-2222-222222222222', 'd3333333-3333-3333-3333-333333333333', 1, 350.00, 350.00);
 
 -- 7. Insert Attendance (To show "Active Now" on dashboard)
 INSERT INTO attendance (member_id, check_in_time) VALUES

@@ -27,6 +27,12 @@ We utilize a two-font system loaded dynamically via Google Fonts:
 - **`Changa One`**: A heavy, bold display font used exclusively for primary headers and numbers (KPIs). It provides that aggressive, industrial "Gym" aesthetic.
 - **`Inter`**: A clean, highly legible sans-serif used for all body text, tables, and UI elements.
 
+### Micro-Animations & Motion
+A static UI is a boring UI. We implemented a comprehensive micro-animation system to make the app feel alive:
+- **Tactile Hover States**: Product cards in the POS elevate and expand their drop-shadows when hovered, providing instant physical feedback.
+- **Framer Motion**: The Login/Signup split-screen utilizes physics-based spring animations for a cinematic entry.
+- **Shimmer Skeletons**: CSS-based infinite linear gradient animations (`@keyframes shimmer`) ensure users never stare at frozen screens during data fetches.
+
 ### Color Palette
 The platform uses a sophisticated "Icy Cyan" base with striking teal and orange contrasts, entirely abandoning generic pure-whites for softer `#f6f6f6` glass panels.
 

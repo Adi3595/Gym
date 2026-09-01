@@ -18,6 +18,28 @@
 
 ---
 
+## 🎨 Design System & Aesthetics
+
+Aura Gym ERP isn't just functional; it was designed with an **editorial-grade, premium UI** meant to look and feel like a modern, high-end fitness brand.
+
+### Typography
+We utilize a two-font system loaded dynamically via Google Fonts:
+- **`Changa One`**: A heavy, bold display font used exclusively for primary headers and numbers (KPIs). It provides that aggressive, industrial "Gym" aesthetic.
+- **`Inter`**: A clean, highly legible sans-serif used for all body text, tables, and UI elements.
+
+### Color Palette
+The platform uses a sophisticated "Icy Cyan" base with striking teal and orange contrasts, entirely abandoning generic pure-whites for softer `#f6f6f6` glass panels.
+
+<p align="left">
+  <img src="https://img.shields.io/badge/Primary_Dark_Teal-%2316697a?style=for-the-badge" alt="Primary Teal" />
+  <img src="https://img.shields.io/badge/Secondary_Teal-%23489fb5?style=for-the-badge" alt="Secondary Teal" />
+  <img src="https://img.shields.io/badge/Icy_Cyan_Base-%23ecf8f8?style=for-the-badge" alt="Icy Cyan" />
+  <img src="https://img.shields.io/badge/Accent_Orange-%23ffa62b?style=for-the-badge" alt="Accent Orange" />
+  <img src="https://img.shields.io/badge/Soft_Panel_White-%23f6f6f6?style=for-the-badge" alt="Soft White" />
+</p>
+
+---
+
 ## ⚡ Core Engine Features
 
 <details>
@@ -39,9 +61,9 @@
 </details>
 
 <details>
-  <summary><b>🎨 Premium "Icy Cyan" Aesthetic</b> <i>(Click to expand)</i></summary>
+  <summary><b>🚀 Instant Suspense Loading</b> <i>(Click to expand)</i></summary>
   <br/>
-  Say goodbye to boring software. Built with bespoke CSS modules, the dashboard features glassmorphism, soft `#f6f6f6` contrasts, and vibrant accent colors designed to WOW staff and members alike.
+  Navigation is buttery smooth. We use Next.js `loading.tsx` boundaries to render beautiful Shimmer Skeletons instantly during route changes, completely eliminating perceived loading latency.
 </details>
 
 ---
@@ -52,8 +74,8 @@ Want to spin this up on your local machine? Follow these exact steps:
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/yourusername/aura-gym-erp.git
-cd aura-gym-erp
+git clone https://github.com/Adi3595/Gym.git
+cd Gym
 npm install
 ```
 
@@ -71,7 +93,6 @@ SMTP_HOST=smtp-relay.brevo.com
 SMTP_PORT=587
 SMTP_USER=your_brevo_login_email@example.com
 SMTP_PASSWORD=your_brevo_smtp_key
-SMTP_FROM_EMAIL=no-reply@auragym.com
 
 # Twilio WhatsApp Bot
 TWILIO_ACCOUNT_SID=your_twilio_account_sid
@@ -90,17 +111,3 @@ Head to your Supabase project's SQL Editor. Copy the entire contents of `supabas
 npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
----
-
-## 🛡️ Architecture & Routing
-
-We utilized Next.js 15 App Router to its absolute maximum potential:
-- **Server Actions**: All database mutations (adding members, processing sales) happen securely on the server without exposing API routes.
-- **Suspense Boundaries (`loading.tsx`)**: Instant route transitions using beautiful CSS shimmer skeletons to eliminate perceived loading latency.
-- **Error Boundaries (`error.tsx`)**: Graceful degradation. If the database drops, the UI remains perfectly intact with a stylized "System Disruption" screen.
-
-<div align="center">
-  <br />
-  <sub>Built with ❤️ for the fitness industry.</sub>
-</div>

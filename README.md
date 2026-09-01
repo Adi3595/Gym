@@ -1,8 +1,9 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Flexed%20Biceps.png" alt="Flexed Biceps" width="80" height="80" />
   
-  # AURA GYM ERP 
-  ### The Ultimate Fitness Management Operating System
+  <a href="https://git.io/typing-svg">
+    <img src="https://readme-typing-svg.demolab.com?font=Changa+One&weight=400&size=45&pause=1000&color=16697A&center=true&vCenter=true&width=800&height=80&lines=AURA+GYM+ERP;ULTIMATE+FITNESS+OS;BUILT+FOR+SCALE" alt="Typing SVG" />
+  </a>
   
   <p align="center">
     <a href="https://nextjs.org/"><img src="https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js" alt="Next.js"></a>

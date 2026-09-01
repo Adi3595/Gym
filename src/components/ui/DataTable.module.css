@@ -1,0 +1,141 @@
+.tableContainer {
+  background: #f6f6f6;
+  border-radius: 16px;
+  border: 1px solid rgba(22, 105, 122, 0.08);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+}
+
+.toolbar {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(22, 105, 122, 0.05);
+  background: white;
+}
+
+.searchBox {
+  position: relative;
+  width: 300px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: #f6f6f6;
+  font-size: 0.875rem;
+  transition: all var(--transition-fast);
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(22, 105, 122, 0.1);
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  background: white;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th {
+  padding: 1.25rem 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  background: #f6f6f6;
+  border-bottom: 2px solid rgba(22, 105, 122, 0.05);
+}
+
+.table td {
+  padding: 1.25rem 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  border-bottom: 1px solid rgba(22, 105, 122, 0.05);
+  font-weight: 500;
+}
+
+.table tr {
+  transition: background var(--transition-fast);
+}
+
+.table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.clickableRow {
+  cursor: pointer;
+}
+
+.actionCol {
+  width: 50px;
+  text-align: center;
+}
+
+.iconButton {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: all var(--transition-fast);
+}
+
+.iconButton:hover {
+  background: rgba(22, 105, 122, 0.1);
+  color: var(--color-primary);
+}
+
+.emptyState {
+  text-align: center;
+  padding: 4rem !important;
+  color: var(--text-muted);
+  font-style: italic;
+  background: white;
+}
+
+.pagination {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f6f6f6;
+  border-top: 1px solid rgba(22, 105, 122, 0.05);
+}
+
+.pageInfo {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.pageControls {
+  display: flex;
+  gap: 0.5rem;
+}

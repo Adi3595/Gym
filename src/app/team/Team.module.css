@@ -1,0 +1,143 @@
+.main {
+  background: var(--bg-main);
+  min-height: 100vh;
+  padding-top: 100px;
+}
+
+.teamContainer {
+  padding: 0 4rem 6rem 4rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.introSection {
+  max-width: 900px;
+  margin-bottom: 6rem;
+  margin-top: 2rem;
+}
+
+.introTitle {
+  font-family: var(--font-display);
+  font-size: 6rem;
+  color: var(--color-primary);
+  line-height: 0.9;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+}
+
+.introText {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+.rosterGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.coachCard {
+  position: relative;
+  aspect-ratio: 3/4;
+  background: var(--color-primary);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+}
+
+/* Gradient overlay to make text readable */
+.coachCard::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to top, rgba(10, 31, 36, 0.95) 0%, rgba(10, 31, 36, 0.4) 40%, transparent 100%);
+  z-index: 1;
+}
+
+.coachImage {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: var(--color-secondary);
+  transition: transform var(--transition-slow);
+}
+
+/* Subtle pattern for the placeholder */
+.coachImage::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 8px);
+}
+
+.coachCard:hover .coachImage {
+  transform: scale(1.05);
+}
+
+.coachInfo {
+  position: absolute;
+  bottom: 0; left: 0; width: 100%;
+  padding: 2.5rem;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.coachName {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  color: var(--text-light);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  transition: color var(--transition-normal);
+}
+
+.coachCard:hover .coachName {
+  color: var(--color-accent);
+}
+
+.coachSpec {
+  color: var(--color-light);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+.coachStats {
+  display: flex;
+  gap: 3rem;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  padding-top: 1.5rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all var(--transition-normal);
+}
+
+.coachCard:hover .coachStats {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.statValue {
+  color: var(--text-light);
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+}
+
+.statLabel {
+  color: var(--color-accent);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+}

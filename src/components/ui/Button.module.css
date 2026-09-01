@@ -1,0 +1,123 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all var(--transition-normal);
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  transition: transform var(--transition-normal);
+}
+
+.button:hover:not(:disabled) .icon {
+  transform: translateX(2px);
+}
+
+/* Sizes */
+.sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.md {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9375rem;
+}
+
+.lg {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  border-radius: 12px;
+}
+
+/* Variants */
+.primary {
+  background: var(--color-accent);
+  color: #000;
+  box-shadow: 0 4px 14px rgba(255, 166, 43, 0.2);
+}
+
+.primary:hover:not(:disabled) {
+  background: #ffb54d;
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(255, 166, 43, 0.4);
+}
+
+.primary::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; width: 50%; height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+  transform: skewX(-20deg);
+  transition: var(--transition-normal);
+}
+
+.primary:hover:not(:disabled)::after {
+  left: 150%;
+  transition: 0.6s ease-in-out;
+}
+
+.primary:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.secondary {
+  background: transparent;
+  color: var(--text-dark);
+  border: 1px solid var(--color-primary);
+}
+
+.secondary:hover:not(:disabled) {
+  background: var(--color-primary);
+  color: var(--text-light);
+}
+
+.glass {
+  background: var(--glass-bg-dark);
+  color: var(--text-light);
+  border: 1px solid var(--glass-border-dark);
+  backdrop-filter: blur(12px);
+}
+
+.glass:hover:not(:disabled) {
+  background: rgba(22, 105, 122, 0.6);
+  border-color: var(--color-light);
+}
+
+.danger {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--status-danger);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.danger:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.ghost:hover:not(:disabled) {
+  color: var(--color-primary);
+  background: rgba(22, 105, 122, 0.05);
+}

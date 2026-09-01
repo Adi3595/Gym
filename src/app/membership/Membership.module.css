@@ -1,0 +1,180 @@
+.main {
+  background: var(--bg-main);
+  min-height: 100vh;
+  padding-top: 100px; /* Offset for fixed navbar */
+}
+
+.pageHeader {
+  max-width: 1400px;
+  margin: 4rem auto 3rem auto;
+  padding: 0 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.pageTitle {
+  font-family: var(--font-display);
+  font-size: 5rem;
+  color: var(--color-primary);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.toggleContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.toggleLabel {
+  font-weight: 500;
+  font-size: 1.125rem;
+  color: var(--text-dark);
+}
+
+.toggleLabel.inactive {
+  color: var(--text-muted);
+}
+
+/* Custom Toggle Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: var(--color-secondary);
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--color-primary);
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Pricing Grid */
+.pricingGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  padding: 0 5%;
+  max-width: 1400px;
+  margin: 0 auto 8rem auto;
+}
+
+.planCard {
+  background: var(--bg-card);
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 24px;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.planCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(22, 105, 122, 0.08);
+}
+
+.planCard.highlight {
+  background: var(--color-primary);
+  color: var(--text-light);
+  transform: scale(1.02);
+  box-shadow: 0 20px 40px rgba(22, 105, 122, 0.2);
+}
+
+.planCard.highlight:hover {
+  transform: scale(1.02) translateY(-10px);
+}
+
+.popularBadge {
+  position: absolute;
+  top: 1.5rem; right: 1.5rem;
+  background: var(--color-accent);
+  color: #000;
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.planName {
+  font-size: 1.5rem;
+  font-family: var(--font-display);
+}
+
+.planPrice {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.priceAmount {
+  font-size: 3.5rem;
+  font-family: var(--font-display);
+  line-height: 1;
+}
+
+.pricePeriod {
+  color: var(--text-muted);
+}
+
+.planCard.highlight .pricePeriod {
+  color: var(--color-light);
+}
+
+.featuresList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex: 1;
+}
+
+.featureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.9375rem;
+}
+
+.featureIcon {
+  color: var(--color-accent);
+  flex-shrink: 0;
+  margin-top: 2px;
+}

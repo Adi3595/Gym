@@ -45,31 +45,47 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  // If user is authenticated, check if they are in the ADMIN_EMAILS list
+  // If user is authenticated, check if they are in the ADMIN whitelist
   if (user && isProtectedPath) {
     const adminEmails = process.env.ADMIN_EMAILS ? process.env.ADMIN_EMAILS.split(',').map(e => e.trim().toLowerCase()) : []
+    const adminPhones = process.env.ADMIN_PHONES ? process.env.ADMIN_PHONES.split(',').map(e => e.trim().replace(/\D/g, '')) : []
     
-    // If ADMIN_EMAILS is configured, restrict access
-    if (adminEmails.length > 0 && user.email && !adminEmails.includes(user.email.toLowerCase())) {
-      // User is not an admin. Forcefully delete their auth cookies to log them out
-      supabaseResponse.cookies.getAll().forEach(cookie => {
-        if (cookie.name.includes('-auth-token')) {
-          supabaseResponse.cookies.delete(cookie.name)
-        }
-      })
-      
-      const url = request.nextUrl.clone()
-      url.pathname = '/login'
-      url.searchParams.set('error', 'Unauthorized access. Your email is not whitelisted for the ERP.')
-      
-      // Override response to redirect with cleared cookies
-      const redirectResponse = NextResponse.redirect(url)
-      supabaseResponse.cookies.getAll().forEach(cookie => {
-        if (cookie.name.includes('-auth-token')) {
-          redirectResponse.cookies.delete(cookie.name)
-        }
-      })
-      return redirectResponse
+    const isWhitelistEnabled = adminEmails.length > 0 || adminPhones.length > 0
+    
+    if (isWhitelistEnabled) {
+      let isAllowed = false;
+
+      // Check Email
+      if (user.email && adminEmails.includes(user.email.toLowerCase())) {
+        isAllowed = true;
+      }
+
+      // Check Phone (strip all non-digits for comparison)
+      if (user.phone && adminPhones.includes(user.phone.replace(/\D/g, ''))) {
+        isAllowed = true;
+      }
+
+      if (!isAllowed) {
+        // User is not an admin. Forcefully delete their auth cookies to log them out
+        supabaseResponse.cookies.getAll().forEach(cookie => {
+          if (cookie.name.includes('-auth-token')) {
+            supabaseResponse.cookies.delete(cookie.name)
+          }
+        })
+        
+        const url = request.nextUrl.clone()
+        url.pathname = '/login'
+        url.searchParams.set('error', 'Unauthorized access. Your account is not whitelisted for the ERP.')
+        
+        // Override response to redirect with cleared cookies
+        const redirectResponse = NextResponse.redirect(url)
+        supabaseResponse.cookies.getAll().forEach(cookie => {
+          if (cookie.name.includes('-auth-token')) {
+            redirectResponse.cookies.delete(cookie.name)
+          }
+        })
+        return redirectResponse
+      }
     }
   }
 

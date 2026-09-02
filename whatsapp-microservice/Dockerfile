@@ -7,6 +7,10 @@ USER root
 # Create app directory
 WORKDIR /usr/src/app
 
+# Tell Puppeteer to use the installed version of Chrome from the base image
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome
+
 # Copy package files
 COPY package*.json ./
 

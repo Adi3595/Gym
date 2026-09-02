@@ -88,17 +88,20 @@ export default function InventoryClient({ initialProducts }: { initialProducts: 
           title="Total Products" 
           value={initialProducts?.length || 0} 
           icon={<Package size={20} />} 
+          colorVariant="primary"
         />
         <SummaryCard 
           title="Low Stock Alerts" 
           value={initialProducts?.filter(p => p.current_stock < 10).length || 0} 
           icon={<AlertCircle size={20} />} 
           trend="Needs Attention" trendUp={false} 
+          colorVariant="accent"
         />
         <SummaryCard 
           title="Active Inventory" 
           value={initialProducts?.filter(p => p.status === 'Active').length || 0} 
           icon={<ShoppingBag size={20} />} 
+          colorVariant="secondary"
         />
       </SummaryGrid>
 

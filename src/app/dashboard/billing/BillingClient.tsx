@@ -121,19 +121,22 @@ export default function BillingClient({
       <SummaryGrid>
         <SummaryCard 
           title="Total Revenue" 
-          value={formatCurrency(initialSubscriptions?.reduce((acc, curr) => acc + (curr.amount_paid || 0), 0) || 0)} 
+          value={formatCurrency(initialSubscriptions?.reduce((acc: any, curr: any) => acc + (curr.amount_paid || 0), 0) || 0)} 
           icon={<CreditCard size={20} />} 
           trend="15%" trendUp={true} 
+          colorVariant="primary"
         />
         <SummaryCard 
           title="Active Subscriptions" 
-          value={initialSubscriptions?.filter(s => new Date(s.end_date) >= new Date()).length || 0} 
+          value={initialSubscriptions?.filter((s: any) => new Date(s.end_date) >= new Date()).length || 0} 
           icon={<Activity size={20} />} 
+          colorVariant="secondary"
         />
         <SummaryCard 
           title="Total Plans" 
           value={plans?.length || 0} 
           icon={<ArrowUpRight size={20} />} 
+          colorVariant="light"
         />
       </SummaryGrid>
 

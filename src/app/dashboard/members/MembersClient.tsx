@@ -72,17 +72,20 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
           value={initialMembers?.length || 0} 
           icon={<Users size={20} />} 
           trend="12%" trendUp={true} 
+          colorVariant="primary"
         />
         <SummaryCard 
           title="Active Members" 
           value={initialMembers?.filter(m => m.status === 'Active').length || 0} 
           icon={<UserCheck size={20} />} 
           trend="5%" trendUp={true} 
+          colorVariant="secondary"
         />
         <SummaryCard 
           title="New This Month" 
           value={initialMembers?.filter(m => new Date(m.join_date).getMonth() === new Date().getMonth()).length || 0} 
           icon={<TrendingUp size={20} />} 
+          colorVariant="accent"
         />
       </SummaryGrid>
 

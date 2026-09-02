@@ -87,54 +87,54 @@ export default async function DashboardOverview() {
       {/* KPI Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
         
-        <div style={{ background: 'white', padding: '1.75rem', borderRadius: '16px', border: '1px solid rgba(22,105,122,0.05)', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem', color: 'var(--text-muted)' }}>
+        <div style={{ background: 'var(--color-primary)', padding: '1.75rem', borderRadius: '16px', border: 'none', boxShadow: '0 10px 30px rgba(22,105,122,0.3)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem', color: 'rgba(255,255,255,0.7)' }}>
             <span style={{ fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Total Members</span>
-            <Users size={20} color="var(--color-primary)" />
+            <Users size={20} color="white" />
           </div>
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'var(--color-primary)', marginBottom: '0.5rem', lineHeight: 1 }}>
+          <div style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'white', marginBottom: '0.5rem', lineHeight: 1 }}>
             {totalMembers || 0}
           </div>
-          <div style={{ fontSize: '0.875rem', color: 'var(--status-success)', fontWeight: 600 }}>
+          <div style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.9)', fontWeight: 600 }}>
             Live Data
           </div>
         </div>
 
-        <div style={{ background: 'white', padding: '1.75rem', borderRadius: '16px', border: '1px solid rgba(72,159,181,0.1)', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem', color: 'var(--text-muted)' }}>
+        <div style={{ background: 'var(--color-secondary)', padding: '1.75rem', borderRadius: '16px', border: 'none', boxShadow: '0 10px 30px rgba(72,159,181,0.3)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem', color: 'rgba(255,255,255,0.7)' }}>
             <span style={{ fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>MRR (30 Days)</span>
-            <TrendingUp size={20} color="var(--color-secondary)" />
+            <TrendingUp size={20} color="white" />
           </div>
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'var(--color-secondary)', marginBottom: '0.5rem', lineHeight: 1 }}>
+          <div style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'white', marginBottom: '0.5rem', lineHeight: 1 }}>
             {formatCurrency(totalMrr)}
           </div>
-          <div style={{ fontSize: '0.875rem', color: 'var(--status-success)', fontWeight: 600 }}>
+          <div style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.9)', fontWeight: 600 }}>
             Live Data
           </div>
         </div>
 
-        <div style={{ background: 'white', padding: '1.75rem', borderRadius: '16px', border: '1px solid rgba(255,166,43,0.15)', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem', color: 'var(--text-muted)' }}>
+        <div style={{ background: 'var(--color-accent)', padding: '1.75rem', borderRadius: '16px', border: 'none', boxShadow: '0 10px 30px rgba(255,166,43,0.3)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem', color: 'rgba(255,255,255,0.7)' }}>
             <span style={{ fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Store Sales Today</span>
-            <ShoppingBag size={20} color="var(--color-accent)" />
+            <ShoppingBag size={20} color="white" />
           </div>
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'var(--color-accent)', marginBottom: '0.5rem', lineHeight: 1 }}>
+          <div style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'white', marginBottom: '0.5rem', lineHeight: 1 }}>
             {formatCurrency(todaySales)}
           </div>
-          <div style={{ fontSize: '0.875rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+          <div style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.9)', fontWeight: 600 }}>
             Live Data
           </div>
         </div>
 
-        <div style={{ background: 'white', padding: '1.75rem', borderRadius: '16px', border: '1px solid rgba(34,197,94,0.15)', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem', color: 'var(--text-muted)' }}>
+        <div style={{ background: 'var(--color-light)', padding: '1.75rem', borderRadius: '16px', border: 'none', boxShadow: '0 10px 30px rgba(130,192,204,0.3)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem', color: 'rgba(255,255,255,0.8)' }}>
             <span style={{ fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Active Now</span>
-            <Activity size={20} color="var(--status-success)" />
+            <Activity size={20} color="white" />
           </div>
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'var(--status-success)', marginBottom: '0.5rem', lineHeight: 1 }}>
+          <div style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'white', marginBottom: '0.5rem', lineHeight: 1 }}>
             {activeNow || 0}
           </div>
-          <div style={{ fontSize: '0.875rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+          <div style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.9)', fontWeight: 600 }}>
             Checked-in currently
           </div>
         </div>

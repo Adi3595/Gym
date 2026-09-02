@@ -13,6 +13,13 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname()
 
+  const handleSignOut = async () => {
+    const { createClient } = await import('@/utils/supabase/client')
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    window.location.href = '/login'
+  }
+
   return (
     <div className={styles.dashboardWrapper}>
       {/* Sidebar */}
@@ -65,7 +72,7 @@ export default function DashboardLayout({
             <Settings size={18} />
             Settings
           </Link>
-          <button className={`${styles.navItem} ${styles.logoutBtn}`}>
+          <button className={`${styles.navItem} ${styles.logoutBtn}`} onClick={handleSignOut}>
             <LogOut size={18} />
             Sign Out
           </button>

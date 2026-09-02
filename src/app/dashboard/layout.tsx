@@ -84,7 +84,7 @@ export default function DashboardLayout({
         {/* Topbar */}
         <header className={styles.topbar}>
           <div className={styles.searchBar}>
-            <input type="text" placeholder="Search members, orders..." className={styles.searchInput} />
+            {/* Disabled global search to avoid confusion */}
           </div>
           <div className={styles.userProfile}>
             <div className={styles.avatar}>A</div>

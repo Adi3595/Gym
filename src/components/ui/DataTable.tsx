@@ -24,6 +24,19 @@ export function DataTable<T extends { id: string | number }>({
   onRowClick,
   searchPlaceholder = 'Search...'
 }: DataTableProps<T>) {
+  const [searchQuery, setSearchQuery] = React.useState('');
+
+  const filteredData = React.useMemo(() => {
+    if (!searchQuery) return data;
+    const lowerQuery = searchQuery.toLowerCase();
+    return data.filter((item) => {
+      // Check if any value in the item matches the search query
+      return Object.values(item).some((val) => 
+        String(val).toLowerCase().includes(lowerQuery)
+      );
+    });
+  }, [data, searchQuery]);
+
   return (
     <div className={styles.tableContainer}>
       <div className={styles.toolbar}>
@@ -33,6 +46,8 @@ export function DataTable<T extends { id: string | number }>({
             type="text" 
             placeholder={searchPlaceholder} 
             className={styles.searchInput} 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         <div className={styles.actions}>
@@ -53,14 +68,14 @@ export function DataTable<T extends { id: string | number }>({
             </tr>
           </thead>
           <tbody>
-            {data.length === 0 ? (
+            {filteredData.length === 0 ? (
               <tr>
                 <td colSpan={columns.length + 1} className={styles.emptyState}>
                   No data found.
                 </td>
               </tr>
             ) : (
-              data.map((item) => (
+              filteredData.map((item) => (
                 <tr 
                   key={item.id} 
                   onClick={() => onRowClick && onRowClick(item)}
@@ -84,7 +99,7 @@ export function DataTable<T extends { id: string | number }>({
       </div>
 
       <div className={styles.pagination}>
-        <span className={styles.pageInfo}>Showing 1 to {data.length} of {data.length} entries</span>
+        <span className={styles.pageInfo}>Showing {filteredData.length > 0 ? 1 : 0} to {filteredData.length} of {data.length} entries</span>
         <div className={styles.pageControls}>
           <Button variant="ghost" size="sm" disabled>Previous</Button>
           <Button variant="primary" size="sm">1</Button>

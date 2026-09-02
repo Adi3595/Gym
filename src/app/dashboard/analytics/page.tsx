@@ -1,6 +1,6 @@
 import React from 'react'
 import { createClient } from '@/utils/supabase/server'
-import { Activity, TrendingUp, Users, DollarSign, Calendar } from 'lucide-react'
+import { Activity, TrendingUp, Users, DollarSign, Calendar, ShoppingBag } from 'lucide-react'
 import { SummaryCard, SummaryGrid } from '@/components/ui/SummaryCards'
 
 export const revalidate = 0

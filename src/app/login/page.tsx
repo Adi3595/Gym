@@ -22,12 +22,6 @@ export default function LoginPage() {
   async function handleSubmit(formData: FormData) {
     setError(null)
     
-    // Quick validation for phone since Supabase phone auth requires setup
-    if (loginMethod === 'phone') {
-      setError("Phone authentication requires an SMS provider (like Twilio) to be configured in your Supabase dashboard. Please use Email for now.")
-      return
-    }
-
     startTransition(async () => {
       const result = authMode === 'signin' ? await login(formData) : await signup(formData)
       

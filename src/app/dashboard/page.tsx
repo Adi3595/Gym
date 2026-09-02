@@ -1,6 +1,7 @@
 import React from 'react'
 import { Users, TrendingUp, ShoppingBag, Activity } from 'lucide-react'
 import { createClient } from '@/utils/supabase/server'
+import { SummaryCard, SummaryGrid } from '@/components/ui/SummaryCards'
 
 export const revalidate = 0 // always fetch live data
 
@@ -85,60 +86,36 @@ export default async function DashboardOverview() {
       </div>
 
       {/* KPI Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
-        
-        <div style={{ background: 'var(--color-primary)', padding: '1.75rem', borderRadius: '16px', border: 'none', boxShadow: '0 10px 30px rgba(22,105,122,0.3)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem', color: 'rgba(255,255,255,0.7)' }}>
-            <span style={{ fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Total Members</span>
-            <Users size={20} color="white" />
-          </div>
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'white', marginBottom: '0.5rem', lineHeight: 1 }}>
-            {totalMembers || 0}
-          </div>
-          <div style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.9)', fontWeight: 600 }}>
-            Live Data
-          </div>
-        </div>
-
-        <div style={{ background: 'var(--color-secondary)', padding: '1.75rem', borderRadius: '16px', border: 'none', boxShadow: '0 10px 30px rgba(72,159,181,0.3)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem', color: 'rgba(255,255,255,0.7)' }}>
-            <span style={{ fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>MRR (30 Days)</span>
-            <TrendingUp size={20} color="white" />
-          </div>
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'white', marginBottom: '0.5rem', lineHeight: 1 }}>
-            {formatCurrency(totalMrr)}
-          </div>
-          <div style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.9)', fontWeight: 600 }}>
-            Live Data
-          </div>
-        </div>
-
-        <div style={{ background: 'var(--color-accent)', padding: '1.75rem', borderRadius: '16px', border: 'none', boxShadow: '0 10px 30px rgba(255,166,43,0.3)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem', color: 'rgba(255,255,255,0.7)' }}>
-            <span style={{ fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Store Sales Today</span>
-            <ShoppingBag size={20} color="white" />
-          </div>
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'white', marginBottom: '0.5rem', lineHeight: 1 }}>
-            {formatCurrency(todaySales)}
-          </div>
-          <div style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.9)', fontWeight: 600 }}>
-            Live Data
-          </div>
-        </div>
-
-        <div style={{ background: 'var(--color-light)', padding: '1.75rem', borderRadius: '16px', border: 'none', boxShadow: '0 10px 30px rgba(130,192,204,0.3)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem', color: 'rgba(255,255,255,0.8)' }}>
-            <span style={{ fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Active Now</span>
-            <Activity size={20} color="white" />
-          </div>
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'white', marginBottom: '0.5rem', lineHeight: 1 }}>
-            {activeNow || 0}
-          </div>
-          <div style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.9)', fontWeight: 600 }}>
-            Checked-in currently
-          </div>
-        </div>
-      </div>
+      <SummaryGrid>
+        <SummaryCard 
+          title="Total Members" 
+          value={totalMembers || 0} 
+          icon={<Users size={20} />} 
+          trend="Live Data" 
+          colorVariant="primary" 
+        />
+        <SummaryCard 
+          title="MRR (30 Days)" 
+          value={formatCurrency(totalMrr)} 
+          icon={<TrendingUp size={20} />} 
+          trend="Live Data" 
+          colorVariant="secondary" 
+        />
+        <SummaryCard 
+          title="Store Sales Today" 
+          value={formatCurrency(todaySales)} 
+          icon={<ShoppingBag size={20} />} 
+          trend="Live Data" 
+          colorVariant="accent" 
+        />
+        <SummaryCard 
+          title="Active Now" 
+          value={activeNow || 0} 
+          icon={<Activity size={20} />} 
+          trend="Checked-in currently" 
+          colorVariant="light" 
+        />
+      </SummaryGrid>
 
       {/* Recent History Grid */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>

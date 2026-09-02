@@ -11,32 +11,39 @@ interface SummaryCardProps {
 
 export function SummaryCard({ title, value, icon, trend, trendUp, colorVariant = 'white' }: SummaryCardProps) {
   const isColored = colorVariant !== 'white';
-  const bgColor = isColored ? `var(--color-${colorVariant})` : 'white';
-  const textColor = isColored ? 'white' : 'var(--text-dark)';
-  const labelColor = isColored ? 'rgba(255,255,255,0.7)' : 'var(--text-muted)';
-  const iconBg = isColored ? 'rgba(0,0,0,0.15)' : 'var(--color-neutral)';
-  const iconColor = isColored ? 'white' : 'var(--color-primary)';
-  const trendColor = isColored ? 'rgba(255,255,255,0.9)' : (trendUp ? '#22C55E' : '#EF4444');
+  const colorVar = isColored ? `var(--color-${colorVariant})` : 'var(--color-primary)';
 
   return (
     <div style={{
-      background: bgColor, padding: '1.75rem', borderRadius: '16px',
-      boxShadow: isColored ? `0 10px 30px rgba(0,0,0,0.15)` : '0 4px 20px rgba(0,0,0,0.03)', 
-      border: isColored ? 'none' : '1px solid rgba(22, 105, 122, 0.05)',
-      display: 'flex', flexDirection: 'column', gap: '1rem', flex: 1, minWidth: '200px'
+      background: 'white', padding: '1.75rem', borderRadius: '16px',
+      boxShadow: '0 4px 20px rgba(0,0,0,0.03)', 
+      border: '1px solid rgba(0,0,0,0.04)',
+      borderTop: isColored ? `4px solid ${colorVar}` : '1px solid rgba(0,0,0,0.04)',
+      display: 'flex', flexDirection: 'column', gap: '1rem', flex: 1, minWidth: '200px',
+      position: 'relative', overflow: 'hidden',
+      transition: 'transform var(--transition-fast), box-shadow var(--transition-fast)'
     }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h3 style={{ fontSize: '0.875rem', fontWeight: 700, color: labelColor, textTransform: 'uppercase', letterSpacing: '1px', margin: 0 }}>{title}</h3>
-        <div style={{ color: iconColor, background: iconBg, padding: '0.5rem', borderRadius: '10px' }}>
+      {/* Decorative ambient glow */}
+      {isColored && (
+        <div style={{
+          position: 'absolute', top: '-40px', right: '-40px', width: '120px', height: '120px',
+          background: colorVar, opacity: 0.08, filter: 'blur(30px)', borderRadius: '50%',
+          pointerEvents: 'none'
+        }} />
+      )}
+      
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative' }}>
+        <h3 style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', margin: 0 }}>{title}</h3>
+        <div style={{ color: colorVar, background: '#f8fafc', padding: '0.6rem', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.02)' }}>
           {icon}
         </div>
       </div>
-      <div style={{ fontSize: '2.5rem', fontWeight: 700, color: textColor, fontFamily: 'var(--font-display)', lineHeight: 1 }}>
+      <div style={{ fontSize: '2.5rem', fontWeight: 700, color: 'var(--text-dark)', fontFamily: 'var(--font-display)', lineHeight: 1, position: 'relative' }}>
         {value}
       </div>
       {trend && (
-        <div style={{ fontSize: '0.85rem', fontWeight: 600, color: trendColor, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-          {trendUp !== undefined && !isColored ? (trendUp ? '↑ ' : '↓ ') : ''}
+        <div style={{ fontSize: '0.85rem', fontWeight: 600, color: trendUp ? '#22C55E' : '#EF4444', display: 'flex', alignItems: 'center', gap: '0.25rem', position: 'relative' }}>
+          {trendUp !== undefined ? (trendUp ? '↑ ' : '↓ ') : ''}
           {trend}
         </div>
       )}

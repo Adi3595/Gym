@@ -124,21 +124,22 @@ export async function GET(request: Request) {
       // Send Ending Soon Emails & WhatsApp
       if (endingSoonData) {
         for (const sub of endingSoonData) {
-          if (sub.members?.email) {
+          const member: any = Array.isArray(sub.members) ? sub.members[0] : sub.members;
+          if (member?.email) {
             await transporter.sendMail({
               from: `"Aura Gym" <${process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER}>`,
-              to: sub.members.email,
+              to: member.email,
               subject: 'Your Membership is Ending Tomorrow! ⚠️',
-              html: `<p>Hi ${sub.members.first_name},</p><p>This is a quick reminder that your gym membership expires tomorrow! Renew today to keep your streak alive and avoid any joining fees.</p>`,
+              html: `<p>Hi ${member.first_name},</p><p>This is a quick reminder that your gym membership expires tomorrow! Renew today to keep your streak alive and avoid any joining fees.</p>`,
             })
             emailsSent.endingSoon++
           }
           
           // Send WhatsApp Alert
-          if (sub.members?.phone) {
+          if (member?.phone) {
             await sendWhatsAppMessage(
-              sub.members.phone, 
-              `⚠️ Hi ${sub.members.first_name}, your Aura Gym membership expires tomorrow! Please renew at the front desk to avoid losing your streak. 💪`
+              member.phone, 
+              `⚠️ Hi ${member.first_name}, your Aura Gym membership expires tomorrow! Please renew at the front desk to avoid losing your streak. 💪`
             );
           }
         }
@@ -146,21 +147,22 @@ export async function GET(request: Request) {
 
       // Send 10 Days Expired Emails & WhatsApp
       for (const sub of expiredMembersToEmail) {
-        if (sub.members?.email) {
+        const member: any = Array.isArray(sub.members) ? sub.members[0] : sub.members;
+        if (member?.email) {
           await transporter.sendMail({
             from: `"Aura Gym" <${process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER}>`,
-            to: sub.members.email,
+            to: member.email,
             subject: 'Your Membership has Expired ❌',
-            html: `<p>Hi ${sub.members.first_name},</p><p>We miss you at the gym! Your membership ended 10 days ago. Reply to this email or drop by the front desk to renew your plan.</p>`,
+            html: `<p>Hi ${member.first_name},</p><p>We miss you at the gym! Your membership ended 10 days ago. Reply to this email or drop by the front desk to renew your plan.</p>`,
           })
           emailsSent.expired10Days++
         }
 
         // Send WhatsApp Alert
-        if (sub.members?.phone) {
+        if (member?.phone) {
           await sendWhatsAppMessage(
-            sub.members.phone, 
-            `❌ Hi ${sub.members.first_name}, your Aura Gym membership ended 10 days ago. We miss seeing you! Drop by the gym to renew your plan and get back to grinding. 🏋️‍♂️`
+            member.phone, 
+            `❌ Hi ${member.first_name}, your Aura Gym membership ended 10 days ago. We miss seeing you! Drop by the gym to renew your plan and get back to grinding. 🏋️‍♂️`
           );
         }
       }

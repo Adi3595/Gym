@@ -13,7 +13,7 @@ function rateLimit(req: NextRequest): NextResponse | null {
   // Only aggressively rate limit API routes to prevent abuse, allow static/page loads
   if (!req.nextUrl.pathname.startsWith('/api')) return null;
 
-  const ip = req.ip || req.headers.get('x-forwarded-for') || 'unknown';
+  const ip = req.headers.get('x-forwarded-for') || 'unknown';
   const now = Date.now();
   const record = ipRequestMap.get(ip);
 
@@ -48,7 +48,7 @@ function rateLimit(req: NextRequest): NextResponse | null {
   return null;
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   // 1. Check Rate Limit First
   const rateLimitResponse = rateLimit(request);
   if (rateLimitResponse) return rateLimitResponse;

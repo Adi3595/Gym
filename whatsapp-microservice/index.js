@@ -47,6 +47,13 @@ client.initialize().catch(err => {
 });
 
 // ---------------------------------------------------------
+// PING ENDPOINT: UptimeRobot calls this every 5 minutes
+// ---------------------------------------------------------
+app.get('/', (req, res) => {
+    res.status(200).send('Aura Gym WhatsApp Bot is awake! 🟢');
+});
+
+// ---------------------------------------------------------
 // API ENDPOINT: Vercel calls this to send messages
 // ---------------------------------------------------------
 app.post('/api/send', async (req, res) => {

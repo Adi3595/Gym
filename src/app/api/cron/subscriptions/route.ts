@@ -139,7 +139,7 @@ export async function GET(request: Request) {
         if (member?.phone) {
           await sendWhatsAppMessage(
             member.phone, 
-            `🌟 *AURA GYM - MEMBERSHIP UPDATE* 🌟\n\nDear *${member.first_name}*,\n\nWe hope you are having a fantastic day and crushing your fitness goals! 💪\n\nThis is a gentle reminder that your premium gym membership is scheduled to expire *tomorrow*.\n\n🔥 *Don't lose your momentum!*\nTo ensure uninterrupted access to the gym and keep your fitness streak alive, please renew your membership at the front desk during your next visit.\n\nIf you have already renewed, please ignore this message.\n\nStay strong and see you at the gym! 🏋️‍♂️\n_Team Aura Gym_`
+            `*AURA GYM - MEMBERSHIP NOTIFICATION*\n\nDear *${member.first_name}*,\n\nWe hope this message finds you well.\n\nThis is a formal reminder that your Aura Gym membership is scheduled to expire *tomorrow*.\n\nTo ensure uninterrupted access to our facilities, kindly renew your membership at the front desk during your next visit. If you have recently renewed your membership, please disregard this notice.\n\nThank you for choosing Aura Gym. We look forward to continuing to support your fitness journey.\n\nBest regards,\n*Aura Gym Management*`
           );
         }
       }
@@ -167,7 +167,7 @@ export async function GET(request: Request) {
       if (member?.phone) {
         await sendWhatsAppMessage(
           member.phone, 
-          `🌟 *AURA GYM - WE MISS YOU!* 🌟\n\nDear *${member.first_name}*,\n\nIt's been a while! We noticed that your Aura Gym membership expired 10 days ago.\n\nYour fitness journey is important to us, and the gym isn't the same without your energy. 🏃‍♂️💨\n\n💡 *Ready to get back on track?*\nDrop by the front desk today to renew your plan. We have all the equipment and motivation waiting for you to crush your next milestone!\n\nLooking forward to welcoming you back! 🏋️‍♀️\n_Team Aura Gym_`
+          `*AURA GYM - MEMBERSHIP UPDATE*\n\nDear *${member.first_name}*,\n\nWe hope this message finds you well.\n\nOur records indicate that your Aura Gym membership expired 10 days ago. We have sincerely missed your presence at the facility.\n\nWe invite you to visit the front desk at your earliest convenience to renew your membership. We remain fully committed to supporting your health and fitness goals.\n\nWe hope to welcome you back soon.\n\nBest regards,\n*Aura Gym Management*`
         );
       }
     }

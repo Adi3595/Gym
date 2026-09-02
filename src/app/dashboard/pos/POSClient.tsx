@@ -116,6 +116,13 @@ export default function POSClient({ products, members }: { products: any[], memb
                 e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.02)';
               }}
             >
+              <div style={{ height: '120px', width: '100%', borderRadius: '8px', overflow: 'hidden', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '0.5rem' }}>
+                {product.product_image ? (
+                  <img src={product.product_image} alt={product.name} style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} />
+                ) : (
+                  <ShoppingCart size={32} color="rgba(0,0,0,0.1)" />
+                )}
+              </div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>{product.sku}</div>
               <div style={{ fontWeight: 600, color: 'var(--text-dark)', lineHeight: 1.2 }}>{product.name}</div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto', paddingTop: '0.5rem' }}>

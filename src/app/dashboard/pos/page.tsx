@@ -10,7 +10,7 @@ export default async function POSPage() {
   // Fetch available products
   const { data: products } = await supabase
     .from('products')
-    .select('id, name, sku, selling_price, current_stock')
+    .select('id, name, sku, selling_price, current_stock, product_image')
     .eq('status', 'Active')
     .gt('current_stock', 0)
     .order('name')

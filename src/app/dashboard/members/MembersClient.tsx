@@ -12,6 +12,19 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
   const [error, setError] = useState<string | null>(null)
 
   const columns = [
+    { 
+      key: 'profile_photo', 
+      header: 'Photo',
+      cell: (item: any) => (
+        item.profile_photo ? (
+          <img src={item.profile_photo} alt={item.first_name} style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }} />
+        ) : (
+          <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '12px', fontWeight: 'bold' }}>
+            {item.first_name[0]}{item.last_name[0]}
+          </div>
+        )
+      )
+    },
     { key: 'first_name', header: 'First Name' },
     { key: 'last_name', header: 'Last Name' },
     { key: 'email', header: 'Email' },

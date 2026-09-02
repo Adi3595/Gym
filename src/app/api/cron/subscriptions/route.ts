@@ -73,19 +73,31 @@ export async function GET(request: Request) {
       expired10Days: 0
     }
 
+    let transporter: any = null;
+    if (process.env.SMTP_USER && process.env.SMTP_PASSWORD && !process.env.SMTP_USER.includes('example.com')) {
+      const nodemailer = await import('nodemailer')
+      transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST || 'smtp-relay.brevo.com',
+        port: parseInt(process.env.SMTP_PORT || '587'),
+        secure: false,
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASSWORD,
+        },
+      })
+    }
+
     // ---------------------------------------------------------
     // WHATSAPP BOT LOGIC (Twilio API)
     // ---------------------------------------------------------
     const sendWhatsAppMessage = async (phone: string, message: string) => {
       const accountSid = process.env.TWILIO_ACCOUNT_SID;
       const authToken = process.env.TWILIO_AUTH_TOKEN;
-      const twilioNumber = process.env.TWILIO_WHATSAPP_NUMBER; // e.g., 'whatsapp:+14155238886'
+      const twilioNumber = process.env.TWILIO_WHATSAPP_NUMBER; 
       
       if (!accountSid || !authToken || !twilioNumber) return;
       
       try {
-        // Format phone number (ensure country code exists, e.g. +919876543210 for India)
-        // Twilio requires the format 'whatsapp:+[country_code][number]'
         const cleanPhone = phone.replace(/\D/g, ''); 
         const formattedPhone = `whatsapp:+${cleanPhone}`; 
         
@@ -107,25 +119,13 @@ export async function GET(request: Request) {
       }
     };
 
-    // Only configure Nodemailer if the user has provided SMTP credentials in .env.local
-    if (process.env.SMTP_USER && process.env.SMTP_PASSWORD) {
-      const nodemailer = await import('nodemailer')
-      
-      const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST || 'smtp-relay.brevo.com',
-        port: parseInt(process.env.SMTP_PORT || '587'),
-        secure: false, // true for 465, false for other ports
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASSWORD,
-        },
-      })
-
-      // Send Ending Soon Emails & WhatsApp
-      if (endingSoonData) {
-        for (const sub of endingSoonData) {
-          const member: any = Array.isArray(sub.members) ? sub.members[0] : sub.members;
-          if (member?.email) {
+    // Send Ending Soon Emails & WhatsApp
+    if (endingSoonData) {
+      for (const sub of endingSoonData) {
+        const member: any = Array.isArray(sub.members) ? sub.members[0] : sub.members;
+        
+        if (member?.email && transporter) {
+          try {
             await transporter.sendMail({
               from: `"Aura Gym" <${process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER}>`,
               to: member.email,
@@ -133,22 +133,27 @@ export async function GET(request: Request) {
               html: `<p>Hi ${member.first_name},</p><p>This is a quick reminder that your gym membership expires tomorrow! Renew today to keep your streak alive and avoid any joining fees.</p>`,
             })
             emailsSent.endingSoon++
-          }
-          
-          // Send WhatsApp Alert
-          if (member?.phone) {
-            await sendWhatsAppMessage(
-              member.phone, 
-              `⚠️ Hi ${member.first_name}, your Aura Gym membership expires tomorrow! Please renew at the front desk to avoid losing your streak. 💪`
-            );
+          } catch (mailErr) {
+            console.error('[SMTP ERROR] Failed to send ending soon email', mailErr)
           }
         }
+        
+        // Send WhatsApp Alert
+        if (member?.phone) {
+          await sendWhatsAppMessage(
+            member.phone, 
+            `⚠️ Hi ${member.first_name}, your Aura Gym membership expires tomorrow! Please renew at the front desk to avoid losing your streak. 💪`
+          );
+        }
       }
+    }
 
-      // Send 10 Days Expired Emails & WhatsApp
-      for (const sub of expiredMembersToEmail) {
-        const member: any = Array.isArray(sub.members) ? sub.members[0] : sub.members;
-        if (member?.email) {
+    // Send 10 Days Expired Emails & WhatsApp
+    for (const sub of expiredMembersToEmail) {
+      const member: any = Array.isArray(sub.members) ? sub.members[0] : sub.members;
+      
+      if (member?.email && transporter) {
+        try {
           await transporter.sendMail({
             from: `"Aura Gym" <${process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER}>`,
             to: member.email,
@@ -156,18 +161,18 @@ export async function GET(request: Request) {
             html: `<p>Hi ${member.first_name},</p><p>We miss you at the gym! Your membership ended 10 days ago. Reply to this email or drop by the front desk to renew your plan.</p>`,
           })
           emailsSent.expired10Days++
-        }
-
-        // Send WhatsApp Alert
-        if (member?.phone) {
-          await sendWhatsAppMessage(
-            member.phone, 
-            `❌ Hi ${member.first_name}, your Aura Gym membership ended 10 days ago. We miss seeing you! Drop by the gym to renew your plan and get back to grinding. 🏋️‍♂️`
-          );
+        } catch (mailErr) {
+          console.error('[SMTP ERROR] Failed to send expired email', mailErr)
         }
       }
-    } else {
-      console.log('[CRON] Skipping actual email/whatsapp sending because credentials are not set in .env.local')
+
+      // Send WhatsApp Alert
+      if (member?.phone) {
+        await sendWhatsAppMessage(
+          member.phone, 
+          `❌ Hi ${member.first_name}, your Aura Gym membership ended 10 days ago. We miss seeing you! Drop by the gym to renew your plan and get back to grinding. 🏋️‍♂️`
+        );
+      }
     }
 
     return NextResponse.json({

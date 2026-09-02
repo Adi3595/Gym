@@ -7,7 +7,7 @@ const supabase = createClient(
 );
 
 async function seedTestData() {
-  console.log('Seeding Cron Test Data...');
+  console.log('Seeding Cron Test Data for Gaurav...');
 
   // Target Dates
   const today = new Date();
@@ -20,11 +20,11 @@ async function seedTestData() {
   tenDaysAgo.setDate(today.getDate() - 10);
   const dateExpired10Days = tenDaysAgo.toISOString().split('T')[0];
 
-  // 1. Fetch Aditya's existing member profile
+  // 1. Fetch Gaurav's existing member profile (if any)
   const { data: member, error: fetchErr } = await supabase
     .from('members')
     .select('id')
-    .eq('email', 'gawaliaditya1483@gmail.com')
+    .eq('email', 'gaurav_test@example.com')
     .single();
 
   let memberId;
@@ -32,10 +32,10 @@ async function seedTestData() {
   if (!member) {
     // If somehow not found, insert
     const { data: newMember } = await supabase.from('members').insert({
-      first_name: 'Aditya',
-      last_name: 'Gawali',
-      email: 'gawaliaditya1483@gmail.com',
-      phone: '+919518573595',
+      first_name: 'Gaurav',
+      last_name: 'Test',
+      email: 'gaurav_test@example.com',
+      phone: '+918329713663',
       status: 'Active',
       join_date: '2023-01-01'
     }).select().single();
@@ -48,7 +48,7 @@ async function seedTestData() {
   const { data: plans } = await supabase.from('membership_plans').select('id').limit(1);
   const planId = plans && plans.length > 0 ? plans[0].id : null;
 
-  // 3. Insert 2 Subscriptions for Aditya
+  // 3. Insert 2 Subscriptions for Gaurav
   const { error: s1Err } = await supabase.from('subscriptions').insert({
     member_id: memberId,
     plan_id: planId,
@@ -70,7 +70,7 @@ async function seedTestData() {
   if (s1Err || s2Err) {
     console.error('Error inserting subscriptions:', s1Err || s2Err);
   } else {
-    console.log(`✅ Success! Seeded subscription ending tomorrow (${dateEndingSoon}) and one expired 10 days ago (${dateExpired10Days}).`);
+    console.log(`✅ Success! Seeded subscription ending tomorrow (${dateEndingSoon}) and one expired 10 days ago (${dateExpired10Days}) for Gaurav.`);
   }
 }
 

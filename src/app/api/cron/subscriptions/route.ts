@@ -88,18 +88,18 @@ export async function GET(request: Request) {
     }
 
     // ---------------------------------------------------------
-    // WHATSAPP BOT LOGIC (Twilio API)
+    // SMS ALERT LOGIC (Twilio API)
     // ---------------------------------------------------------
-    const sendWhatsAppMessage = async (phone: string, message: string) => {
+    const sendSmsMessage = async (phone: string, message: string) => {
       const accountSid = process.env.TWILIO_ACCOUNT_SID;
       const authToken = process.env.TWILIO_AUTH_TOKEN;
-      const twilioNumber = process.env.TWILIO_WHATSAPP_NUMBER; 
+      const twilioNumber = process.env.TWILIO_WHATSAPP_NUMBER ? process.env.TWILIO_WHATSAPP_NUMBER.replace('whatsapp:', '') : null; 
       
       if (!accountSid || !authToken || !twilioNumber) return;
       
       try {
         const cleanPhone = phone.replace(/\D/g, ''); 
-        const formattedPhone = `whatsapp:+${cleanPhone}`; 
+        const formattedPhone = `+${cleanPhone}`; 
         
         const params = new URLSearchParams();
         params.append('To', formattedPhone);
@@ -115,7 +115,7 @@ export async function GET(request: Request) {
           body: params
         });
       } catch (err) {
-        console.error('[WHATSAPP ERROR]', err);
+        console.error('[SMS ERROR]', err);
       }
     };
 
@@ -138,9 +138,9 @@ export async function GET(request: Request) {
           }
         }
         
-        // Send WhatsApp Alert
+        // Send SMS Alert
         if (member?.phone) {
-          await sendWhatsAppMessage(
+          await sendSmsMessage(
             member.phone, 
             `⚠️ Hi ${member.first_name}, your Aura Gym membership expires tomorrow! Please renew at the front desk to avoid losing your streak. 💪`
           );
@@ -166,9 +166,9 @@ export async function GET(request: Request) {
         }
       }
 
-      // Send WhatsApp Alert
+      // Send SMS Alert
       if (member?.phone) {
-        await sendWhatsAppMessage(
+        await sendSmsMessage(
           member.phone, 
           `❌ Hi ${member.first_name}, your Aura Gym membership ended 10 days ago. We miss seeing you! Drop by the gym to renew your plan and get back to grinding. 🏋️‍♂️`
         );

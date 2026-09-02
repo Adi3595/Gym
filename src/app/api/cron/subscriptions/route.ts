@@ -88,34 +88,31 @@ export async function GET(request: Request) {
     }
 
     // ---------------------------------------------------------
-    // SMS ALERT LOGIC (Twilio API)
+    // CUSTOM WHATSAPP MICROSERVICE LOGIC (whatsapp-web.js)
     // ---------------------------------------------------------
-    const sendSmsMessage = async (phone: string, message: string) => {
-      const accountSid = process.env.TWILIO_ACCOUNT_SID;
-      const authToken = process.env.TWILIO_AUTH_TOKEN;
-      const twilioNumber = process.env.TWILIO_WHATSAPP_NUMBER ? process.env.TWILIO_WHATSAPP_NUMBER.replace('whatsapp:', '') : null; 
-      
-      if (!accountSid || !authToken || !twilioNumber) return;
+    const sendWhatsAppMessage = async (phone: string, message: string) => {
+      // The URL where your WhatsApp microservice is hosted (e.g. Render.com URL or localhost for testing)
+      const microserviceUrl = process.env.WHATSAPP_MICROSERVICE_URL || 'http://localhost:4000/api/send';
+      const microserviceSecret = process.env.MICROSERVICE_SECRET || 'aura_gym_whatsapp_secret_key_123';
       
       try {
-        const cleanPhone = phone.replace(/\D/g, ''); 
-        const formattedPhone = `+${cleanPhone}`; 
-        
-        const params = new URLSearchParams();
-        params.append('To', formattedPhone);
-        params.append('From', twilioNumber);
-        params.append('Body', message);
-
-        await fetch(`https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`, {
+        const response = await fetch(microserviceUrl, {
           method: 'POST',
           headers: {
-            'Authorization': 'Basic ' + Buffer.from(`${accountSid}:${authToken}`).toString('base64'),
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/json',
           },
-          body: params
+          body: JSON.stringify({
+            secret: microserviceSecret,
+            phone: phone,
+            message: message
+          })
         });
+
+        if (!response.ok) {
+           console.error('[WHATSAPP MICROSERVICE ERROR]', await response.text());
+        }
       } catch (err) {
-        console.error('[SMS ERROR]', err);
+        console.error('[WHATSAPP MICROSERVICE FETCH ERROR]', err);
       }
     };
 
@@ -138,9 +135,9 @@ export async function GET(request: Request) {
           }
         }
         
-        // Send SMS Alert
+        // Send WhatsApp Alert
         if (member?.phone) {
-          await sendSmsMessage(
+          await sendWhatsAppMessage(
             member.phone, 
             `⚠️ Hi ${member.first_name}, your Aura Gym membership expires tomorrow! Please renew at the front desk to avoid losing your streak. 💪`
           );
@@ -166,9 +163,9 @@ export async function GET(request: Request) {
         }
       }
 
-      // Send SMS Alert
+      // Send WhatsApp Alert
       if (member?.phone) {
-        await sendSmsMessage(
+        await sendWhatsAppMessage(
           member.phone, 
           `❌ Hi ${member.first_name}, your Aura Gym membership ended 10 days ago. We miss seeing you! Drop by the gym to renew your plan and get back to grinding. 🏋️‍♂️`
         );

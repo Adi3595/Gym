@@ -60,13 +60,21 @@ export async function updateSession(request: NextRequest) {
         isAllowed = true;
       }
 
-      // Check Phone (strip all non-digits for comparison)
-      if (user.phone && adminPhones.includes(user.phone.replace(/\D/g, ''))) {
-        isAllowed = true;
+      // Check Phone (strip all non-digits for comparison, allow matching without country code)
+      if (user.phone) {
+        const cleanUserPhone = user.phone.replace(/\D/g, '')
+        for (const adminPhone of adminPhones) {
+          if (cleanUserPhone.endsWith(adminPhone)) {
+            isAllowed = true;
+            break;
+          }
+        }
       }
 
       if (!isAllowed) {
-        // User is not an admin. Forcefully delete their auth cookies to log them out
+        // User is not an admin. Forcefully sign them out and delete cookies
+        await supabase.auth.signOut()
+        
         supabaseResponse.cookies.getAll().forEach(cookie => {
           if (cookie.name.includes('-auth-token')) {
             supabaseResponse.cookies.delete(cookie.name)
@@ -90,10 +98,13 @@ export async function updateSession(request: NextRequest) {
   }
 
   // If user is authenticated and trying to access login/register, redirect to dashboard
+  // EXCEPT if they are arriving with an unauthorized error (meaning they were just kicked out)
   if (user && (request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/register')) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/dashboard'
-    return NextResponse.redirect(url)
+    if (!request.nextUrl.searchParams.has('error')) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/dashboard'
+      return NextResponse.redirect(url)
+    }
   }
 
   return supabaseResponse

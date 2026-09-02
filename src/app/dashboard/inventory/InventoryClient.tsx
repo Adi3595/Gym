@@ -101,7 +101,7 @@ export default function InventoryClient({ initialProducts }: { initialProducts: 
           backdropFilter: 'blur(4px)'
         }}>
           <div style={{
-            background: '#f6f6f6',
+            background: '#b3b3b3',
             padding: '2.5rem',
             borderRadius: '20px',
             width: '100%',
@@ -155,7 +155,7 @@ export default function InventoryClient({ initialProducts }: { initialProducts: 
                 </div>
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Status</label>
-                  <select name="status" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }}>
+                  <select name="status" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#b3b3b3' }}>
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>

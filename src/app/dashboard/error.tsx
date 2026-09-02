@@ -24,7 +24,7 @@ export default function DashboardError({
       justifyContent: 'center',
       height: '100%',
       minHeight: '60vh',
-      background: '#f6f6f6',
+      background: '#b3b3b3',
       borderRadius: '20px',
       border: '1px solid rgba(239, 68, 68, 0.1)',
       padding: '3rem',

@@ -94,7 +94,7 @@ export default function POSClient({ products, members }: { products: any[], memb
               key={product.id}
               onClick={() => addToCart(product)}
               style={{
-                background: '#f6f6f6',
+                background: '#b3b3b3',
                 border: '1px solid rgba(22, 105, 122, 0.08)',
                 borderRadius: '12px',
                 padding: '1.25rem',
@@ -116,7 +116,7 @@ export default function POSClient({ products, members }: { products: any[], memb
                 e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.02)';
               }}
             >
-              <div style={{ height: '120px', width: '100%', borderRadius: '8px', overflow: 'hidden', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '0.5rem' }}>
+              <div style={{ height: '120px', width: '100%', borderRadius: '8px', overflow: 'hidden', background: '#b3b3b3', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '0.5rem' }}>
                 {product.product_image ? (
                   <img src={product.product_image} alt={product.name} style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} />
                 ) : (
@@ -137,14 +137,14 @@ export default function POSClient({ products, members }: { products: any[], memb
       </div>
 
       {/* Cart Section (Right) */}
-      <div style={{ flex: 1, background: '#f6f6f6', borderRadius: '16px', border: '1px solid rgba(22, 105, 122, 0.08)', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+      <div style={{ flex: 1, background: '#b3b3b3', borderRadius: '16px', border: '1px solid rgba(22, 105, 122, 0.08)', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
         
-        <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'white' }}>
+        <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center', gap: '0.5rem', background: '#b3b3b3' }}>
           <ShoppingCart size={20} color="var(--color-primary)" />
           <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', color: 'var(--color-primary)', margin: 0 }}>Current Order</h2>
         </div>
 
-        <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(0,0,0,0.05)', background: 'white' }}>
+        <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(0,0,0,0.05)', background: '#b3b3b3' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <label style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Assign to Member (Optional)</label>
             <div style={{ position: 'relative' }}>
@@ -152,7 +152,7 @@ export default function POSClient({ products, members }: { products: any[], memb
               <select 
                 value={selectedMember} 
                 onChange={(e) => setSelectedMember(e.target.value)}
-                style={{ width: '100%', padding: '0.75rem 0.75rem 0.75rem 2.5rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#f6f6f6' }}
+                style={{ width: '100%', padding: '0.75rem 0.75rem 0.75rem 2.5rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#b3b3b3' }}
               >
                 <option value="">Walk-in Customer</option>
                 {members.map(m => (
@@ -174,9 +174,9 @@ export default function POSClient({ products, members }: { products: any[], memb
                   <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{formatCurrency(item.price)}</div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <button onClick={() => updateQuantity(item.product_id, -1)} style={{ width: '24px', height: '24px', borderRadius: '4px', border: '1px solid #ddd', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}><Minus size={14}/></button>
+                  <button onClick={() => updateQuantity(item.product_id, -1)} style={{ width: '24px', height: '24px', borderRadius: '4px', border: '1px solid #ddd', background: '#b3b3b3', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}><Minus size={14}/></button>
                   <span style={{ fontWeight: 600, width: '20px', textAlign: 'center' }}>{item.quantity}</span>
-                  <button onClick={() => updateQuantity(item.product_id, 1)} style={{ width: '24px', height: '24px', borderRadius: '4px', border: '1px solid #ddd', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}><Plus size={14}/></button>
+                  <button onClick={() => updateQuantity(item.product_id, 1)} style={{ width: '24px', height: '24px', borderRadius: '4px', border: '1px solid #ddd', background: '#b3b3b3', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}><Plus size={14}/></button>
                   <button onClick={() => removeFromCart(item.product_id)} style={{ background: 'none', border: 'none', color: '#EF4444', cursor: 'pointer', marginLeft: '0.5rem' }}><X size={16}/></button>
                 </div>
               </div>
@@ -200,7 +200,7 @@ export default function POSClient({ products, members }: { products: any[], memb
                   padding: '0.5rem', 
                   borderRadius: '6px', 
                   border: `1px solid ${paymentMethod === method ? 'var(--color-primary)' : 'rgba(0,0,0,0.1)'}`,
-                  background: paymentMethod === method ? 'rgba(22, 105, 122, 0.1)' : 'white',
+                  background: paymentMethod === method ? 'rgba(22, 105, 122, 0.1)' : '#b3b3b3',
                   color: paymentMethod === method ? 'var(--color-primary)' : 'var(--text-muted)',
                   fontWeight: 600,
                   cursor: 'pointer'

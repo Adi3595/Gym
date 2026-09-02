@@ -74,7 +74,7 @@ export default async function DashboardOverview() {
       {/* KPI Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
         
-        <div style={{ background: '#f6f6f6', padding: '1.75rem', borderRadius: '16px', border: '1px solid rgba(22,105,122,0.05)', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+        <div style={{ background: '#b3b3b3', padding: '1.75rem', borderRadius: '16px', border: '1px solid rgba(22,105,122,0.05)', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem', color: 'var(--text-muted)' }}>
             <span style={{ fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Total Members</span>
             <Users size={20} color="var(--color-primary)" />
@@ -87,7 +87,7 @@ export default async function DashboardOverview() {
           </div>
         </div>
 
-        <div style={{ background: '#f6f6f6', padding: '1.75rem', borderRadius: '16px', border: '1px solid rgba(72,159,181,0.1)', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+        <div style={{ background: '#b3b3b3', padding: '1.75rem', borderRadius: '16px', border: '1px solid rgba(72,159,181,0.1)', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem', color: 'var(--text-muted)' }}>
             <span style={{ fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>MRR (30 Days)</span>
             <TrendingUp size={20} color="var(--color-secondary)" />
@@ -100,7 +100,7 @@ export default async function DashboardOverview() {
           </div>
         </div>
 
-        <div style={{ background: '#f6f6f6', padding: '1.75rem', borderRadius: '16px', border: '1px solid rgba(255,166,43,0.15)', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+        <div style={{ background: '#b3b3b3', padding: '1.75rem', borderRadius: '16px', border: '1px solid rgba(255,166,43,0.15)', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem', color: 'var(--text-muted)' }}>
             <span style={{ fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Store Sales Today</span>
             <ShoppingBag size={20} color="var(--color-accent)" />
@@ -113,7 +113,7 @@ export default async function DashboardOverview() {
           </div>
         </div>
 
-        <div style={{ background: '#f6f6f6', padding: '1.75rem', borderRadius: '16px', border: '1px solid rgba(34,197,94,0.15)', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+        <div style={{ background: '#b3b3b3', padding: '1.75rem', borderRadius: '16px', border: '1px solid rgba(34,197,94,0.15)', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem', color: 'var(--text-muted)' }}>
             <span style={{ fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Active Now</span>
             <Activity size={20} color="var(--status-success)" />

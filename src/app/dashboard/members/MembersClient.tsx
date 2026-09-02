@@ -12,19 +12,6 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
   const [error, setError] = useState<string | null>(null)
 
   const columns = [
-    { 
-      key: 'profile_photo', 
-      header: 'Photo',
-      cell: (item: any) => (
-        item.profile_photo ? (
-          <img src={item.profile_photo} alt={item.first_name} style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }} />
-        ) : (
-          <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '12px', fontWeight: 'bold' }}>
-            {item.first_name[0]}{item.last_name[0]}
-          </div>
-        )
-      )
-    },
     { key: 'first_name', header: 'First Name' },
     { key: 'last_name', header: 'Last Name' },
     { key: 'email', header: 'Email' },
@@ -97,7 +84,7 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
           backdropFilter: 'blur(4px)'
         }}>
           <div style={{
-            background: '#f6f6f6',
+            background: '#b3b3b3',
             padding: '2.5rem',
             borderRadius: '20px',
             width: '100%',
@@ -140,7 +127,7 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
                 <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Status</label>
-                <select name="status" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }}>
+                <select name="status" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#b3b3b3' }}>
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
                 </select>

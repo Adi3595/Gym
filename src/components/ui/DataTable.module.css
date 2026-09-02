@@ -1,5 +1,5 @@
 .tableContainer {
-  background: #f6f6f6;
+  background: #b3b3b3;
   border-radius: 16px;
   border: 1px solid rgba(22, 105, 122, 0.08);
   overflow: hidden;
@@ -12,7 +12,7 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid rgba(22, 105, 122, 0.05);
-  background: white;
+  background: #b3b3b3;
 }
 
 .searchBox {
@@ -33,7 +33,7 @@
   padding: 0.75rem 1rem 0.75rem 2.5rem;
   border-radius: 8px;
   border: 1px solid rgba(0,0,0,0.1);
-  background: #f6f6f6;
+  background: #b3b3b3;
   font-size: 0.875rem;
   transition: all var(--transition-fast);
 }
@@ -41,7 +41,7 @@
 .searchInput:focus {
   outline: none;
   border-color: var(--color-primary);
-  background: white;
+  background: #b3b3b3;
   box-shadow: 0 0 0 3px rgba(22, 105, 122, 0.1);
 }
 
@@ -52,7 +52,7 @@
 
 .tableWrapper {
   overflow-x: auto;
-  background: white;
+  background: #b3b3b3;
 }
 
 .table {
@@ -68,7 +68,7 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   color: var(--text-muted);
-  background: #f6f6f6;
+  background: #b3b3b3;
   border-bottom: 2px solid rgba(22, 105, 122, 0.05);
 }
 
@@ -117,7 +117,7 @@
   padding: 4rem !important;
   color: var(--text-muted);
   font-style: italic;
-  background: white;
+  background: #b3b3b3;
 }
 
 .pagination {
@@ -125,7 +125,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #f6f6f6;
+  background: #b3b3b3;
   border-top: 1px solid rgba(22, 105, 122, 0.05);
 }
 

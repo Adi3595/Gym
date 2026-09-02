@@ -119,7 +119,7 @@ export default function BillingClient({
           backdropFilter: 'blur(4px)'
         }}>
           <div style={{
-            background: '#f6f6f6',
+            background: '#b3b3b3',
             padding: '2.5rem',
             borderRadius: '20px',
             width: '100%',
@@ -142,7 +142,7 @@ export default function BillingClient({
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Select Member *</label>
-                <select name="member_id" required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }}>
+                <select name="member_id" required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#b3b3b3' }}>
                   <option value="">-- Choose Member --</option>
                   {members.map(m => (
                     <option key={m.id} value={m.id}>{m.first_name} {m.last_name} ({m.phone})</option>
@@ -152,7 +152,7 @@ export default function BillingClient({
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Membership Plan *</label>
-                <select name="plan_id" required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }}>
+                <select name="plan_id" required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#b3b3b3' }}>
                   <option value="">-- Choose Plan --</option>
                   {plans.map(p => (
                     <option key={p.id} value={p.id}>{p.name} - {formatCurrency(p.price)} ({p.duration_days} Days)</option>
@@ -162,7 +162,7 @@ export default function BillingClient({
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
                 <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Payment Method *</label>
-                <select name="payment_method" required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }}>
+                <select name="payment_method" required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#b3b3b3' }}>
                   <option value="Card">Credit/Debit Card</option>
                   <option value="UPI">UPI</option>
                   <option value="Cash">Cash</option>

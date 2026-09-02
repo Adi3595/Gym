@@ -3,7 +3,8 @@
 import React, { useState, useTransition } from 'react'
 import { DataTable } from '@/components/ui/DataTable'
 import { Button } from '@/components/ui/Button'
-import { Plus, X, Loader2 } from 'lucide-react'
+import { Plus, X, Loader2, CreditCard, ArrowUpRight, Activity } from 'lucide-react'
+import { SummaryGrid, SummaryCard } from '@/components/ui/SummaryCards'
 import { addSubscription } from './actions'
 
 export default function BillingClient({ 
@@ -99,6 +100,25 @@ export default function BillingClient({
           Assign Subscription
         </Button>
       </div>
+
+      <SummaryGrid>
+        <SummaryCard 
+          title="Total Revenue" 
+          value={formatCurrency(initialSubscriptions?.reduce((acc, curr) => acc + (curr.amount_paid || 0), 0) || 0)} 
+          icon={<CreditCard size={20} />} 
+          trend="15%" trendUp={true} 
+        />
+        <SummaryCard 
+          title="Active Subscriptions" 
+          value={initialSubscriptions?.filter(s => new Date(s.end_date) >= new Date()).length || 0} 
+          icon={<Activity size={20} />} 
+        />
+        <SummaryCard 
+          title="Total Plans" 
+          value={plans?.length || 0} 
+          icon={<ArrowUpRight size={20} />} 
+        />
+      </SummaryGrid>
 
       <DataTable 
         data={initialSubscriptions || []} 

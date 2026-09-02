@@ -3,7 +3,8 @@
 import React, { useState, useTransition } from 'react'
 import { DataTable } from '@/components/ui/DataTable'
 import { Button } from '@/components/ui/Button'
-import { Plus, X, Loader2 } from 'lucide-react'
+import { Plus, X, Loader2, Users, UserCheck, TrendingUp } from 'lucide-react'
+import { SummaryGrid, SummaryCard } from '@/components/ui/SummaryCards'
 import { addMember } from './actions'
 
 export default function MembersClient({ initialMembers }: { initialMembers: any[] }) {
@@ -64,6 +65,26 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
           Add Member
         </Button>
       </div>
+
+      <SummaryGrid>
+        <SummaryCard 
+          title="Total Members" 
+          value={initialMembers?.length || 0} 
+          icon={<Users size={20} />} 
+          trend="12%" trendUp={true} 
+        />
+        <SummaryCard 
+          title="Active Members" 
+          value={initialMembers?.filter(m => m.status === 'Active').length || 0} 
+          icon={<UserCheck size={20} />} 
+          trend="5%" trendUp={true} 
+        />
+        <SummaryCard 
+          title="New This Month" 
+          value={initialMembers?.filter(m => new Date(m.join_date).getMonth() === new Date().getMonth()).length || 0} 
+          icon={<TrendingUp size={20} />} 
+        />
+      </SummaryGrid>
 
       <DataTable 
         data={initialMembers || []} 

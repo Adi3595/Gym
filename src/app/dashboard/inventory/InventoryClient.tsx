@@ -3,7 +3,8 @@
 import React, { useState, useTransition } from 'react'
 import { DataTable } from '@/components/ui/DataTable'
 import { Button } from '@/components/ui/Button'
-import { Plus, X, Loader2 } from 'lucide-react'
+import { Plus, X, Loader2, Package, AlertCircle, ShoppingBag } from 'lucide-react'
+import { SummaryGrid, SummaryCard } from '@/components/ui/SummaryCards'
 import { addProduct } from './actions'
 
 export default function InventoryClient({ initialProducts }: { initialProducts: any[] }) {
@@ -81,6 +82,25 @@ export default function InventoryClient({ initialProducts }: { initialProducts: 
           Add Product
         </Button>
       </div>
+
+      <SummaryGrid>
+        <SummaryCard 
+          title="Total Products" 
+          value={initialProducts?.length || 0} 
+          icon={<Package size={20} />} 
+        />
+        <SummaryCard 
+          title="Low Stock Alerts" 
+          value={initialProducts?.filter(p => p.current_stock < 10).length || 0} 
+          icon={<AlertCircle size={20} />} 
+          trend="Needs Attention" trendUp={false} 
+        />
+        <SummaryCard 
+          title="Active Inventory" 
+          value={initialProducts?.filter(p => p.status === 'Active').length || 0} 
+          icon={<ShoppingBag size={20} />} 
+        />
+      </SummaryGrid>
 
       <DataTable 
         data={initialProducts || []} 

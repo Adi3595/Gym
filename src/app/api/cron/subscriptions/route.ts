@@ -32,7 +32,7 @@ export async function GET(request: Request) {
     // ---------------------------------------------------------
     const { data: endingSoonData, error: endingError } = await supabaseAdmin
       .from('subscriptions')
-      .select('id, end_date, members(id, first_name, email)')
+      .select('id, end_date, members(id, first_name, email, phone)')
       .eq('end_date', dateEndingSoon)
       .eq('payment_status', 'Completed')
 
@@ -44,7 +44,7 @@ export async function GET(request: Request) {
     // We only want to email them if they haven't renewed since then.
     const { data: expiredData, error: expiredError } = await supabaseAdmin
       .from('subscriptions')
-      .select('id, end_date, member_id, members(id, first_name, email)')
+      .select('id, end_date, member_id, members(id, first_name, email, phone)')
       .eq('end_date', dateExpired10Days)
 
     if (expiredError) throw expiredError

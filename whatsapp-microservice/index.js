@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const qrcode = require('qrcode-terminal');
 const { Client, LocalAuth } = require('whatsapp-web.js');
@@ -31,8 +32,19 @@ client.on('disconnected', (reason) => {
     console.log('❌ WhatsApp Client was disconnected:', reason);
 });
 
+client.on('loading_screen', (percent, message) => {
+    console.log('LOADING SCREEN', percent, message);
+});
+
+client.on('auth_failure', msg => {
+    console.error('AUTHENTICATION FAILURE', msg);
+});
+
 // Start the client
-client.initialize();
+console.log('Initializing WhatsApp Web Puppeteer (this takes 10-15 seconds)...');
+client.initialize().catch(err => {
+    console.error('CRITICAL ERROR INITIALIZING PUPPETEER:', err);
+});
 
 // ---------------------------------------------------------
 // API ENDPOINT: Vercel calls this to send messages

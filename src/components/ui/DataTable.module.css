@@ -1,5 +1,5 @@
 .tableContainer {
-  background: white;
+  background: #f6f6f6;
   border-radius: 16px;
   border: 1px solid rgba(22, 105, 122, 0.08);
   overflow: hidden;
@@ -33,7 +33,7 @@
   padding: 0.75rem 1rem 0.75rem 2.5rem;
   border-radius: 8px;
   border: 1px solid rgba(0,0,0,0.1);
-  background: white;
+  background: #f6f6f6;
   font-size: 0.875rem;
   transition: all var(--transition-fast);
 }
@@ -68,7 +68,7 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   color: var(--text-muted);
-  background: white;
+  background: #f6f6f6;
   border-bottom: 2px solid rgba(22, 105, 122, 0.05);
 }
 
@@ -125,7 +125,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: white;
+  background: #f6f6f6;
   border-top: 1px solid rgba(22, 105, 122, 0.05);
 }
 

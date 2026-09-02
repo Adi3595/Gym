@@ -68,12 +68,12 @@ export default function POSClient({ products, members }: { products: any[], memb
   }
 
   return (
-    <div style={{ display: 'flex', gap: '1rem', height: 'calc(100vh - 150px)' }}>
+    <div style={{ display: 'flex', gap: '2rem', height: 'calc(100vh - 150px)' }}>
       
       {/* Products Section (Left) */}
       <div style={{ flex: 2, display: 'flex', flexDirection: 'column', gap: '1.5rem', overflow: 'hidden' }}>
         <div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', color: 'var(--color-primary)', lineHeight: 1 }}>Point of Sale</h1>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', color: 'var(--color-primary)', lineHeight: 1 }}>Point of Sale</h1>
           <p style={{ color: 'var(--text-muted)' }}>Scan or select products to checkout.</p>
         </div>
 
@@ -94,7 +94,7 @@ export default function POSClient({ products, members }: { products: any[], memb
               key={product.id}
               onClick={() => addToCart(product)}
               style={{
-                background: 'white',
+                background: '#f6f6f6',
                 border: '1px solid rgba(22, 105, 122, 0.08)',
                 borderRadius: '12px',
                 padding: '1.25rem',
@@ -116,7 +116,7 @@ export default function POSClient({ products, members }: { products: any[], memb
                 e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.02)';
               }}
             >
-              <div style={{ height: '120px', width: '100%', borderRadius: '8px', overflow: 'hidden', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '0.5rem' }}>
+              <div style={{ height: '120px', width: '100%', borderRadius: '8px', overflow: 'hidden', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '0.5rem' }}>
                 {product.product_image ? (
                   <img src={product.product_image} alt={product.name} style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} />
                 ) : (
@@ -137,14 +137,14 @@ export default function POSClient({ products, members }: { products: any[], memb
       </div>
 
       {/* Cart Section (Right) */}
-      <div style={{ flex: 1, background: 'white', borderRadius: '16px', border: '1px solid rgba(22, 105, 122, 0.08)', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+      <div style={{ flex: 1, background: '#f6f6f6', borderRadius: '16px', border: '1px solid rgba(22, 105, 122, 0.08)', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
         
-        <div style={{ padding: '1rem', borderBottom: '1px solid rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'white' }}>
+        <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'white' }}>
           <ShoppingCart size={20} color="var(--color-primary)" />
           <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', color: 'var(--color-primary)', margin: 0 }}>Current Order</h2>
         </div>
 
-        <div style={{ padding: '1rem', borderBottom: '1px solid rgba(0,0,0,0.05)', background: 'white' }}>
+        <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(0,0,0,0.05)', background: 'white' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <label style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Assign to Member (Optional)</label>
             <div style={{ position: 'relative' }}>
@@ -152,7 +152,7 @@ export default function POSClient({ products, members }: { products: any[], memb
               <select 
                 value={selectedMember} 
                 onChange={(e) => setSelectedMember(e.target.value)}
-                style={{ width: '100%', padding: '0.75rem 0.75rem 0.75rem 2.5rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }}
+                style={{ width: '100%', padding: '0.75rem 0.75rem 0.75rem 2.5rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#f6f6f6' }}
               >
                 <option value="">Walk-in Customer</option>
                 {members.map(m => (
@@ -163,7 +163,7 @@ export default function POSClient({ products, members }: { products: any[], memb
           </div>
         </div>
 
-        <div style={{ flex: 1, overflowY: 'auto', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {cart.length === 0 ? (
             <div style={{ textAlign: 'center', color: 'var(--text-muted)', marginTop: '2rem' }}>Cart is empty</div>
           ) : (
@@ -184,7 +184,7 @@ export default function POSClient({ products, members }: { products: any[], memb
           )}
         </div>
 
-        <div style={{ padding: '1rem', background: 'var(--bg-main)', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
+        <div style={{ padding: '1.5rem', background: 'var(--bg-main)', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-dark)' }}>
             <span>Total</span>
             <span style={{ color: 'var(--color-accent)' }}>{formatCurrency(total)}</span>

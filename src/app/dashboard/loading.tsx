@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function DashboardLoading() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', width: '100%' }}>
       {/* Header Skeleton */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
         <div className="skeleton" style={{ width: '250px', height: '48px', borderRadius: '8px' }}></div>

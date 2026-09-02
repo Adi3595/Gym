@@ -1,7 +1,7 @@
 .dashboardWrapper {
   display: flex;
   height: 100vh;
-  background: linear-gradient(135deg, var(--color-neutral) 0%, var(--color-light) 100%);
+  background: var(--bg-main); /* icy cyan */
   overflow: hidden;
   font-family: var(--font-sans);
 }
@@ -9,11 +9,11 @@
 /* Sidebar */
 .sidebar {
   width: 280px;
-  background: white;
+  background: #f6f6f6;
   border-right: 1px solid rgba(22, 105, 122, 0.08);
   display: flex;
   flex-direction: column;
-  padding: 1.5rem;
+  padding: 2.5rem 2rem;
   z-index: 10;
   box-shadow: 2px 0 20px rgba(0,0,0,0.02);
 }
@@ -22,7 +22,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 3rem;
 }
 
 .logo {
@@ -48,7 +48,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2.5rem;
 }
 
 .navGroup {
@@ -123,13 +123,13 @@
 
 /* Topbar */
 .topbar {
-  height: 70px;
+  height: 90px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1.5rem;
+  padding: 0 3rem;
   border-bottom: 1px solid rgba(22, 105, 122, 0.05);
-  background: transparent;
+  background: var(--bg-main);
 }
 
 .searchInput {
@@ -137,7 +137,7 @@
   padding: 0.875rem 1.25rem;
   border-radius: 12px;
   border: 1px solid rgba(22, 105, 122, 0.1);
-  background: white;
+  background: #f6f6f6;
   font-size: 0.9rem;
   color: var(--text-dark);
   transition: all var(--transition-fast);
@@ -175,6 +175,6 @@
 /* Content Container */
 .contentContainer {
   flex: 1;
-  padding: 1.5rem;
+  padding: 3rem;
   overflow-y: auto;
 }

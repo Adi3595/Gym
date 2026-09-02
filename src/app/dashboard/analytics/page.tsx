@@ -26,16 +26,16 @@ export default async function AnalyticsPage() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       <div>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', color: 'var(--color-primary)', lineHeight: 1 }}>Analytics</h1>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'var(--color-primary)', lineHeight: 1 }}>Analytics</h1>
         <p style={{ color: 'var(--text-muted)' }}>Deep dive into your gym's performance.</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
         
         {/* Recent Transactions */}
-        <div style={{ background: 'white', borderRadius: '16px', border: '1px solid rgba(22, 105, 122, 0.08)', padding: '2rem', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+        <div style={{ background: '#f6f6f6', borderRadius: '16px', border: '1px solid rgba(22, 105, 122, 0.08)', padding: '2rem', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
             <TrendingUp color="var(--color-secondary)" />
             <h2 style={{ fontSize: '1.25rem', color: 'var(--color-primary)', margin: 0, fontWeight: 700 }}>Recent Transactions</h2>
@@ -59,7 +59,7 @@ export default async function AnalyticsPage() {
         </div>
 
         {/* Recent Check-Ins */}
-        <div style={{ background: 'white', borderRadius: '16px', border: '1px solid rgba(22, 105, 122, 0.08)', padding: '2rem', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+        <div style={{ background: '#f6f6f6', borderRadius: '16px', border: '1px solid rgba(22, 105, 122, 0.08)', padding: '2rem', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
             <Activity color="var(--status-success)" />
             <h2 style={{ fontSize: '1.25rem', color: 'var(--color-primary)', margin: 0, fontWeight: 700 }}>Recent Check-ins</h2>

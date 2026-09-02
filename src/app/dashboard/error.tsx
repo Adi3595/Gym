@@ -24,7 +24,7 @@ export default function DashboardError({
       justifyContent: 'center',
       height: '100%',
       minHeight: '60vh',
-      background: 'white',
+      background: '#f6f6f6',
       borderRadius: '20px',
       border: '1px solid rgba(239, 68, 68, 0.1)',
       padding: '3rem',
@@ -45,7 +45,7 @@ export default function DashboardError({
       
       <h2 style={{ 
         fontFamily: 'var(--font-display)', 
-        fontSize: '1.8rem', 
+        fontSize: '2.5rem', 
         color: 'var(--text-dark)', 
         marginBottom: '0.5rem',
         lineHeight: 1

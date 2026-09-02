@@ -88,11 +88,11 @@ export default function BillingClient({
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', color: 'var(--color-primary)', lineHeight: 1 }}>Billing</h1>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'var(--color-primary)', lineHeight: 1 }}>Billing</h1>
           <p style={{ color: 'var(--text-muted)' }}>Manage memberships and subscription payments.</p>
         </div>
         <Button variant="primary" icon={<Plus size={18} />} onClick={() => setIsModalOpen(true)}>
@@ -119,8 +119,8 @@ export default function BillingClient({
           backdropFilter: 'blur(4px)'
         }}>
           <div style={{
-            background: 'white',
-            padding: '1rem',
+            background: '#f6f6f6',
+            padding: '2.5rem',
             borderRadius: '20px',
             width: '100%',
             maxWidth: '500px',

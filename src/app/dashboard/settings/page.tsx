@@ -8,13 +8,13 @@ export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('general')
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       <div>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', color: 'var(--color-primary)', lineHeight: 1 }}>Settings</h1>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'var(--color-primary)', lineHeight: 1 }}>Settings</h1>
         <p style={{ color: 'var(--text-muted)' }}>Configure your gym's core preferences.</p>
       </div>
 
-      <div style={{ display: 'flex', gap: '1rem' }}>
+      <div style={{ display: 'flex', gap: '2rem' }}>
         
         {/* Settings Sidebar */}
         <div style={{ width: '250px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -45,7 +45,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Settings Content */}
-        <div style={{ flex: 1, background: 'white', borderRadius: '16px', border: '1px solid rgba(22, 105, 122, 0.08)', padding: '1rem', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+        <div style={{ flex: 1, background: '#f6f6f6', borderRadius: '16px', border: '1px solid rgba(22, 105, 122, 0.08)', padding: '2.5rem', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
           
           {activeTab === 'general' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
@@ -99,9 +99,9 @@ export default function SettingsPage() {
           {activeTab === 'api' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               <h2 style={{ fontSize: '1.5rem', color: 'var(--text-dark)', marginBottom: '1rem' }}>Developer Keys</h2>
-              <div style={{ background: 'white', padding: '1rem', borderRadius: '8px', border: '1px dashed rgba(0,0,0,0.1)' }}>
+              <div style={{ background: 'white', padding: '1.5rem', borderRadius: '8px', border: '1px dashed rgba(0,0,0,0.1)' }}>
                 <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Stripe Webhook Secret</p>
-                <div style={{ background: 'white', padding: '0.75rem', borderRadius: '6px', fontFamily: 'monospace' }}>whsec_xxxxxxxxxxxxxxxxxxxxxxxx</div>
+                <div style={{ background: '#f6f6f6', padding: '0.75rem', borderRadius: '6px', fontFamily: 'monospace' }}>whsec_xxxxxxxxxxxxxxxxxxxxxxxx</div>
               </div>
             </div>
           )}

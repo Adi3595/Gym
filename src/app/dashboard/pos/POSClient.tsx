@@ -63,6 +63,11 @@ export default function POSClient({ products, members }: { products: any[], memb
         setCart([])
         setSelectedMember('')
         setTimeout(() => setSuccess(false), 3000)
+        
+        // Open receipt in new tab
+        if (res.saleId) {
+          window.open(`/receipt/pos/${res.saleId}`, '_blank')
+        }
       }
     })
   }

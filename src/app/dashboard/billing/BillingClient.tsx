@@ -73,6 +73,23 @@ export default function BillingClient({
           {item.payment_status}
         </span>
       )
+    },
+    {
+      key: 'actions',
+      header: 'Actions',
+      cell: (item: any) => (
+        <a 
+          href={`/receipt/subscription/${item.id}`} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          style={{
+            display: 'inline-block', padding: '6px 12px', background: 'var(--color-primary)', color: 'white',
+            borderRadius: '6px', fontSize: '0.75rem', fontWeight: 600, textDecoration: 'none'
+          }}
+        >
+          View Receipt
+        </a>
+      )
     }
   ]
 

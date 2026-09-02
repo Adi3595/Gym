@@ -35,7 +35,7 @@ export default async function AnalyticsPage() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
         
         {/* Recent Transactions */}
-        <div style={{ background: '#f6f6f6', borderRadius: '16px', border: '1px solid rgba(22, 105, 122, 0.08)', padding: '2rem', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+        <div style={{ background: 'white', borderRadius: '16px', border: '1px solid rgba(22, 105, 122, 0.08)', padding: '2rem', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
             <TrendingUp color="var(--color-secondary)" />
             <h2 style={{ fontSize: '1.25rem', color: 'var(--color-primary)', margin: 0, fontWeight: 700 }}>Recent Transactions</h2>
@@ -43,15 +43,16 @@ export default async function AnalyticsPage() {
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {recentSales && recentSales.length > 0 ? recentSales.map(sale => (
-              <div key={sale.id} style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1rem', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
+              <div key={sale.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
                 <div>
                   <div style={{ fontWeight: 600, color: 'var(--text-dark)' }}>
                     {sale.members ? `${sale.members.first_name} ${sale.members.last_name}` : 'Walk-in Customer'}
                   </div>
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{new Date(sale.created_at).toLocaleString()}</div>
                 </div>
-                <div style={{ fontWeight: 700, color: 'var(--color-accent)' }}>
-                  {formatCurrency(sale.final_amount)}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <span style={{ fontWeight: 700, color: 'var(--color-accent)' }}>{formatCurrency(sale.final_amount)}</span>
+                  <a href={`/receipt/pos/${sale.id}`} target="_blank" style={{ fontSize: '0.75rem', background: '#f3f4f6', padding: '0.5rem 0.75rem', borderRadius: '6px', textDecoration: 'none', color: 'var(--text-dark)', fontWeight: 600 }}>Receipt</a>
                 </div>
               </div>
             )) : <p style={{ color: 'var(--text-muted)' }}>No recent transactions.</p>}
@@ -59,7 +60,7 @@ export default async function AnalyticsPage() {
         </div>
 
         {/* Recent Check-Ins */}
-        <div style={{ background: '#f6f6f6', borderRadius: '16px', border: '1px solid rgba(22, 105, 122, 0.08)', padding: '2rem', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+        <div style={{ background: 'white', borderRadius: '16px', border: '1px solid rgba(22, 105, 122, 0.08)', padding: '2rem', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
             <Activity color="var(--status-success)" />
             <h2 style={{ fontSize: '1.25rem', color: 'var(--color-primary)', margin: 0, fontWeight: 700 }}>Recent Check-ins</h2>

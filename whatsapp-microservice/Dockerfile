@@ -1,15 +1,19 @@
-# Use the official Puppeteer image which comes with Chromium pre-installed
-FROM ghcr.io/puppeteer/puppeteer:latest
+# Use a lightweight Node.js image
+FROM node:18-slim
 
-# Switch to root to configure permissions
-USER root
+# Install Chromium and dependencies
+RUN apt-get update && apt-get install -y \
+    chromium \
+    fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
+    --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set Puppeteer environment variables to use the installed Chromium
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 # Create app directory
 WORKDIR /usr/src/app
-
-# Tell Puppeteer to use the installed version of Chrome from the base image
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
 
 # Copy package files
 COPY package*.json ./
@@ -19,12 +23,6 @@ RUN npm install
 
 # Copy the rest of the application code
 COPY . .
-
-# Ensure the puppeteer user has permissions to write the auth session data
-RUN chown -R pptruser:pptruser /usr/src/app
-
-# Switch back to the puppeteer user for security
-USER pptruser
 
 # Expose the port the app runs on
 EXPOSE 4000

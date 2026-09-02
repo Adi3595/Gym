@@ -10,7 +10,7 @@ app.use(express.json()); // Allow JSON payloads
 const client = new Client({
     authStrategy: new LocalAuth(), // Saves the login session so you don't have to scan QR every time
     puppeteer: {
-        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || (process.platform === 'linux' ? '/usr/bin/google-chrome' : null),
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || (process.platform === 'linux' ? '/usr/bin/google-chrome-stable' : null),
         args: ['--no-sandbox', '--disable-setuid-sandbox'] // Required for running on platforms like Render
     }
 });

@@ -9,7 +9,7 @@ WORKDIR /usr/src/app
 
 # Tell Puppeteer to use the installed version of Chrome from the base image
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
 
 # Copy package files
 COPY package*.json ./

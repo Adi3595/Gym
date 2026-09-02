@@ -53,11 +53,11 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'var(--color-primary)', lineHeight: 1 }}>Members</h1>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', color: 'var(--color-primary)', lineHeight: 1 }}>Members</h1>
           <p style={{ color: 'var(--text-muted)' }}>Manage your gym's member database.</p>
         </div>
         <Button variant="primary" icon={<Plus size={18} />} onClick={() => setIsModalOpen(true)}>
@@ -84,8 +84,8 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
           backdropFilter: 'blur(4px)'
         }}>
           <div style={{
-            background: '#b3b3b3',
-            padding: '2.5rem',
+            background: 'white',
+            padding: '1rem',
             borderRadius: '20px',
             width: '100%',
             maxWidth: '500px',
@@ -127,7 +127,7 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
                 <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Status</label>
-                <select name="status" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#b3b3b3' }}>
+                <select name="status" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }}>
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
                 </select>

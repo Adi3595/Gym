@@ -88,11 +88,11 @@ export default function BillingClient({
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'var(--color-primary)', lineHeight: 1 }}>Billing</h1>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', color: 'var(--color-primary)', lineHeight: 1 }}>Billing</h1>
           <p style={{ color: 'var(--text-muted)' }}>Manage memberships and subscription payments.</p>
         </div>
         <Button variant="primary" icon={<Plus size={18} />} onClick={() => setIsModalOpen(true)}>
@@ -119,8 +119,8 @@ export default function BillingClient({
           backdropFilter: 'blur(4px)'
         }}>
           <div style={{
-            background: '#b3b3b3',
-            padding: '2.5rem',
+            background: 'white',
+            padding: '1rem',
             borderRadius: '20px',
             width: '100%',
             maxWidth: '500px',
@@ -142,7 +142,7 @@ export default function BillingClient({
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Select Member *</label>
-                <select name="member_id" required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#b3b3b3' }}>
+                <select name="member_id" required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }}>
                   <option value="">-- Choose Member --</option>
                   {members.map(m => (
                     <option key={m.id} value={m.id}>{m.first_name} {m.last_name} ({m.phone})</option>
@@ -152,7 +152,7 @@ export default function BillingClient({
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Membership Plan *</label>
-                <select name="plan_id" required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#b3b3b3' }}>
+                <select name="plan_id" required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }}>
                   <option value="">-- Choose Plan --</option>
                   {plans.map(p => (
                     <option key={p.id} value={p.id}>{p.name} - {formatCurrency(p.price)} ({p.duration_days} Days)</option>
@@ -162,7 +162,7 @@ export default function BillingClient({
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
                 <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Payment Method *</label>
-                <select name="payment_method" required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#b3b3b3' }}>
+                <select name="payment_method" required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }}>
                   <option value="Card">Credit/Debit Card</option>
                   <option value="UPI">UPI</option>
                   <option value="Cash">Cash</option>

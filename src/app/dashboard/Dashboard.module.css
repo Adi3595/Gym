@@ -9,8 +9,8 @@
 /* Sidebar */
 .sidebar {
   width: 280px;
-  background: #f6f6f6;
-  border-right: 1px solid rgba(22, 105, 122, 0.08);
+  background: var(--color-primary);
+  border-right: none;
   display: flex;
   flex-direction: column;
   padding: 2.5rem 2rem;
@@ -28,14 +28,14 @@
 .logo {
   font-family: var(--font-display);
   font-size: 2.25rem;
-  color: var(--color-primary);
+  color: white;
   line-height: 1;
   letter-spacing: 1px;
 }
 
 .roleTag {
-  background: rgba(22, 105, 122, 0.1);
-  color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-accent);
   font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -62,10 +62,9 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.5);
   margin-bottom: 0.75rem;
   padding-left: 0.75rem;
-  opacity: 0.7;
 }
 
 .navItem {
@@ -74,7 +73,7 @@
   gap: 1rem;
   padding: 0.875rem 1rem;
   border-radius: 12px;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.7);
   font-weight: 600;
   font-size: 0.95rem;
   transition: all var(--transition-fast);
@@ -83,16 +82,16 @@
 }
 
 .navItem:hover {
-  background: white;
-  color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
   box-shadow: 0 4px 12px rgba(0,0,0,0.02);
   transform: translateX(4px);
 }
 
 .active {
-  background: white;
-  color: var(--color-primary);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  background: var(--color-secondary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   border-left: 4px solid var(--color-accent);
 }
 
@@ -129,7 +128,7 @@
   justify-content: space-between;
   padding: 0 3rem;
   border-bottom: 1px solid rgba(22, 105, 122, 0.05);
-  background: var(--bg-main);
+  background: white;
 }
 
 .searchInput {
@@ -137,7 +136,7 @@
   padding: 0.875rem 1.25rem;
   border-radius: 12px;
   border: 1px solid rgba(22, 105, 122, 0.1);
-  background: #f6f6f6;
+  background: white;
   font-size: 0.9rem;
   color: var(--text-dark);
   transition: all var(--transition-fast);

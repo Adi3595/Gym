@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useTransition } from 'react'
+import React, { useState, useTransition, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { login, signup } from './actions'
 import styles from './Login.module.css'
@@ -12,6 +12,12 @@ export default function LoginPage() {
   const [loginMethod, setLoginMethod] = useState<'email' | 'phone'>('email')
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const err = params.get('error')
+    if (err) setError(err)
+  }, [])
 
   async function handleSubmit(formData: FormData) {
     setError(null)

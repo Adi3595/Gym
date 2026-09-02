@@ -45,6 +45,34 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
+  // If user is authenticated, check if they are in the ADMIN_EMAILS list
+  if (user && isProtectedPath) {
+    const adminEmails = process.env.ADMIN_EMAILS ? process.env.ADMIN_EMAILS.split(',').map(e => e.trim().toLowerCase()) : []
+    
+    // If ADMIN_EMAILS is configured, restrict access
+    if (adminEmails.length > 0 && user.email && !adminEmails.includes(user.email.toLowerCase())) {
+      // User is not an admin. Forcefully delete their auth cookies to log them out
+      supabaseResponse.cookies.getAll().forEach(cookie => {
+        if (cookie.name.includes('-auth-token')) {
+          supabaseResponse.cookies.delete(cookie.name)
+        }
+      })
+      
+      const url = request.nextUrl.clone()
+      url.pathname = '/login'
+      url.searchParams.set('error', 'Unauthorized access. Your email is not whitelisted for the ERP.')
+      
+      // Override response to redirect with cleared cookies
+      const redirectResponse = NextResponse.redirect(url)
+      supabaseResponse.cookies.getAll().forEach(cookie => {
+        if (cookie.name.includes('-auth-token')) {
+          redirectResponse.cookies.delete(cookie.name)
+        }
+      })
+      return redirectResponse
+    }
+  }
+
   // If user is authenticated and trying to access login/register, redirect to dashboard
   if (user && (request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/register')) {
     const url = request.nextUrl.clone()

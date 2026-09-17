@@ -3,7 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Users, CreditCard, ShoppingBag, ShoppingCart, Settings, LogOut, Activity } from 'lucide-react'
+import { LayoutDashboard, Users, CreditCard, ShoppingBag, ShoppingCart, Settings, LogOut, Activity, Menu, X } from 'lucide-react'
 import styles from './Dashboard.module.css'
 
 export default function DashboardLayout({
@@ -12,6 +12,7 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
+  const [mobileSidebarOpen, setMobileSidebarOpen] = React.useState(false)
 
   const handleSignOut = async () => {
     const { createClient } = await import('@/utils/supabase/client')
@@ -22,10 +23,24 @@ export default function DashboardLayout({
 
   return (
     <div className={styles.dashboardWrapper}>
+      {/* Mobile Header */}
+      <div className={styles.mobileHeader}>
+        <div className={styles.logo}>SMFITNESS</div>
+        <button className={styles.hamburgerBtn} onClick={() => setMobileSidebarOpen(true)}>
+          <Menu size={24} color="white" />
+        </button>
+      </div>
+
+      {/* Overlay */}
+      {mobileSidebarOpen && <div className={styles.overlay} onClick={() => setMobileSidebarOpen(false)}></div>}
+
       {/* Sidebar */}
-      <aside className={styles.sidebar}>
+      <aside className={`${styles.sidebar} ${mobileSidebarOpen ? styles.sidebarOpen : ''}`}>
         <div className={styles.sidebarHeader}>
           <div className={styles.logo}>SMFITNESS</div>
+          <button className={styles.closeSidebarBtn} onClick={() => setMobileSidebarOpen(false)}>
+            <X size={24} color="white" />
+          </button>
           <span className={styles.roleTag}>Admin</span>
         </div>
 

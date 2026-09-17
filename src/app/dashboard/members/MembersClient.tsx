@@ -109,11 +109,13 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
         }}>
           <div style={{
             background: '#f6f6f6',
-            padding: '2.5rem',
+            padding: '1.5rem',
             borderRadius: '20px',
-            width: '100%',
+            width: '90%',
             maxWidth: '500px',
             position: 'relative',
+            maxHeight: '90vh',
+            overflowY: 'auto',
             boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
           }}>
             <button 

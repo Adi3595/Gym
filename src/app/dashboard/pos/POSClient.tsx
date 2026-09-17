@@ -4,6 +4,7 @@ import React, { useState, useTransition } from 'react'
 import { processSale } from './actions'
 import { Button } from '@/components/ui/Button'
 import { ShoppingCart, Plus, Minus, X, CreditCard, Search, User, CheckCircle2 } from 'lucide-react'
+import styles from './POSClient.module.css'
 
 export default function POSClient({ products, members }: { products: any[], members: any[] }) {
   const [cart, setCart] = useState<any[]>([])
@@ -64,19 +65,19 @@ export default function POSClient({ products, members }: { products: any[], memb
         setSelectedMember('')
         setTimeout(() => setSuccess(false), 3000)
         
-        // Open receipt in new tab
+        // Open receipt in new tab and trigger print
         if (res.saleId) {
-          window.open(`/receipt/pos/${res.saleId}`, '_blank')
+          window.open(`/receipt/pos/${res.saleId}?autoPrint=true`, '_blank')
         }
       }
     })
   }
 
   return (
-    <div style={{ display: 'flex', gap: '2rem', height: 'calc(100vh - 150px)' }}>
+    <div className={styles.posContainer}>
       
       {/* Products Section (Left) */}
-      <div style={{ flex: 2, display: 'flex', flexDirection: 'column', gap: '1.5rem', overflow: 'hidden' }}>
+      <div className={styles.productsSection}>
         <div>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', color: 'var(--color-primary)', lineHeight: 1 }}>Point of Sale</h1>
           <p style={{ color: 'var(--text-muted)' }}>Scan or select products to checkout.</p>
@@ -142,7 +143,7 @@ export default function POSClient({ products, members }: { products: any[], memb
       </div>
 
       {/* Cart Section (Right) */}
-      <div style={{ flex: 1, background: '#f6f6f6', borderRadius: '16px', border: '1px solid rgba(22, 105, 122, 0.08)', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+      <div className={styles.cartSection}>
         
         <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'white' }}>
           <ShoppingCart size={20} color="var(--color-primary)" />

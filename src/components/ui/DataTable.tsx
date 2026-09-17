@@ -25,17 +25,33 @@ export function DataTable<T extends { id: string | number }>({
   searchPlaceholder = 'Search...'
 }: DataTableProps<T>) {
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [sortKey, setSortKey] = React.useState<string | null>(null);
+  const [sortOrder, setSortOrder] = React.useState<'asc' | 'desc'>('asc');
+  const [showFilter, setShowFilter] = React.useState(false);
 
   const filteredData = React.useMemo(() => {
-    if (!searchQuery) return data;
-    const lowerQuery = searchQuery.toLowerCase();
-    return data.filter((item) => {
-      // Check if any value in the item matches the search query
-      return Object.values(item).some((val) => 
-        String(val).toLowerCase().includes(lowerQuery)
-      );
-    });
-  }, [data, searchQuery]);
+    let result = data;
+    if (searchQuery) {
+      const lowerQuery = searchQuery.toLowerCase();
+      result = result.filter((item) => {
+        return Object.values(item).some((val) => 
+          String(val).toLowerCase().includes(lowerQuery)
+        );
+      });
+    }
+
+    if (sortKey) {
+      result = [...result].sort((a: any, b: any) => {
+        const aVal = a[sortKey];
+        const bVal = b[sortKey];
+        if (aVal < bVal) return sortOrder === 'asc' ? -1 : 1;
+        if (aVal > bVal) return sortOrder === 'asc' ? 1 : -1;
+        return 0;
+      });
+    }
+
+    return result;
+  }, [data, searchQuery, sortKey, sortOrder]);
 
   return (
     <div className={styles.tableContainer}>
@@ -50,10 +66,42 @@ export function DataTable<T extends { id: string | number }>({
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <div className={styles.actions}>
-          <Button variant="secondary" icon={<Filter size={18} />}>
-            Filter
+        <div className={styles.actions} style={{ position: 'relative' }}>
+          <Button variant="secondary" icon={<Filter size={18} />} onClick={() => setShowFilter(!showFilter)}>
+            Sort
           </Button>
+
+          {showFilter && (
+            <div className={styles.filterDropdown}>
+              <div style={{ padding: '0.75rem', fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Sort By</div>
+              {columns.map(col => (
+                <button 
+                  key={col.key} 
+                  className={styles.filterOption}
+                  onClick={() => {
+                    if (sortKey === col.key) {
+                      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+                    } else {
+                      setSortKey(col.key);
+                      setSortOrder('asc');
+                    }
+                  }}
+                >
+                  {col.header} 
+                  {sortKey === col.key && (sortOrder === 'asc' ? ' ↑' : ' ↓')}
+                </button>
+              ))}
+              <div style={{ padding: '0.5rem', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
+                <button 
+                  className={styles.filterOption} 
+                  style={{ color: '#EF4444' }}
+                  onClick={() => { setSortKey(null); setShowFilter(false); }}
+                >
+                  Clear Sort
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

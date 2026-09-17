@@ -245,3 +245,64 @@
   opacity: 1;
   transform: translateX(0);
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    padding: 6rem 1.5rem 2rem 1.5rem;
+    text-align: center;
+  }
+  .heroContent {
+    width: 100%;
+    padding-right: 0;
+    margin-bottom: 3rem;
+  }
+  .heroTitle {
+    font-size: 3rem;
+  }
+  .heroSubtitle {
+    font-size: 1rem;
+    margin: 0 auto 2rem auto;
+  }
+  .heroActions {
+    justify-content: center;
+    flex-direction: column;
+  }
+  .heroVisual {
+    position: relative;
+    right: 0;
+    top: 0;
+    transform: none;
+    width: 100%;
+    height: 400px;
+  }
+  .floatingCard1, .floatingCard2 {
+    display: none; /* Hide floating elements on very small screens to avoid clutter */
+  }
+  
+  .brandStatement {
+    padding: 3rem 1.5rem;
+  }
+  .statementText {
+    font-size: 2.5rem;
+  }
+  
+  .bentoSection {
+    padding: 4rem 1.5rem;
+  }
+  .sectionHeader h2 {
+    font-size: 2.5rem;
+  }
+  
+  .goalGrid {
+    display: flex;
+    flex-direction: column;
+  }
+  .goalCard {
+    height: 200px;
+  }
+  .cardContent h3 {
+    font-size: 1.75rem;
+  }
+}

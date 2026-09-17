@@ -8,7 +8,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-export default async function ReceiptPage({ params }: { params: { type: string, id: string } }) {
+export default async function ReceiptPage({ params, searchParams }: { params: { type: string, id: string }, searchParams?: { [key: string]: string | undefined } }) {
   const { type, id } = params
   
   let receiptData: any = null
@@ -155,11 +155,24 @@ export default async function ReceiptPage({ params }: { params: { type: string, 
 
       <style dangerouslySetInnerHTML={{__html: `
         @media print {
-          body { background: white !important; }
+          @page { margin: 5mm; }
+          body { 
+            background: white !important; 
+            -webkit-print-color-adjust: exact; 
+          }
           .no-print { display: none !important; }
-          div[style*="boxShadow"] { box-shadow: none !important; padding: 0 !important; }
+          div[style*="boxShadow"] { 
+            box-shadow: none !important; 
+            padding: 0 !important; 
+            max-width: 100% !important;
+            width: 100% !important;
+          }
         }
       `}} />
+      
+      {searchParams?.autoPrint === 'true' && (
+        <script dangerouslySetInnerHTML={{ __html: 'window.onload = function() { setTimeout(function() { window.print(); }, 500); }' }} />
+      )}
     </div>
   )
 }

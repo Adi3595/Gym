@@ -58,3 +58,45 @@
 .navLink.active {
   color: var(--color-accent);
 }
+
+.hamburger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem 1.5rem;
+  }
+  .scrolled {
+    padding: 0.75rem 1.5rem;
+  }
+  .hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 101;
+  }
+  .navLinks {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    height: 100vh;
+    background: var(--bg-main);
+    flex-direction: column;
+    padding: 6rem 2rem 2rem 2rem;
+    gap: 2rem;
+    align-items: flex-start;
+    transition: all var(--transition-normal);
+    box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+  }
+  .navLinks.mobileNavOpen {
+    right: 0;
+  }
+  .navLink {
+    font-size: 1.25rem;
+  }
+}

@@ -168,3 +168,17 @@ input, textarea, select {
   background-size: 1000px 100%;
   border-radius: 12px;
 }
+
+/* Responsive Utilities */
+@media (max-width: 768px) {
+  .hideOnMobile { display: none !important; }
+  .showOnMobile { display: block !important; }
+  .showOnMobileFlex { display: flex !important; }
+  html { font-size: 14px; }
+}
+
+@media (min-width: 769px) {
+  .hideOnDesktop { display: none !important; }
+  .showOnMobile { display: none !important; }
+  .showOnMobileFlex { display: none !important; }
+}

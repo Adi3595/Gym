@@ -61,7 +61,7 @@ export default function LoginPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
-            Welcome to the Aura administrative dashboard. Manage your members, track your point of sale, and oversee facility operations securely.
+            Welcome to the SMFitness administrative dashboard. Manage your members, track your point of sale, and oversee facility operations securely.
           </motion.p>
         </div>
       </div>
@@ -75,7 +75,7 @@ export default function LoginPage() {
           transition={{ duration: 0.5 }}
         >
           <div className={styles.header}>
-            <div className={styles.logo}>AURA ERP</div>
+            <div className={styles.logo}>SMFITNESS ERP</div>
             <p className={styles.subtitle}>Secure backend access.</p>
           </div>
 

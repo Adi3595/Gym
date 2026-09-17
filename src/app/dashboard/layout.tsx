@@ -25,7 +25,7 @@ export default function DashboardLayout({
       {/* Sidebar */}
       <aside className={styles.sidebar}>
         <div className={styles.sidebarHeader}>
-          <div className={styles.logo}>AURA</div>
+          <div className={styles.logo}>SMFITNESS</div>
           <span className={styles.roleTag}>Admin</span>
         </div>
 

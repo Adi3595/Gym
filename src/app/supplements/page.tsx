@@ -36,7 +36,7 @@ export default function SupplementsPage() {
           </div>
           <div className={styles.heroContent}>
             <span className={styles.heroTag}>Best Seller</span>
-            <h1 className={styles.heroTitle}>Aura Pure Whey Isolate</h1>
+            <h1 className={styles.heroTitle}>SMFitness Pure Whey Isolate</h1>
             <p className={styles.heroDesc}>
               Ultra-fast absorbing protein designed for maximum muscle recovery. Zero sugar, 25g protein per scoop. Formulated specifically for serious athletes pushing their limits.
             </p>
@@ -51,7 +51,7 @@ export default function SupplementsPage() {
 
         {/* Product Grid */}
         <div className={styles.gridHeader}>
-          <h2>AURA IN-STORE SUPPLEMENTS</h2>
+          <h2>SMFITNESS IN-STORE SUPPLEMENTS</h2>
           <span style={{ color: 'var(--text-muted)' }}>Sort By: Featured</span>
         </div>
 

@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Flexed%20Biceps.png" alt="Flexed Biceps" width="80" height="80" />
   
   <a href="https://git.io/typing-svg">
-    <img src="https://readme-typing-svg.demolab.com?font=Changa+One&weight=400&size=45&pause=1000&color=16697A&center=true&vCenter=true&width=800&height=80&lines=AURA+GYM+ERP;ULTIMATE+FITNESS+OS;BUILT+FOR+SCALE" alt="Typing SVG" />
+    <img src="https://readme-typing-svg.demolab.com?font=Changa+One&weight=400&size=45&pause=1000&color=16697A&center=true&vCenter=true&width=800&height=80&lines=SMFITNESS+GYM+ERP;ULTIMATE+FITNESS+OS;BUILT+FOR+SCALE" alt="Typing SVG" />
   </a>
   
   <p align="center">
@@ -21,7 +21,7 @@
 
 ## 🎨 Design System & Aesthetics
 
-Aura Gym ERP isn't just functional; it was designed with an **editorial-grade, premium UI** meant to look and feel like a modern, high-end fitness brand.
+SMFitness Gym ERP isn't just functional; it was designed with an **editorial-grade, premium UI** meant to look and feel like a modern, high-end fitness brand.
 
 ### Typography
 We utilize a two-font system loaded dynamically via Google Fonts:

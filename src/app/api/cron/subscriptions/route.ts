@@ -93,7 +93,7 @@ export async function GET(request: Request) {
     const sendWhatsAppMessage = async (phone: string, message: string) => {
       // The URL where your WhatsApp microservice is hosted (e.g. Render.com URL or localhost for testing)
       const microserviceUrl = process.env.WHATSAPP_MICROSERVICE_URL || 'http://localhost:4000/api/send';
-      const microserviceSecret = process.env.MICROSERVICE_SECRET || 'aura_gym_whatsapp_secret_key_123';
+      const microserviceSecret = process.env.MICROSERVICE_SECRET || 'smfitness_gym_whatsapp_secret_key_123';
       
       try {
         const response = await fetch(microserviceUrl, {
@@ -124,7 +124,7 @@ export async function GET(request: Request) {
         if (member?.email && transporter) {
           try {
             await transporter.sendMail({
-              from: `"Aura Gym" <${process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER}>`,
+              from: `"SMFitness Gym" <${process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER}>`,
               to: member.email,
               subject: 'Your Membership is Ending Tomorrow! ⚠️',
               html: `<p>Hi ${member.first_name},</p><p>This is a quick reminder that your gym membership expires tomorrow! Renew today to keep your streak alive and avoid any joining fees.</p>`,
@@ -139,7 +139,7 @@ export async function GET(request: Request) {
         if (member?.phone) {
           await sendWhatsAppMessage(
             member.phone, 
-            `*AURA GYM - MEMBERSHIP NOTIFICATION*\n\nDear *${member.first_name}*,\n\nWe hope this message finds you well.\n\nThis is a formal reminder that your Aura Gym membership is scheduled to expire *tomorrow*.\n\nTo ensure uninterrupted access to our facilities, kindly renew your membership at the front desk during your next visit. If you have recently renewed your membership, please disregard this notice.\n\nThank you for choosing Aura Gym. We look forward to continuing to support your fitness journey.\n\nBest regards,\n*Aura Gym Management*`
+            `*SMFITNESS GYM - MEMBERSHIP NOTIFICATION*\n\nDear *${member.first_name}*,\n\nWe hope this message finds you well.\n\nThis is a formal reminder that your SMFitness Gym membership is scheduled to expire *tomorrow*.\n\nTo ensure uninterrupted access to our facilities, kindly renew your membership at the front desk during your next visit. If you have recently renewed your membership, please disregard this notice.\n\nThank you for choosing SMFitness Gym. We look forward to continuing to support your fitness journey.\n\nBest regards,\n*SMFitness Gym Management*`
           );
         }
       }
@@ -152,7 +152,7 @@ export async function GET(request: Request) {
       if (member?.email && transporter) {
         try {
           await transporter.sendMail({
-            from: `"Aura Gym" <${process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER}>`,
+            from: `"SMFitness Gym" <${process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER}>`,
             to: member.email,
             subject: 'Your Membership has Expired ❌',
             html: `<p>Hi ${member.first_name},</p><p>We miss you at the gym! Your membership ended 10 days ago. Reply to this email or drop by the front desk to renew your plan.</p>`,
@@ -167,7 +167,7 @@ export async function GET(request: Request) {
       if (member?.phone) {
         await sendWhatsAppMessage(
           member.phone, 
-          `*AURA GYM - MEMBERSHIP UPDATE*\n\nDear *${member.first_name}*,\n\nWe hope this message finds you well.\n\nOur records indicate that your Aura Gym membership expired 10 days ago. We have sincerely missed your presence at the facility.\n\nWe invite you to visit the front desk at your earliest convenience to renew your membership. We remain fully committed to supporting your health and fitness goals.\n\nWe hope to welcome you back soon.\n\nBest regards,\n*Aura Gym Management*`
+          `*SMFITNESS GYM - MEMBERSHIP UPDATE*\n\nDear *${member.first_name}*,\n\nWe hope this message finds you well.\n\nOur records indicate that your SMFitness Gym membership expired 10 days ago. We have sincerely missed your presence at the facility.\n\nWe invite you to visit the front desk at your earliest convenience to renew your membership. We remain fully committed to supporting your health and fitness goals.\n\nWe hope to welcome you back soon.\n\nBest regards,\n*SMFitness Gym Management*`
         );
       }
     }

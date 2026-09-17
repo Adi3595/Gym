@@ -22,7 +22,7 @@ export default function Sidebar() {
     <aside className={`liquid-glass ${styles.sidebar}`}>
       <div className={styles.logo}>
         <div className={styles.logoIcon}></div>
-        <h1 className="glow-text">AURA</h1>
+        <h1 className="glow-text">SMFITNESS</h1>
       </div>
       
       <nav className={styles.nav}>

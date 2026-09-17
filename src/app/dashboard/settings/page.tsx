@@ -54,11 +54,11 @@ export default function SettingsPage() {
               <div style={{ display: 'flex', gap: '1rem' }}>
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>Facility Name</label>
-                  <input type="text" defaultValue="Aura Gym & Supplements" style={{ padding: '0.875rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }} />
+                  <input type="text" defaultValue="SMFitness Gym & Supplements" style={{ padding: '0.875rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }} />
                 </div>
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>Contact Email</label>
-                  <input type="email" defaultValue="admin@auragym.com" style={{ padding: '0.875rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }} />
+                  <input type="email" defaultValue="admin@smfitness.com" style={{ padding: '0.875rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }} />
                 </div>
               </div>
 

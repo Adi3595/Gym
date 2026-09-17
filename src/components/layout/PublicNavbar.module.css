@@ -50,6 +50,11 @@
   transition: var(--transition-normal);
 }
 
-.navLink:hover::after {
+.navLink:hover::after,
+.navLink.active::after {
   width: 100%;
+}
+
+.navLink.active {
+  color: var(--color-accent);
 }

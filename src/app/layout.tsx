@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Aura Gym Management & Store",
+  title: "SMFitness Management & Store",
   description: "Premium Gym Management Software with Integrated Supplement POS",
 };
 

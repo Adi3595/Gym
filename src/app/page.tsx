@@ -111,7 +111,7 @@ export default function PublicLanding() {
 
       {/* Cinematic Hero */}
       <section ref={heroRef} className={styles.hero}>
-        <div className={`${styles.heroBackgroundType} hero-bg-type`}>AURA</div>
+        <div className={`${styles.heroBackgroundType} hero-bg-type`}>SMFITNESS</div>
         
         <div className={styles.heroContent}>
           <h1 className={styles.heroTitle}>

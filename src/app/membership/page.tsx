@@ -72,7 +72,7 @@ export default function MembershipPage() {
           transition={{ delay: 0.4 }}
         >
           <div className={styles.popularBadge}>Recommended</div>
-          <h3 className={styles.planName}>Aura Pro</h3>
+          <h3 className={styles.planName}>SMFitness Pro</h3>
           <div className={styles.planPrice}>
             <span className={styles.priceAmount}>₹{isAnnual ? '2,400' : '3,000'}</span>
             <span className={styles.pricePeriod}>/ mo</span>
@@ -86,7 +86,7 @@ export default function MembershipPage() {
             <div className={styles.featureItem}><CheckCircle2 size={18} className={styles.featureIcon} /> Monthly Body Composition Scan</div>
           </div>
           
-          <Button variant="primary" fullWidth size="lg">Get Aura Pro</Button>
+          <Button variant="primary" fullWidth size="lg">Get SMFitness Pro</Button>
         </motion.div>
 
         {/* Elite PT Plan */}

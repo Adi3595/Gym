@@ -18,7 +18,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
           >
-            THE AURA EXPERIENCE
+            THE SMFITNESS EXPERIENCE
           </motion.h1>
         </div>
 
@@ -61,7 +61,7 @@ export default function AboutPage() {
           <div className={styles.featureContent}>
             <h2 className={styles.featureTitle}>The Science of Recovery</h2>
             <p className={styles.featureText}>
-              Training breaks you down; recovery builds you up. Aura features a dedicated recovery zone 
+              Training breaks you down; recovery builds you up. SMFitness features a dedicated recovery zone 
               equipped with the latest modalities to ensure you bounce back faster and stronger. Stop 
               leaving your gains on the table by ignoring what happens after the workout.
             </p>

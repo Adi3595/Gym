@@ -70,7 +70,7 @@ export default async function ReceiptPage({ params }: { params: { type: string, 
         
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '3rem', borderBottom: '2px dashed #e5e7eb', paddingBottom: '2rem' }}>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', color: 'var(--color-primary)', margin: 0 }}>AURA GYM</h1>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', color: 'var(--color-primary)', margin: 0 }}>SMFITNESS GYM</h1>
           <p style={{ color: '#6b7280', margin: '0.5rem 0 0 0' }}>123 Fitness Avenue, Mumbai, IN 400001</p>
           <p style={{ color: '#6b7280', margin: '0.25rem 0 0 0' }}>Phone: +91 98765 43210</p>
           <div style={{ marginTop: '1.5rem', background: '#f3f4f6', display: 'inline-block', padding: '0.5rem 1rem', borderRadius: '4px', fontWeight: 700, color: 'var(--text-dark)', letterSpacing: '1px' }}>
@@ -147,7 +147,7 @@ export default async function ReceiptPage({ params }: { params: { type: string, 
 
         {/* Footer */}
         <div style={{ textAlign: 'center', marginTop: '4rem', color: '#9ca3af', fontSize: '0.85rem' }}>
-          <p style={{ margin: 0 }}>Thank you for choosing Aura Gym!</p>
+          <p style={{ margin: 0 }}>Thank you for choosing SMFitness Gym!</p>
           <p style={{ margin: '0.25rem 0 0 0' }}>This is a computer generated receipt.</p>
         </div>
 

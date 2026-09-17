@@ -1,33 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Changa+One&display=swap');
 
 :root {
-  /* Brand Color System */
-  --color-primary: #16697a;
-  --color-secondary: #489fb5;
-  --color-light: #82c0cc;
-  --color-neutral: #ecf8f8;
-  --color-accent: #ffa62b;
+  /* Brand Color System (SMFitness Strong Aesthetic) */
+  --color-primary: #D32F2F; /* Strong Red */
+  --color-secondary: #212121; /* Charcoal Black */
+  --color-light: #9E9E9E; /* Cool Gray */
+  --color-neutral: #f4f4f5; /* Clean Light Gray */
+  --color-accent: #FF5252; /* Vibrant Red Accent */
   
   /* UI Colors */
   --bg-main: var(--color-neutral);
-  --bg-dark: var(--color-primary);
-  --bg-card: var(--color-neutral);
+  --bg-dark: var(--color-secondary);
+  --bg-card: #ffffff;
   
-  --text-dark: #0a1f24;
+  --text-dark: #111111;
   --text-light: #ffffff;
-  --text-muted: #5a7b82;
+  --text-muted: #6b7280;
   
   /* Glassmorphism */
-  --glass-bg: rgba(255, 255, 255, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.4);
-  --glass-bg-dark: rgba(22, 105, 122, 0.4);
-  --glass-border-dark: rgba(72, 159, 181, 0.4);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-bg-dark: rgba(33, 33, 33, 0.6);
+  --glass-border-dark: rgba(100, 100, 100, 0.3);
   
   /* Status */
-  --status-success: #22C55E;
-  --status-warning: #ffa62b; /* using brand orange for warning */
-  --status-danger: #EF4444;
-  --status-info: #489fb5;
+  --status-success: #16a34a;
+  --status-warning: #f59e0b; 
+  --status-danger: #dc2626;
+  --status-info: #2563eb;
   
   /* Typography */
   --font-sans: 'Inter', sans-serif;

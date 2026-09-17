@@ -103,7 +103,7 @@ export default async function AnalyticsPage() {
                 background: 'linear-gradient(to top, var(--color-primary), var(--color-secondary))', 
                 borderRadius: '8px 8px 0 0', transition: 'height 1s ease-out',
                 position: 'relative',
-                boxShadow: '0 4px 12px rgba(22,105,122,0.2)'
+                boxShadow: '0 4px 12px rgba(211, 47, 47,0.2)'
               }}>
                 <div style={{ position: 'absolute', top: '-25px', width: '100%', textAlign: 'center', fontSize: '0.7rem', fontWeight: 700, color: 'var(--color-primary)' }}>
                   {formatCurrency(d.revenue).replace('₹', '')}

@@ -135,7 +135,7 @@
   width: 320px;
   padding: 0.875rem 1.25rem;
   border-radius: 12px;
-  border: 1px solid rgba(22, 105, 122, 0.1);
+  border: 1px solid rgba(211, 47, 47, 0.1);
   background: var(--color-neutral);
   font-size: 0.9rem;
   color: var(--text-dark);
@@ -147,7 +147,7 @@
   outline: none;
   border-color: var(--color-secondary);
   background: white;
-  box-shadow: 0 0 0 4px rgba(72, 159, 181, 0.1);
+  box-shadow: 0 0 0 4px rgba(33, 33, 33, 0.1);
 }
 
 .userProfile {
@@ -168,7 +168,7 @@
   font-weight: 700;
   font-size: 1.2rem;
   font-family: var(--font-display);
-  box-shadow: 0 4px 12px rgba(22, 105, 122, 0.2);
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.2);
 }
 
 /* Content Container */

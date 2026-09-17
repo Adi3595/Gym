@@ -45,7 +45,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Settings Content */}
-        <div style={{ flex: 1, background: 'white', borderRadius: '16px', border: '1px solid rgba(22, 105, 122, 0.08)', padding: '2.5rem', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
+        <div style={{ flex: 1, background: 'white', borderRadius: '16px', border: '1px solid rgba(211, 47, 47, 0.08)', padding: '2.5rem', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
           
           {activeTab === 'general' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>

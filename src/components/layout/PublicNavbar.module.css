@@ -14,8 +14,8 @@
   background: rgba(236, 248, 248, 0.9);
   backdrop-filter: blur(12px);
   padding: 1rem 4rem;
-  box-shadow: 0 4px 30px rgba(22, 105, 122, 0.05);
-  border-bottom: 1px solid rgba(22, 105, 122, 0.1);
+  box-shadow: 0 4px 30px rgba(211, 47, 47, 0.05);
+  border-bottom: 1px solid rgba(211, 47, 47, 0.1);
 }
 
 .logo {

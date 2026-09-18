@@ -66,7 +66,7 @@ export default function SupplementsPage() {
               transition={{ delay: i * 0.05 }}
             >
               <div className={styles.productImage}>
-                <Package size={48} color="var(--color-primary)" />
+                {/* Background image set in CSS */}
               </div>
               <div className={styles.productCategory}>{product.category}</div>
               <h3 className={styles.productName}>{product.name}</h3>

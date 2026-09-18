@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Settings, Shield, Bell, Key, MessageCircle, CheckCircle2, XCircle } from 'lucide-react'
 import { checkWhatsAppStatus } from './actions'
-import QRCode from 'qrcode.react'
+import { QRCodeSVG } from 'qrcode.react'
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('general')
@@ -155,7 +155,7 @@ export default function SettingsPage() {
                       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
                         <p style={{ margin: 0, color: '#991b1b', textAlign: 'center', fontWeight: 600 }}>Scan this QR code with your Gym WhatsApp to reconnect!</p>
                         <div style={{ padding: '1rem', background: 'white', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-                          <QRCode value={waStatus.qr} size={256} />
+                          <QRCodeSVG value={waStatus.qr} size={256} />
                         </div>
                       </div>
                     ) : (

@@ -7,10 +7,18 @@ export const revalidate = 0 // always fetch live data
 export default async function MembersPage() {
   const supabase = await createClient()
 
-  // Fetch members
+  // Fetch members and their subscriptions
   const { data: members, error } = await supabase
     .from('members')
-    .select('*')
+    .select(`
+      *,
+      subscriptions (
+        id,
+        end_date,
+        payment_status,
+        membership_plans (name)
+      )
+    `)
     .order('created_at', { ascending: false })
 
   if (error) {

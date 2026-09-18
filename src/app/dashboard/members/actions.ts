@@ -40,3 +40,12 @@ export async function softDeleteMember(id: string) {
   revalidatePath('/dashboard/members')
   return { success: true }
 }
+
+export async function sendManualReminder(phone: string, name: string) {
+  const { sendWhatsAppMessage } = await import('@/utils/messaging')
+  
+  const textMessage = `*Aura Gym - Subscription Reminder*\n\nHi ${name},\nYour gym subscription has recently expired. Please renew it at the front desk to continue your fitness journey!\n\n- Aura Gym Team`;
+  
+  await sendWhatsAppMessage(phone, textMessage);
+  return { success: true }
+}

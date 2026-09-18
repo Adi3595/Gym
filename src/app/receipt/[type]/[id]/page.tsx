@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js'
 import { ArrowLeft, Receipt as ReceiptIcon } from 'lucide-react'
 import Link from 'next/link'
 import PrintButton from './PrintButton'
+import AutoPrint from './AutoPrint'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -221,7 +222,7 @@ export default async function ReceiptPage(props: { params: Promise<{ type: strin
       `}} />
       
       {searchParams?.autoPrint === 'true' && (
-        <script dangerouslySetInnerHTML={{ __html: 'window.onload = function() { setTimeout(function() { window.print(); }, 500); }' }} />
+        <AutoPrint />
       )}
     </div>
   )

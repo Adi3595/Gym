@@ -5,7 +5,7 @@ import { DataTable } from '@/components/ui/DataTable'
 import { Button } from '@/components/ui/Button'
 import { Plus, X, Loader2, Users, UserCheck, MoreVertical, Trash } from 'lucide-react'
 import { SummaryGrid, SummaryCard } from '@/components/ui/SummaryCards'
-import { addMember, softDeleteMember } from './actions'
+import { addMember, softDeleteMember, sendManualReminder } from './actions'
 
 export default function MembersClient({ initialMembers }: { initialMembers: any[] }) {
   const [mounted, setMounted] = useState(false)
@@ -25,10 +25,14 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
     return () => document.removeEventListener('click', handleClickOutside);
   }, []);
 
+  const getLatestSub = (member: any) => {
+    if (!member.subscriptions || member.subscriptions.length === 0) return null;
+    return member.subscriptions.sort((a: any, b: any) => new Date(b.end_date).getTime() - new Date(a.end_date).getTime())[0];
+  }
+
   const columns = [
     { key: 'first_name', header: 'First Name' },
     { key: 'last_name', header: 'Last Name' },
-    { key: 'email', header: 'Email' },
     { key: 'phone', header: 'Phone' },
     { 
       key: 'status', 
@@ -46,6 +50,24 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
           {item.status}
         </span>
       )
+    },
+    { 
+      key: 'expiry', 
+      header: 'Sub Expiry',
+      cell: (item: any) => {
+        const sub = getLatestSub(item);
+        if (!sub) return <span style={{ color: '#9ca3af' }}>No Plan</span>;
+        const isExpired = new Date(sub.end_date) < new Date();
+        return (
+          <span style={{ color: isExpired ? '#EF4444' : 'var(--text-dark)', fontWeight: isExpired ? 700 : 500 }}>
+            {new Date(sub.end_date).toLocaleDateString()}
+          </span>
+        )
+      },
+      sortValue: (item: any) => {
+        const sub = getLatestSub(item);
+        return sub ? new Date(sub.end_date).getTime() : 0;
+      }
     },
     { 
       key: 'join_date', 
@@ -105,7 +127,7 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
       <DataTable 
         data={initialMembers || []} 
         columns={columns} 
-        searchPlaceholder="Search members by name or email..."
+        searchPlaceholder="Search members by name or phone..."
         renderActions={(item) => (
           <div style={{ position: 'relative' }}>
             <button 
@@ -122,8 +144,28 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
                 position: 'absolute', right: '100%', top: '0', 
                 background: 'white', border: '1px solid rgba(0,0,0,0.1)', 
                 borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                padding: '0.5rem', zIndex: 10, minWidth: '150px'
+                padding: '0.5rem', zIndex: 10, minWidth: '160px'
               }}>
+                <button 
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '0.5rem', 
+                    width: '100%', padding: '0.5rem', background: 'none', border: 'none', 
+                    cursor: 'pointer', color: 'var(--color-primary)', fontSize: '0.875rem', fontWeight: 600,
+                    borderRadius: '4px', transition: 'background 0.2s', marginBottom: '4px'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(22, 105, 122, 0.1)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    startTransition(() => {
+                      sendManualReminder(item.phone, item.first_name);
+                      alert('WhatsApp reminder queued!');
+                    });
+                    setOpenDropdownId(null);
+                  }}
+                >
+                  Send Reminder
+                </button>
                 <button 
                   style={{
                     display: 'flex', alignItems: 'center', gap: '0.5rem', 

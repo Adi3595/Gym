@@ -1,11 +1,32 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/Button'
-import { Settings, Shield, Bell, Key } from 'lucide-react'
+import { Settings, Shield, Bell, Key, MessageCircle, CheckCircle2, XCircle } from 'lucide-react'
+import { checkWhatsAppStatus } from './actions'
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('general')
+  const [waStatus, setWaStatus] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const fetchWhatsAppStatus = async () => {
+    setIsLoading(true)
+    try {
+      const data = await checkWhatsAppStatus()
+      setWaStatus(data)
+    } catch (err) {
+      setWaStatus({ connected: false, error: 'Failed to fetch status' })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (activeTab === 'whatsapp') {
+      fetchWhatsAppStatus()
+    }
+  }, [activeTab])
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -20,6 +41,7 @@ export default function SettingsPage() {
         <div style={{ width: '250px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           {[
             { id: 'general', label: 'General Info', icon: Settings },
+            { id: 'whatsapp', label: 'WhatsApp Bot', icon: MessageCircle },
             { id: 'security', label: 'Security & Auth', icon: Shield },
             { id: 'notifications', label: 'Notifications', icon: Bell },
             { id: 'api', label: 'API Keys', icon: Key },
@@ -102,6 +124,46 @@ export default function SettingsPage() {
               <div style={{ background: 'white', padding: '1.5rem', borderRadius: '8px', border: '1px dashed rgba(0,0,0,0.1)' }}>
                 <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Stripe Webhook Secret</p>
                 <div style={{ background: '#f6f6f6', padding: '0.75rem', borderRadius: '6px', fontFamily: 'monospace' }}>whsec_xxxxxxxxxxxxxxxxxxxxxxxx</div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'whatsapp' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <h2 style={{ fontSize: '1.5rem', color: 'var(--text-dark)', marginBottom: '0.5rem' }}>WhatsApp Bot Integration</h2>
+              <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>Check the connection status of your automated WhatsApp bot.</p>
+              
+              <div style={{ 
+                background: waStatus?.connected ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)', 
+                border: \`1px solid \${waStatus?.connected ? '#22c55e' : '#ef4444'}\`, 
+                padding: '2rem', borderRadius: '12px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' 
+              }}>
+                {isLoading ? (
+                  <div style={{ color: 'var(--text-muted)' }}>Checking connection...</div>
+                ) : waStatus?.connected ? (
+                  <>
+                    <CheckCircle2 size={48} color="#22c55e" />
+                    <h3 style={{ margin: 0, color: '#15803d', fontSize: '1.25rem' }}>Bot is Connected and Active!</h3>
+                    <p style={{ margin: 0, color: '#166534', textAlign: 'center' }}>The microservice is successfully communicating with WhatsApp Web.</p>
+                  </>
+                ) : (
+                  <>
+                    <XCircle size={48} color="#ef4444" />
+                    <h3 style={{ margin: 0, color: '#b91c1c', fontSize: '1.25rem' }}>Bot is Disconnected</h3>
+                    <p style={{ margin: 0, color: '#991b1b', textAlign: 'center' }}>
+                      {waStatus?.error || 'The microservice is offline or the WhatsApp session was logged out.'}
+                    </p>
+                    <p style={{ margin: 0, color: '#7f1d1d', fontSize: '0.875rem', marginTop: '0.5rem', textAlign: 'center' }}>
+                      To reconnect, run the microservice and scan the QR code in your terminal with your WhatsApp app.
+                    </p>
+                  </>
+                )}
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+                <Button variant="secondary" onClick={fetchWhatsAppStatus} disabled={isLoading}>
+                  {isLoading ? 'Refreshing...' : 'Refresh Status'}
+                </Button>
               </div>
             </div>
           )}

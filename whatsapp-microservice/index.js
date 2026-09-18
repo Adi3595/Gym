@@ -23,13 +23,17 @@ client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
 });
 
+let isConnected = false;
+
 // Event: Client successfully connected
 client.on('ready', () => {
+    isConnected = true;
     console.log('\n✅ Aura Gym WhatsApp Bot is READY and connected!');
 });
 
 // Event: Client disconnected
 client.on('disconnected', (reason) => {
+    isConnected = false;
     console.log('❌ WhatsApp Client was disconnected:', reason);
 });
 
@@ -52,6 +56,18 @@ client.initialize().catch(err => {
 // ---------------------------------------------------------
 app.get('/', (req, res) => {
     res.status(200).send('Aura Gym WhatsApp Bot is awake! 🟢');
+});
+
+// ---------------------------------------------------------
+// STATUS ENDPOINT: Check if WhatsApp is actually connected
+// ---------------------------------------------------------
+app.get('/api/status', (req, res) => {
+    // Enable CORS so the Next.js frontend can call this directly if needed
+    res.header("Access-Control-Allow-Origin", "*");
+    res.status(200).json({ 
+        connected: isConnected,
+        status: isConnected ? 'connected' : 'disconnected'
+    });
 });
 
 // ---------------------------------------------------------

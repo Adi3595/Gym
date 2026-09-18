@@ -17,6 +17,24 @@ export default function POSClient({ products, members }: { products: any[], memb
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  const getFallbackImage = (name: string) => {
+    const ids = [
+      '1584017911766-d451b3d0e843',
+      '1550989460-0adf9ea622e2',
+      '1584362917165-526a968579e8',
+      '1593095948071-474c5cc2989d',
+      '1541534741688-6078c6bfb5c5',
+      '1534438327276-14e5300c3a48',
+      '1490645935967-10de6ba17061',
+      '1517836357463-d25dfeac3438'
+    ];
+    let sum = 0;
+    for (let i = 0; i < name.length; i++) {
+      sum += name.charCodeAt(i);
+    }
+    return `https://images.unsplash.com/photo-${ids[sum % ids.length]}?auto=format&fit=crop&q=80&w=400`;
+  }
+
   const formatCurrency = (val: number) => {
     return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(val || 0)
   }
@@ -125,11 +143,11 @@ export default function POSClient({ products, members }: { products: any[], memb
               }}
             >
               <div style={{ height: '120px', width: '100%', borderRadius: '8px', overflow: 'hidden', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '0.5rem' }}>
-                {product.product_image ? (
-                  <img src={product.product_image} alt={product.name} style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} />
-                ) : (
-                  <ShoppingCart size={32} color="rgba(0,0,0,0.1)" />
-                )}
+                <img 
+                  src={product.product_image || getFallbackImage(product.name)} 
+                  alt={product.name} 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                />
               </div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>{product.sku}</div>
               <div style={{ fontWeight: 600, color: 'var(--text-dark)', lineHeight: 1.2 }}>{product.name}</div>

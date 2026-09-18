@@ -12,21 +12,21 @@ export default function TeamPage() {
       spec: 'Strength & Hypertrophy', 
       exp: '8 Years',
       clients: '300+',
-      image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=600' 
+      image: 'https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&q=80&w=600' 
     },
     { 
       name: 'Anita Desai', 
       spec: 'Mobility & Yoga', 
       exp: '5 Years',
       clients: '500+',
-      image: 'https://images.unsplash.com/photo-1518611012118-69b120a14d53?auto=format&fit=crop&q=80&w=600' 
+      image: 'https://images.unsplash.com/photo-1548690312-e3b507d8c110?auto=format&fit=crop&q=80&w=600' 
     },
     { 
       name: 'Karan Singh', 
       spec: 'CrossFit & Athletics', 
       exp: '6 Years',
       clients: '200+',
-      image: 'https://images.unsplash.com/photo-1599058917212-32b70f0e0dfb?auto=format&fit=crop&q=80&w=600' 
+      image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&q=80&w=600' 
     }
   ];
 

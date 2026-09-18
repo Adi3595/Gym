@@ -183,7 +183,7 @@ export default function SettingsPage() {
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-                <Button variant="secondary" onClick={fetchWhatsAppStatus} disabled={isLoading}>
+                <Button variant="secondary" onClick={() => fetchWhatsAppStatus(false)} disabled={isLoading}>
                   {isLoading ? 'Refreshing...' : 'Refresh Status'}
                 </Button>
               </div>

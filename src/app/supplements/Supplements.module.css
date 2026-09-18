@@ -17,7 +17,7 @@
   border-radius: 24px;
   overflow: hidden;
   margin-bottom: 6rem;
-  box-shadow: 0 30px 60px rgba(211, 47, 47, 0.2);
+  box-shadow: 0 30px 60px rgba(22, 105, 122, 0.2);
 }
 
 .heroVisual {
@@ -113,8 +113,8 @@
 
 .productCard:hover {
   transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(211, 47, 47, 0.08);
-  border-color: rgba(211, 47, 47, 0.2);
+  box-shadow: 0 20px 40px rgba(22, 105, 122, 0.08);
+  border-color: rgba(22, 105, 122, 0.2);
 }
 
 .productImage {

@@ -24,7 +24,7 @@ export default function GlobalNotFound() {
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: '2rem',
-        boxShadow: '0 20px 40px rgba(211, 47, 47, 0.3)'
+        boxShadow: '0 20px 40px rgba(22, 105, 122, 0.3)'
       }}>
         <Dumbbell size={50} color="white" />
       </div>

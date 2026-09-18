@@ -112,7 +112,7 @@
   border-radius: 16px;
   width: 260px;
   z-index: 3;
-  box-shadow: 0 20px 40px rgba(211, 47, 47, 0.15);
+  box-shadow: 0 20px 40px rgba(22, 105, 122, 0.15);
 }
 
 .floatingCard2 {
@@ -125,7 +125,7 @@
   border-radius: 16px;
   width: 220px;
   z-index: 3;
-  box-shadow: 0 20px 40px rgba(211, 47, 47, 0.1);
+  box-shadow: 0 20px 40px rgba(22, 105, 122, 0.1);
 }
 
 /* -------------------------------------

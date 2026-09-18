@@ -107,14 +107,14 @@ input:checked + .slider:before {
 
 .planCard:hover {
   transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(211, 47, 47, 0.08);
+  box-shadow: 0 20px 40px rgba(22, 105, 122, 0.08);
 }
 
 .planCard.highlight {
   background: var(--color-primary);
   color: var(--text-light);
   transform: scale(1.02);
-  box-shadow: 0 20px 40px rgba(211, 47, 47, 0.2);
+  box-shadow: 0 20px 40px rgba(22, 105, 122, 0.2);
 }
 
 .planCard.highlight:hover {

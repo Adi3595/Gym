@@ -101,7 +101,7 @@ export default function POSClient({ products, members }: { products: any[], memb
               onClick={() => addToCart(product)}
               style={{
                 background: '#f6f6f6',
-                border: '1px solid rgba(211, 47, 47, 0.08)',
+                border: '1px solid rgba(22, 105, 122, 0.08)',
                 borderRadius: '12px',
                 padding: '1.25rem',
                 cursor: 'pointer',
@@ -117,7 +117,7 @@ export default function POSClient({ products, members }: { products: any[], memb
                 e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.05)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(211, 47, 47, 0.08)';
+                e.currentTarget.style.borderColor = 'rgba(22, 105, 122, 0.08)';
                 e.currentTarget.style.transform = 'none';
                 e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.02)';
               }}
@@ -206,7 +206,7 @@ export default function POSClient({ products, members }: { products: any[], memb
                   padding: '0.5rem', 
                   borderRadius: '6px', 
                   border: `1px solid ${paymentMethod === method ? 'var(--color-primary)' : 'rgba(0,0,0,0.1)'}`,
-                  background: paymentMethod === method ? 'rgba(211, 47, 47, 0.1)' : 'white',
+                  background: paymentMethod === method ? 'rgba(22, 105, 122, 0.1)' : 'white',
                   color: paymentMethod === method ? 'var(--color-primary)' : 'var(--text-muted)',
                   fontWeight: 600,
                   cursor: 'pointer'

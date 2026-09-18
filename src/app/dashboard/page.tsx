@@ -121,7 +121,7 @@ export default async function DashboardOverview() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
         
         {/* Recent POS Sales */}
-        <div style={{ background: 'white', padding: '2rem', borderRadius: '16px', border: '1px solid rgba(211, 47, 47,0.05)', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
+        <div style={{ background: 'white', padding: '2rem', borderRadius: '16px', border: '1px solid rgba(22,105,122,0.05)', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
           <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-primary)', marginBottom: '1.5rem' }}>Recent POS Bills</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {recentSales?.map((sale: any) => (
@@ -141,7 +141,7 @@ export default async function DashboardOverview() {
         </div>
 
         {/* Recent Subscriptions */}
-        <div style={{ background: 'white', padding: '2rem', borderRadius: '16px', border: '1px solid rgba(211, 47, 47,0.05)', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
+        <div style={{ background: 'white', padding: '2rem', borderRadius: '16px', border: '1px solid rgba(22,105,122,0.05)', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
           <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-primary)', marginBottom: '1.5rem' }}>Recent Subscriptions</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {recentSubs?.map((sub: any) => (

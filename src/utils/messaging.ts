@@ -24,44 +24,6 @@ export const sendWhatsAppMessage = async (phone: string, message: string) => {
   }
 };
 
-export const sendSMSMessage = async (phone: string, message: string) => {
-  // Check if Fast2SMS environment variable is set
-  if (!process.env.FAST2SMS_API_KEY) {
-    console.warn('[SMS SKIPPED] FAST2SMS_API_KEY not configured in .env.local');
-    console.log(`[MOCK SMS TO ${phone}]: ${message}`);
-    return;
-  }
-
-  try {
-    // Fast2SMS requires a 10-digit number without country code usually
-    const cleanPhone = phone.replace(/\D/g, '');
-    const finalPhone = cleanPhone.length > 10 ? cleanPhone.slice(-10) : cleanPhone;
-
-    const response = await fetch("https://www.fast2sms.com/dev/bulkV2", {
-      method: "POST",
-      headers: {
-        "authorization": process.env.FAST2SMS_API_KEY,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        route: "q",
-        message: message,
-        language: "english",
-        flash: 0,
-        numbers: finalPhone
-      })
-    });
-
-    if (!response.ok) {
-      console.error('[FAST2SMS ERROR]', await response.text());
-    } else {
-      console.log(`[SMS SENT] Successfully sent SMS via Fast2SMS to ${finalPhone}`);
-    }
-  } catch (err) {
-    console.error('[FAST2SMS FETCH ERROR]', err);
-  }
-};
-
 export const sendReceiptNotification = async (phone: string, receiptData: { 
   customerName: string, 
   totalAmount: number,
@@ -77,5 +39,4 @@ export const sendReceiptNotification = async (phone: string, receiptData: {
 
   // Send to both WhatsApp and SMS
   await sendWhatsAppMessage(phone, textMessage);
-  await sendSMSMessage(phone, textMessage);
 };

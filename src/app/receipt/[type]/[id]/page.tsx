@@ -199,6 +199,7 @@ export default async function ReceiptPage(props: { params: Promise<{ type: strin
           <div style={{ textAlign: 'center', marginTop: '4rem', color: '#9ca3af', fontSize: '0.85rem' }}>
             <p style={{ margin: 0, fontWeight: 500 }}>Thank you for choosing SMFitness Gym!</p>
             <p style={{ margin: '0.35rem 0 0 0' }}>This is a computer generated receipt.</p>
+          </div>
         </div>
       </div>
 

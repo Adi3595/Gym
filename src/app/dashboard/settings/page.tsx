@@ -24,19 +24,8 @@ export default function SettingsPage() {
   }
 
   useEffect(() => {
-    let interval: NodeJS.Timeout
-
     if (activeTab === 'whatsapp') {
       fetchWhatsAppStatus(false)
-      
-      // Poll every 10 seconds to get fresh QR codes
-      interval = setInterval(() => {
-        fetchWhatsAppStatus(true)
-      }, 10000)
-    }
-
-    return () => {
-      if (interval) clearInterval(interval)
     }
   }, [activeTab])
 

@@ -1,5 +1,3 @@
-import twilio from 'twilio';
-
 // The URL where your WhatsApp microservice is hosted
 const microserviceUrl = process.env.WHATSAPP_MICROSERVICE_URL || 'http://localhost:4000/api/send';
 const microserviceSecret = process.env.MICROSERVICE_SECRET || 'smfitness_gym_whatsapp_secret_key_123';
@@ -27,23 +25,40 @@ export const sendWhatsAppMessage = async (phone: string, message: string) => {
 };
 
 export const sendSMSMessage = async (phone: string, message: string) => {
-  // Check if Twilio environment variables are set
-  if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN || !process.env.TWILIO_PHONE_NUMBER) {
-    console.warn('[SMS SKIPPED] Twilio credentials not fully configured in .env.local');
+  // Check if Fast2SMS environment variable is set
+  if (!process.env.FAST2SMS_API_KEY) {
+    console.warn('[SMS SKIPPED] FAST2SMS_API_KEY not configured in .env.local');
     console.log(`[MOCK SMS TO ${phone}]: ${message}`);
     return;
   }
 
   try {
-    const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-    await client.messages.create({
-      body: message,
-      from: process.env.TWILIO_PHONE_NUMBER,
-      to: phone.startsWith('+') ? phone : `+91${phone.replace(/\D/g, '')}` // Assume India (+91) if no country code
+    // Fast2SMS requires a 10-digit number without country code usually
+    const cleanPhone = phone.replace(/\D/g, '');
+    const finalPhone = cleanPhone.length > 10 ? cleanPhone.slice(-10) : cleanPhone;
+
+    const response = await fetch("https://www.fast2sms.com/dev/bulkV2", {
+      method: "POST",
+      headers: {
+        "authorization": process.env.FAST2SMS_API_KEY,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        route: "q",
+        message: message,
+        language: "english",
+        flash: 0,
+        numbers: finalPhone
+      })
     });
-    console.log(`[SMS SENT] Successfully sent SMS to ${phone}`);
+
+    if (!response.ok) {
+      console.error('[FAST2SMS ERROR]', await response.text());
+    } else {
+      console.log(`[SMS SENT] Successfully sent SMS via Fast2SMS to ${finalPhone}`);
+    }
   } catch (err) {
-    console.error('[TWILIO SMS ERROR]', err);
+    console.error('[FAST2SMS FETCH ERROR]', err);
   }
 };
 

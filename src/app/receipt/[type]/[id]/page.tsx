@@ -1,7 +1,8 @@
 import React from 'react'
 import { createClient } from '@supabase/supabase-js'
-import { Printer, ArrowLeft } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
+import PrintButton from './PrintButton'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -98,12 +99,7 @@ export default async function ReceiptPage(props: { params: Promise<{ type: strin
         <Link href="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', color: 'var(--color-primary)', border: '1px solid var(--color-primary)', padding: '0.75rem 1.5rem', borderRadius: '8px', textDecoration: 'none', fontWeight: 600 }}>
           <ArrowLeft size={18} /> Back to Dashboard
         </Link>
-        <button 
-          onClick={() => window.print()}
-          style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--color-primary)', color: 'white', border: 'none', padding: '0.75rem 1.5rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 600 }}
-        >
-          <Printer size={18} /> Print Receipt
-        </button>
+        <PrintButton />
       </div>
 
       {/* Receipt Paper */}

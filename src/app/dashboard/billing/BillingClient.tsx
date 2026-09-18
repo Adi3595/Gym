@@ -151,7 +151,7 @@ export default function BillingClient({
             title="Expired / Overdue" 
             value={initialSubscriptions?.filter((s: any) => new Date(s.end_date) < new Date()).length || 0} 
             icon={<AlertCircle size={20} />} 
-            colorVariant="danger"
+            colorVariant="accent"
           />
         </SummaryGrid>
       )}

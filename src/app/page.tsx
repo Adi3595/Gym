@@ -186,7 +186,7 @@ export default function PublicLanding() {
         
         <div className={styles.goalGrid}>
           <div className={`${styles.goalCard} ${styles.goalCard1}`}>
-            <div className={styles.cardBg}></div>
+            <div className={styles.cardBg} style={{ backgroundImage: 'url(/images/goals/build.jpg)' }}></div>
             <div className={styles.cardContent}>
               <h3>BUILD MUSCLE</h3>
               <span className={styles.arrow}>Explore Products →</span>
@@ -194,6 +194,7 @@ export default function PublicLanding() {
           </div>
           
           <div className={`${styles.goalCard} ${styles.goalCard2}`}>
+            <div className={styles.cardBg} style={{ backgroundImage: 'url(/images/goals/lose.jpg)' }}></div>
             <div className={styles.cardContent}>
               <h3>LOSE FAT</h3>
               <span className={styles.arrow} style={{ color: 'var(--color-primary)' }}>Explore Products →</span>
@@ -201,6 +202,7 @@ export default function PublicLanding() {
           </div>
           
           <div className={`${styles.goalCard} ${styles.goalCard3}`}>
+            <div className={styles.cardBg} style={{ backgroundImage: 'url(/images/goals/recover.jpg)' }}></div>
             <div className={styles.cardContent}>
               <h3>RECOVER</h3>
               <span className={styles.arrow}>Explore Products →</span>
@@ -208,6 +210,7 @@ export default function PublicLanding() {
           </div>
           
           <div className={`${styles.goalCard} ${styles.goalCard4}`}>
+            <div className={styles.cardBg} style={{ backgroundImage: 'url(/images/goals/perform.jpg)' }}></div>
             <div className={styles.cardContent}>
               <h3>PERFORM</h3>
               <span className={styles.arrow} style={{ color: 'var(--color-accent)' }}>Explore Products →</span>
@@ -215,6 +218,7 @@ export default function PublicLanding() {
           </div>
 
           <div className={`${styles.goalCard} ${styles.goalCard5}`}>
+            <div className={styles.cardBg} style={{ backgroundImage: 'url(/images/goals/beginner.jpg)' }}></div>
             <div className={styles.cardContent}>
               <h3 style={{ color: 'var(--color-light)' }}>BEGINNER STACK</h3>
               <span className={styles.arrow}>Explore Products →</span>

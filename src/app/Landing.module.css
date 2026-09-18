@@ -205,14 +205,16 @@
 .cardBg {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
-  object-fit: cover;
-  opacity: 0.1;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.4;
   transition: transform var(--transition-slow);
+  mix-blend-mode: overlay;
 }
 
 .goalCard:hover .cardBg {
   transform: scale(1.05);
-  opacity: 0.2;
+  opacity: 0.6;
 }
 
 .cardContent {

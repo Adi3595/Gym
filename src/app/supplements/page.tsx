@@ -9,14 +9,14 @@ import styles from './Supplements.module.css';
 
 export default function SupplementsPage() {
   const products = [
-    { name: 'Creatine Monohydrate', category: 'Strength', price: '₹999' },
-    { name: 'Pre-Workout Igniter', category: 'Energy', price: '₹1,899' },
-    { name: 'BCAA Recovery', category: 'Endurance', price: '₹1,499' },
-    { name: 'Casein Protein', category: 'Recovery', price: '₹2,899' },
-    { name: 'Multivitamin Elite', category: 'Wellness', price: '₹799' },
-    { name: 'Omega-3 Fish Oil', category: 'Wellness', price: '₹899' },
-    { name: 'Mass Gainer Pro', category: 'Size', price: '₹3,499' },
-    { name: 'Glutamine', category: 'Recovery', price: '₹1,199' },
+    { name: 'Creatine Monohydrate', category: 'Strength', price: '₹999', image: 'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?auto=format&fit=crop&q=80&w=400' },
+    { name: 'Pre-Workout Igniter', category: 'Energy', price: '₹1,899', image: 'https://images.unsplash.com/photo-1579722839958-3f5f3e4e94b2?auto=format&fit=crop&q=80&w=400' },
+    { name: 'BCAA Recovery', category: 'Endurance', price: '₹1,499', image: 'https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&q=80&w=400' },
+    { name: 'Casein Protein', category: 'Recovery', price: '₹2,899', image: 'https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&q=80&w=400' },
+    { name: 'Multivitamin Elite', category: 'Wellness', price: '₹799', image: 'https://images.unsplash.com/photo-1577253313708-8abeb28387bc?auto=format&fit=crop&q=80&w=400' },
+    { name: 'Omega-3 Fish Oil', category: 'Wellness', price: '₹899', image: 'https://images.unsplash.com/photo-1584362917165-526a968579e8?auto=format&fit=crop&q=80&w=400' },
+    { name: 'Mass Gainer Pro', category: 'Size', price: '₹3,499', image: 'https://images.unsplash.com/photo-1622486981880-928ccf2e21b0?auto=format&fit=crop&q=80&w=400' },
+    { name: 'Glutamine', category: 'Recovery', price: '₹1,199', image: 'https://images.unsplash.com/photo-1511690521873-157929497e55?auto=format&fit=crop&q=80&w=400' },
   ];
 
   return (
@@ -65,9 +65,10 @@ export default function SupplementsPage() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
             >
-              <div className={styles.productImage}>
-                {/* Background image set in CSS */}
-              </div>
+              <div 
+                className={styles.productImage}
+                style={{ backgroundImage: `url('${product.image}')` }}
+              >
               <div className={styles.productCategory}>{product.category}</div>
               <h3 className={styles.productName}>{product.name}</h3>
               <div className={styles.productFooter}>

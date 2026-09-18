@@ -121,7 +121,6 @@
 
 .productImage {
   aspect-ratio: 1;
-  background-image: url('/images/goals/beginner.jpg');
   background-size: cover;
   background-position: center;
   border-radius: 8px;

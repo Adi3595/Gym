@@ -135,7 +135,7 @@ export default function SettingsPage() {
               
               <div style={{ 
                 background: waStatus?.connected ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)', 
-                border: \`1px solid \${waStatus?.connected ? '#22c55e' : '#ef4444'}\`, 
+                border: `1px solid ${waStatus?.connected ? '#22c55e' : '#ef4444'}`, 
                 padding: '2rem', borderRadius: '12px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' 
               }}>
                 {isLoading ? (

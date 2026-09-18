@@ -4,10 +4,14 @@ import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { revalidatePath } from 'next/cache'
 
 export async function processSale(cart: any[], memberId: string | null, paymentMethod: string) {
+  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return { error: 'CRITICAL: Vercel Environment Variable SUPABASE_SERVICE_ROLE_KEY is missing. You must add it to Vercel and redeploy!' }
+  }
+
   // Use service role key to bypass RLS for critical POS operations
   const supabase = createSupabaseClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!, 
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
+    process.env.SUPABASE_SERVICE_ROLE_KEY
   )
 
   // 1. Calculate totals
@@ -44,6 +48,7 @@ export async function processSale(cart: any[], memberId: string | null, paymentM
 
     if (itemError) {
       console.error("Error inserting sale item:", itemError)
+      return { error: `Failed to insert line item: ${itemError.message}` }
     }
 
     // Deduct stock

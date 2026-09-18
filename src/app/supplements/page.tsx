@@ -68,7 +68,7 @@ export default function SupplementsPage() {
               <div 
                 className={styles.productImage}
                 style={{ backgroundImage: `url('${product.image}')` }}
-              >
+              ></div>
               <div className={styles.productCategory}>{product.category}</div>
               <h3 className={styles.productName}>{product.name}</h3>
               <div className={styles.productFooter}>

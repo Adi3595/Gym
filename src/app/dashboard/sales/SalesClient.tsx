@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { DataTable } from '@/components/ui/DataTable'
 import { Button } from '@/components/ui/Button'
 import { Receipt, Calendar, CreditCard, Users, ExternalLink } from 'lucide-react'
@@ -9,6 +9,11 @@ import { useRouter } from 'next/navigation'
 
 export default function SalesClient({ initialSales }: { initialSales: any[] }) {
   const router = useRouter()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const formatCurrency = (val: number) => {
     return new Intl.NumberFormat('en-IN', {
@@ -96,6 +101,10 @@ export default function SalesClient({ initialSales }: { initialSales: any[] }) {
            saleDate.getFullYear() === today.getFullYear()
   })
   const todayRevenue = todaySales.reduce((sum, sale) => sum + (sale.final_amount || 0), 0)
+
+  if (!mounted) {
+    return null // Prevent hydration mismatch
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>

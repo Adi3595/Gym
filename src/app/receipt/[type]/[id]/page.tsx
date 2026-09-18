@@ -3,6 +3,9 @@ import { createClient } from '@/utils/supabase/server'
 import { Printer, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function ReceiptPage({ params, searchParams }: { params: { type: string, id: string }, searchParams?: { [key: string]: string | undefined } }) {
   const { type, id } = params
   const supabase = createClient()
@@ -10,7 +13,7 @@ export default async function ReceiptPage({ params, searchParams }: { params: { 
   let receiptData: any = null
   
   if (type === 'subscription') {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('subscriptions')
       .select(`
         *,
@@ -19,9 +22,13 @@ export default async function ReceiptPage({ params, searchParams }: { params: { 
       `)
       .eq('id', id)
       .single()
+    
+    if (error) {
+      return <div style={{ padding: '2rem', color: 'red' }}>Database Error (Subscription): {error.message}</div>
+    }
     receiptData = data
   } else if (type === 'pos') {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('sales')
       .select(`
         *,
@@ -32,6 +39,10 @@ export default async function ReceiptPage({ params, searchParams }: { params: { 
       `)
       .eq('id', id)
       .single()
+      
+    if (error) {
+      return <div style={{ padding: '2rem', color: 'red' }}>Database Error (POS): {error.message}</div>
+    }
     receiptData = data
   }
 

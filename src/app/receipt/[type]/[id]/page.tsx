@@ -1,15 +1,11 @@
 import React from 'react'
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@/utils/supabase/server'
 import { Printer, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 
-// Create a public client for the receipt (read-only)
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-const supabase = createClient(supabaseUrl, supabaseKey)
-
 export default async function ReceiptPage({ params, searchParams }: { params: { type: string, id: string }, searchParams?: { [key: string]: string | undefined } }) {
   const { type, id } = params
+  const supabase = createClient()
   
   let receiptData: any = null
   

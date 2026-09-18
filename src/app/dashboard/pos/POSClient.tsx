@@ -10,6 +10,7 @@ import styles from './POSClient.module.css'
 export default function POSClient({ products, members }: { products: any[], members: any[] }) {
   const [cart, setCart] = useState<any[]>([])
   const [selectedMember, setSelectedMember] = useState<string>('')
+  const [walkInPhone, setWalkInPhone] = useState<string>('')
   const [paymentMethod, setPaymentMethod] = useState<string>('Card')
   const [searchQuery, setSearchQuery] = useState('')
   const router = useRouter()
@@ -76,13 +77,14 @@ export default function POSClient({ products, members }: { products: any[], memb
     setSuccess(false)
 
     startTransition(async () => {
-      const res = await processSale(cart, selectedMember || null, paymentMethod)
+      const res = await processSale(cart, selectedMember || null, paymentMethod, walkInPhone)
       if (res.error) {
         setError(res.error)
       } else {
         setSuccess(true)
         setCart([])
         setSelectedMember('')
+        setWalkInPhone('')
         setTimeout(() => setSuccess(false), 3000)
         
         // Navigate to receipt page directly (prevents popup blockers)
@@ -173,19 +175,41 @@ export default function POSClient({ products, members }: { products: any[], memb
         <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(0,0,0,0.05)', background: 'white' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <label style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>Assign to Member (Optional)</label>
-            <div style={{ position: 'relative' }}>
-              <User size={16} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-              <select 
-                value={selectedMember} 
-                onChange={(e) => setSelectedMember(e.target.value)}
-                style={{ width: '100%', padding: '0.75rem 0.75rem 0.75rem 2.5rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#f6f6f6' }}
-              >
-                <option value="">Walk-in Customer</option>
-                {members.map(m => (
-                  <option key={m.id} value={m.id}>{m.first_name} {m.last_name} ({m.phone})</option>
-                ))}
-              </select>
-            </div>
+              <div style={{ position: 'relative' }}>
+                <User size={16} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                <input 
+                  type="text" 
+                  list="members-list" 
+                  placeholder="Search Member or leave empty for Walk-in"
+                  style={{ width: '100%', padding: '0.75rem 0.75rem 0.75rem 2.5rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#f6f6f6' }}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    const match = members.find(m => `${m.first_name} ${m.last_name} (${m.phone})` === val);
+                    if (match) {
+                      setSelectedMember(match.id);
+                    } else {
+                      setSelectedMember('');
+                    }
+                  }}
+                />
+                <datalist id="members-list">
+                  {members.map(m => (
+                    <option key={m.id} value={`${m.first_name} ${m.last_name} (${m.phone})`} />
+                  ))}
+                </datalist>
+              </div>
+              
+              {!selectedMember && (
+                <div style={{ marginTop: '0.5rem' }}>
+                  <input 
+                    type="tel"
+                    placeholder="Walk-in Phone Number (Optional)"
+                    value={walkInPhone}
+                    onChange={(e) => setWalkInPhone(e.target.value)}
+                    style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#f6f6f6', fontSize: '0.875rem' }}
+                  />
+                </div>
+              )}
           </div>
         </div>
 

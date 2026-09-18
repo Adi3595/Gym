@@ -33,12 +33,14 @@ export default function BillingClient({
     { 
       key: 'member', 
       header: 'Member',
-      cell: (item: any) => `${item.members?.first_name || 'Unknown'} ${item.members?.last_name || ''}`
+      cell: (item: any) => `${item.members?.first_name || 'Unknown'} ${item.members?.last_name || ''}`,
+      sortValue: (item: any) => `${item.members?.first_name || ''} ${item.members?.last_name || ''}`.trim()
     },
     { 
       key: 'plan', 
       header: 'Plan',
-      cell: (item: any) => item.membership_plans?.name || 'Unknown Plan'
+      cell: (item: any) => item.membership_plans?.name || 'Unknown Plan',
+      sortValue: (item: any) => item.membership_plans?.name || ''
     },
     { 
       key: 'amount_paid', 
@@ -224,6 +226,11 @@ export default function BillingClient({
                   <option value="Cash">Cash</option>
                   <option value="Bank Transfer">Bank Transfer</option>
                 </select>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+                <input type="checkbox" id="payment_done" name="payment_done" defaultChecked style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
+                <label htmlFor="payment_done" style={{ fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}>Payment Received</label>
               </div>
 
               <Button type="submit" variant="primary" fullWidth disabled={isPending}>

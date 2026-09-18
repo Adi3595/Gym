@@ -9,6 +9,7 @@ export interface Column<T> {
   key: string;
   header: string;
   cell?: (item: T) => React.ReactNode;
+  sortValue?: (item: T) => any;
 }
 
 interface DataTableProps<T> {
@@ -16,13 +17,15 @@ interface DataTableProps<T> {
   columns: Column<T>[];
   onRowClick?: (item: T) => void;
   searchPlaceholder?: string;
+  renderActions?: (item: T) => React.ReactNode;
 }
 
 export function DataTable<T extends { id: string | number }>({ 
   data, 
   columns, 
   onRowClick,
-  searchPlaceholder = 'Search...'
+  searchPlaceholder = 'Search...',
+  renderActions
 }: DataTableProps<T>) {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [sortKey, setSortKey] = React.useState<string | null>(null);
@@ -42,8 +45,10 @@ export function DataTable<T extends { id: string | number }>({
 
     if (sortKey) {
       result = [...result].sort((a: any, b: any) => {
-        const aVal = a[sortKey];
-        const bVal = b[sortKey];
+        const colDef = columns.find(c => c.key === sortKey);
+        const aVal = colDef?.sortValue ? colDef.sortValue(a) : a[sortKey];
+        const bVal = colDef?.sortValue ? colDef.sortValue(b) : b[sortKey];
+        
         if (aVal < bVal) return sortOrder === 'asc' ? -1 : 1;
         if (aVal > bVal) return sortOrder === 'asc' ? 1 : -1;
         return 0;
@@ -134,11 +139,17 @@ export function DataTable<T extends { id: string | number }>({
                       {col.cell ? col.cell(item) : (item as any)[col.key]}
                     </td>
                   ))}
-                  <td className={styles.actionCol}>
-                    <button className={styles.iconButton}>
-                      <MoreVertical size={18} />
-                    </button>
-                  </td>
+                  {renderActions ? (
+                    <td className={styles.actionCol}>
+                      {renderActions(item)}
+                    </td>
+                  ) : (
+                    <td className={styles.actionCol}>
+                      <button className={styles.iconButton}>
+                        <MoreVertical size={18} />
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))
             )}

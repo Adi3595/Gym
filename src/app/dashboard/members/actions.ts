@@ -23,3 +23,20 @@ export async function addMember(formData: FormData) {
   revalidatePath('/dashboard/members')
   return { success: true }
 }
+
+export async function softDeleteMember(id: string) {
+  const supabase = await createClient()
+
+  // Soft delete by setting status to Inactive
+  const { error } = await supabase
+    .from('members')
+    .update({ status: 'Inactive' })
+    .eq('id', id)
+
+  if (error) {
+    return { error: error.message }
+  }
+
+  revalidatePath('/dashboard/members')
+  return { success: true }
+}

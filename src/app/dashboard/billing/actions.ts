@@ -52,13 +52,15 @@ export async function addSubscription(formData: FormData) {
   const endDate = new Date(startDate)
   endDate.setDate(endDate.getDate() + planData.duration_days)
 
+  const paymentDone = formData.get('payment_done') === 'on'
+
   const subscriptionData = {
     member_id: memberId,
     plan_id: planId,
     start_date: startDate.toISOString().split('T')[0],
     end_date: endDate.toISOString().split('T')[0],
-    amount_paid: planData.price,
-    payment_status: 'Completed',
+    amount_paid: paymentDone ? planData.price : 0,
+    payment_status: paymentDone ? 'Completed' : 'Pending',
     payment_method: paymentMethod
   }
 

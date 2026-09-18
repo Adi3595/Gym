@@ -2,8 +2,9 @@
 
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { revalidatePath } from 'next/cache'
+import { sendReceiptNotification } from '@/utils/messaging'
 
-export async function processSale(cart: any[], memberId: string | null, paymentMethod: string) {
+export async function processSale(cart: any[], memberId: string | null, paymentMethod: string, walkInPhone?: string) {
   if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
     return { error: 'CRITICAL: Vercel Environment Variable SUPABASE_SERVICE_ROLE_KEY is missing. You must add it to Vercel and redeploy!' }
   }
@@ -62,6 +63,26 @@ export async function processSale(cart: any[], memberId: string | null, paymentM
 
   revalidatePath('/dashboard')
   revalidatePath('/dashboard/inventory')
+
+  // 4. Send Receipt (WhatsApp & SMS)
+  let phone = walkInPhone;
+  let customerName = 'Walk-in Customer';
+
+  if (memberId) {
+    const { data: memberData } = await supabase.from('members').select('first_name, phone').eq('id', memberId).single()
+    if (memberData) {
+      phone = memberData.phone;
+      customerName = memberData.first_name;
+    }
+  }
+
+  if (phone) {
+    await sendReceiptNotification(phone, {
+      customerName,
+      totalAmount: finalAmount,
+      items: cart.map(i => ({ name: i.name, quantity: i.quantity, price: i.price }))
+    })
+  }
   
   return { success: true, saleId }
 }

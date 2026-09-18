@@ -3,9 +3,9 @@
 import React, { useState, useEffect, useTransition } from 'react'
 import { DataTable } from '@/components/ui/DataTable'
 import { Button } from '@/components/ui/Button'
-import { Plus, X, Loader2, Users, UserCheck } from 'lucide-react'
+import { Plus, X, Loader2, Users, UserCheck, MoreVertical, Trash } from 'lucide-react'
 import { SummaryGrid, SummaryCard } from '@/components/ui/SummaryCards'
-import { addMember } from './actions'
+import { addMember, softDeleteMember } from './actions'
 
 export default function MembersClient({ initialMembers }: { initialMembers: any[] }) {
   const [mounted, setMounted] = useState(false)
@@ -17,6 +17,13 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
+  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null)
+
+  useEffect(() => {
+    const handleClickOutside = () => setOpenDropdownId(null);
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
 
   const columns = [
     { key: 'first_name', header: 'First Name' },
@@ -99,6 +106,50 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
         data={initialMembers || []} 
         columns={columns} 
         searchPlaceholder="Search members by name or email..."
+        renderActions={(item) => (
+          <div style={{ position: 'relative' }}>
+            <button 
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', borderRadius: '4px', color: 'var(--text-muted)' }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpenDropdownId(openDropdownId === item.id ? null : item.id);
+              }}
+            >
+              <MoreVertical size={18} />
+            </button>
+            {openDropdownId === item.id && (
+              <div style={{
+                position: 'absolute', right: '100%', top: '0', 
+                background: 'white', border: '1px solid rgba(0,0,0,0.1)', 
+                borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                padding: '0.5rem', zIndex: 10, minWidth: '150px'
+              }}>
+                <button 
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '0.5rem', 
+                    width: '100%', padding: '0.5rem', background: 'none', border: 'none', 
+                    cursor: 'pointer', color: '#EF4444', fontSize: '0.875rem', fontWeight: 600,
+                    borderRadius: '4px', transition: 'background 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (confirm('Are you sure you want to deactivate this member?')) {
+                      startTransition(() => {
+                        softDeleteMember(item.id);
+                      });
+                    }
+                    setOpenDropdownId(null);
+                  }}
+                >
+                  <Trash size={16} />
+                  Delete Member
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       />
 
       {/* Basic Modal */}

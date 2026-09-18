@@ -139,7 +139,7 @@ export async function GET(request: Request) {
         if (member?.phone) {
           await sendWhatsAppMessage(
             member.phone, 
-            `*SMFITNESS GYM - MEMBERSHIP NOTIFICATION*\n\nDear *${member.first_name}*,\n\nWe hope this message finds you well.\n\nThis is a formal reminder that your SMFitness Gym membership is scheduled to expire *tomorrow*.\n\nTo ensure uninterrupted access to our facilities, kindly renew your membership at the front desk during your next visit. If you have recently renewed your membership, please disregard this notice.\n\nThank you for choosing SMFitness Gym. We look forward to continuing to support your fitness journey.\n\nBest regards,\n*SMFitness Gym Management*`
+            `*SMFITNESS GYM - MEMBERSHIP NOTIFICATION*\n\nDear *${member.first_name}*,\n\n[ENGLISH]\nThis is a friendly reminder that your SMFitness Gym membership is scheduled to expire *tomorrow*. Kindly renew your membership at the front desk to ensure uninterrupted access to our facilities. If you have recently renewed, please disregard this notice.\n\n[मराठी]\nही एक आठवण करून देण्यासाठी सूचना आहे की तुमची एसएम फिटनेस जिम मेंबरशिप *उद्या* संपणार आहे. जिमचा विनाअडथळा लाभ घेण्यासाठी, कृपया रिसेप्शनवर मेंबरशिपचे नूतनीकरण (renew) करा. तुम्ही आधीच नूतनीकरण केले असल्यास, कृपया या सूचनेकडे दुर्लक्ष करा.\n\n[हिंदी]\nयह आपको याद दिलाने के लिए है कि आपकी एसएम फिटनेस जिम की मेंबरशिप *कल* समाप्त होने वाली है। जिम सुविधाओं का निर्बाध उपयोग सुनिश्चित करने के लिए, कृपया रिसेप्शन पर अपनी मेंबरशिप का नवीनीकरण (renew) करें। यदि आपने हाल ही में अपनी मेंबरशिप नवीनीकृत की है, तो कृपया इस सूचना को अनदेखा करें。\n\nThank you / धन्यवाद!\n*SMFitness Gym Management*`
           );
         }
       }
@@ -167,7 +167,7 @@ export async function GET(request: Request) {
       if (member?.phone) {
         await sendWhatsAppMessage(
           member.phone, 
-          `*SMFITNESS GYM - MEMBERSHIP UPDATE*\n\nDear *${member.first_name}*,\n\nWe hope this message finds you well.\n\nOur records indicate that your SMFitness Gym membership expired 10 days ago. We have sincerely missed your presence at the facility.\n\nWe invite you to visit the front desk at your earliest convenience to renew your membership. We remain fully committed to supporting your health and fitness goals.\n\nWe hope to welcome you back soon.\n\nBest regards,\n*SMFitness Gym Management*`
+          `*SMFITNESS GYM - MEMBERSHIP UPDATE*\n\nDear *${member.first_name}*,\n\n[ENGLISH]\nOur records indicate that your SMFitness Gym membership expired 10 days ago. We have sincerely missed your presence at the facility! We invite you to visit the front desk to renew your membership so we can continue supporting your fitness goals.\n\n[मराठी]\nआमच्या रेकॉर्डनुसार, तुमची एसएम फिटनेस जिम मेंबरशिप १० दिवसांपूर्वी संपली आहे. आम्ही तुम्हाला जिममध्ये खूप मिस करत आहोत! मेंबरशिपचे नूतनीकरण (renew) करण्यासाठी लवकरात लवकर रिसेप्शनला भेट द्या.\n\n[हिंदी]\nहमारे रिकॉर्ड के अनुसार, आपकी एसएम फिटनेस जिम की मेंबरशिप 10 दिन पहले समाप्त हो गई है। हम आपको जिम में बहुत मिस कर रहे हैं! अपनी मेंबरशिप का नवीनीकरण (renew) करने के लिए कृपया जल्द से जल्द रिसेप्शन पर आएं।\n\nHope to see you soon! / लवकरच भेटूया!\n*SMFitness Gym Management*`
         );
       }
     }

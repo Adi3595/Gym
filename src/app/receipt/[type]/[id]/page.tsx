@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 // Create a public client for the receipt (read-only)
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 export default async function ReceiptPage({ params, searchParams }: { params: { type: string, id: string }, searchParams?: { [key: string]: string | undefined } }) {

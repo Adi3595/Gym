@@ -34,9 +34,11 @@ export default async function ReceiptPage({ params, searchParams }: { params: { 
   const supabase = createClient(supabaseUrl, serviceKey)
   
   let receiptData: any = null
+  let data: any = null
+  let error: any = null
   
   if (type === 'subscription') {
-    const { data, error } = await supabase
+    const res = await supabase
       .from('subscriptions')
       .select(`
         *,
@@ -46,12 +48,14 @@ export default async function ReceiptPage({ params, searchParams }: { params: { 
       .eq('id', id)
       .single()
     
-    if (error) {
-      return <div style={{ padding: '2rem', color: 'red' }}>Database Error (Subscription): {error.message}</div>
+    if (res.error) {
+      return <div style={{ padding: '2rem', color: 'red' }}>Database Error (Subscription): {res.error.message}</div>
     }
-    receiptData = data
+    receiptData = res.data
+    data = res.data
+    error = res.error
   } else if (type === 'pos') {
-    const { data, error } = await supabase
+    const res = await supabase
       .from('sales')
       .select(`
         *,
@@ -63,19 +67,26 @@ export default async function ReceiptPage({ params, searchParams }: { params: { 
       .eq('id', id)
       .single()
       
-    if (error) {
-      return <div style={{ padding: '2rem', color: 'red' }}>Database Error (POS): {error.message}</div>
+    if (res.error) {
+      return <div style={{ padding: '2rem', color: 'red' }}>Database Error (POS): {res.error.message}</div>
     }
-    receiptData = data
+    receiptData = res.data
+    data = res.data
+    error = res.error
   }
 
   if (!receiptData) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#f6f6f6' }}>
-        <div style={{ padding: '2rem', background: 'white', borderRadius: '12px', textAlign: 'center' }}>
-          <h2>Receipt Not Found</h2>
-          <p>This receipt may have been deleted or the link is invalid.</p>
-        </div>
+      <div style={{ padding: '2rem', background: '#fff', wordBreak: 'break-all' }}>
+        <h2>DEBUG: Receipt Not Found</h2>
+        <pre>
+          {JSON.stringify({
+            params,
+            hasServiceKey: !!serviceKey,
+            dataStr: data ? 'exists' : 'null',
+            errorStr: error ? error.message : 'null'
+          }, null, 2)}
+        </pre>
       </div>
     )
   }

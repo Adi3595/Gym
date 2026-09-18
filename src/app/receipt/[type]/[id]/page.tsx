@@ -6,7 +6,9 @@ import Link from 'next/link'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-export default async function ReceiptPage({ params, searchParams }: { params: { type: string, id: string }, searchParams?: { [key: string]: string | undefined } }) {
+export default async function ReceiptPage(props: { params: Promise<{ type: string, id: string }>, searchParams?: Promise<{ [key: string]: string | undefined }> }) {
+  const params = await props.params;
+  const searchParams = props.searchParams ? await props.searchParams : undefined;
   const { type, id } = params
   
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -77,16 +79,11 @@ export default async function ReceiptPage({ params, searchParams }: { params: { 
 
   if (!receiptData) {
     return (
-      <div style={{ padding: '2rem', background: '#fff', wordBreak: 'break-all' }}>
-        <h2>DEBUG: Receipt Not Found</h2>
-        <pre>
-          {JSON.stringify({
-            params,
-            hasServiceKey: !!serviceKey,
-            dataStr: data ? 'exists' : 'null',
-            errorStr: error ? error.message : 'null'
-          }, null, 2)}
-        </pre>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#f6f6f6' }}>
+        <div style={{ padding: '2rem', background: 'white', borderRadius: '12px', textAlign: 'center' }}>
+          <h2>Receipt Not Found</h2>
+          <p>This receipt may have been deleted or the link is invalid.</p>
+        </div>
       </div>
     )
   }

@@ -36,6 +36,10 @@ export async function GET(request: Request) {
   tenDaysAgo.setDate(today.getDate() - 10)
   const dateExpired10Days = getISTDateString(tenDaysAgo)
 
+  const yesterday = new Date(today)
+  yesterday.setDate(today.getDate() - 1)
+  const dateExpiredYesterday = getISTDateString(yesterday)
+
   try {
     // ---------------------------------------------------------
     // SCENARIO 1: Subscriptions ending tomorrow
@@ -52,17 +56,27 @@ export async function GET(request: Request) {
     // SCENARIO 2: Subscriptions that ended exactly 10 days ago
     // ---------------------------------------------------------
     // We only want to email them if they haven't renewed since then.
-    const { data: expiredData, error: expiredError } = await supabaseAdmin
+    const { data: expired10DaysData, error: expired10DaysError } = await supabaseAdmin
       .from('subscriptions')
       .select('id, end_date, member_id, members(id, first_name, email, phone)')
       .eq('end_date', dateExpired10Days)
 
-    if (expiredError) throw expiredError
+    if (expired10DaysError) throw expired10DaysError
 
-    // Verify they haven't purchased a newer subscription
-    const expiredMembersToEmail = []
-    if (expiredData && expiredData.length > 0) {
-      for (const sub of expiredData) {
+    // ---------------------------------------------------------
+    // SCENARIO 3: Subscriptions that ended exactly yesterday
+    // ---------------------------------------------------------
+    const { data: expiredYesterdayData, error: expiredYesterdayError } = await supabaseAdmin
+      .from('subscriptions')
+      .select('id, end_date, member_id, members(id, first_name, email, phone)')
+      .eq('end_date', dateExpiredYesterday)
+
+    if (expiredYesterdayError) throw expiredYesterdayError
+
+    // Verify they haven't purchased a newer subscription (10 Days)
+    const expired10DaysMembersToEmail = []
+    if (expired10DaysData && expired10DaysData.length > 0) {
+      for (const sub of expired10DaysData) {
         const { data: newerSubs } = await supabaseAdmin
           .from('subscriptions')
           .select('id')
@@ -70,7 +84,23 @@ export async function GET(request: Request) {
           .gt('end_date', dateExpired10Days)
         
         if (!newerSubs || newerSubs.length === 0) {
-          expiredMembersToEmail.push(sub)
+          expired10DaysMembersToEmail.push(sub)
+        }
+      }
+    }
+
+    // Verify they haven't purchased a newer subscription (Yesterday)
+    const expiredYesterdayMembersToEmail = []
+    if (expiredYesterdayData && expiredYesterdayData.length > 0) {
+      for (const sub of expiredYesterdayData) {
+        const { data: newerSubs } = await supabaseAdmin
+          .from('subscriptions')
+          .select('id')
+          .eq('member_id', sub.member_id)
+          .gt('end_date', dateExpiredYesterday)
+        
+        if (!newerSubs || newerSubs.length === 0) {
+          expiredYesterdayMembersToEmail.push(sub)
         }
       }
     }
@@ -80,6 +110,7 @@ export async function GET(request: Request) {
     // ---------------------------------------------------------
     const emailsSent = {
       endingSoon: 0,
+      expiredYesterday: 0,
       expired10Days: 0
     }
 
@@ -155,8 +186,35 @@ export async function GET(request: Request) {
       }
     }
 
+    // Send Yesterday Expired Emails & WhatsApp
+    for (const sub of expiredYesterdayMembersToEmail) {
+      const member: any = Array.isArray(sub.members) ? sub.members[0] : sub.members;
+      
+      if (member?.email && transporter) {
+        try {
+          await transporter.sendMail({
+            from: `"SMFitness Gym" <${process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER}>`,
+            to: member.email,
+            subject: 'Your Membership Expired Yesterday ⚠️',
+            html: `<p>Hi ${member.first_name},</p><p>Your gym membership expired yesterday. Please renew your plan at the front desk to continue your fitness journey!</p>`,
+          })
+          emailsSent.expiredYesterday++
+        } catch (mailErr) {
+          console.error('[SMTP ERROR] Failed to send expired yesterday email', mailErr)
+        }
+      }
+
+      // Send WhatsApp Alert
+      if (member?.phone) {
+        await sendWhatsAppMessage(
+          member.phone, 
+          `*SMFITNESS GYM - MEMBERSHIP EXPIRED*\n\nDear *${member.first_name}*,\n\n[ENGLISH]\nYour SMFitness Gym membership expired *yesterday*. Kindly visit the front desk to renew it and continue your fitness journey with us. If you have already renewed, please ignore this message.\n\n[मराठी]\nतुमची एसएम फिटनेस जिम मेंबरशिप *काल* संपली आहे. कृपया रिसेप्शनवर मेंबरशिपचे नूतनीकरण (renew) करा. तुम्ही आधीच नूतनीकरण केले असल्यास, कृपया या सूचनेकडे दुर्लक्ष करा.\n\n[हिंदी]\nआपकी एसएम फिटनेस जिम की मेंबरशिप *कल* समाप्त हो गई है। अपनी मेंबरशिप का नवीनीकरण (renew) करने के लिए कृपया रिसेप्शन पर आएं। यदि आपने पहले ही नवीनीकरण कर लिया है, तो कृपया इस संदेश को अनदेखा करें。\n\nThank you / धन्यवाद!\n*SMFitness Gym Management*`
+        );
+      }
+    }
+
     // Send 10 Days Expired Emails & WhatsApp
-    for (const sub of expiredMembersToEmail) {
+    for (const sub of expired10DaysMembersToEmail) {
       const member: any = Array.isArray(sub.members) ? sub.members[0] : sub.members;
       
       if (member?.email && transporter) {

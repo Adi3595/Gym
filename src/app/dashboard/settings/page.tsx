@@ -10,21 +10,32 @@ export default function SettingsPage() {
   const [waStatus, setWaStatus] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(false)
 
-  const fetchWhatsAppStatus = async () => {
-    setIsLoading(true)
+  const fetchWhatsAppStatus = async (isPolling = false) => {
+    if (!isPolling) setIsLoading(true)
     try {
       const data = await checkWhatsAppStatus()
       setWaStatus(data)
     } catch (err) {
       setWaStatus({ connected: false, error: 'Failed to fetch status' })
     } finally {
-      setIsLoading(false)
+      if (!isPolling) setIsLoading(false)
     }
   }
 
   useEffect(() => {
+    let interval: NodeJS.Timeout
+
     if (activeTab === 'whatsapp') {
-      fetchWhatsAppStatus()
+      fetchWhatsAppStatus(false)
+      
+      // Poll every 10 seconds to get fresh QR codes
+      interval = setInterval(() => {
+        fetchWhatsAppStatus(true)
+      }, 10000)
+    }
+
+    return () => {
+      if (interval) clearInterval(interval)
     }
   }, [activeTab])
 

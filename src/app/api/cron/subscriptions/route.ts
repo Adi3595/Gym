@@ -17,14 +17,24 @@ export async function GET(request: Request) {
 
   const today = new Date()
   
-  // Calculate Target Dates
+  // Helper to get date string in Indian Standard Time (IST)
+  const getISTDateString = (date: Date) => {
+    return new Intl.DateTimeFormat('en-CA', { 
+        timeZone: 'Asia/Kolkata', 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit' 
+    }).format(date)
+  }
+  
+  // Calculate Target Dates in IST
   const tomorrow = new Date(today)
   tomorrow.setDate(today.getDate() + 1)
-  const dateEndingSoon = tomorrow.toISOString().split('T')[0]
+  const dateEndingSoon = getISTDateString(tomorrow)
 
   const tenDaysAgo = new Date(today)
   tenDaysAgo.setDate(today.getDate() - 10)
-  const dateExpired10Days = tenDaysAgo.toISOString().split('T')[0]
+  const dateExpired10Days = getISTDateString(tenDaysAgo)
 
   try {
     // ---------------------------------------------------------

@@ -37,11 +37,13 @@ export default function DashboardLayout({
       {/* Sidebar */}
       <aside className={`${styles.sidebar} ${mobileSidebarOpen ? styles.sidebarOpen : ''}`}>
         <div className={styles.sidebarHeader}>
-          <div className={styles.logo}>SMFITNESS</div>
+          <div className={styles.sidebarHeaderLeft}>
+            <div className={styles.logo}>SMFITNESS</div>
+            <span className={styles.roleTag}>Admin</span>
+          </div>
           <button className={styles.closeSidebarBtn} onClick={() => setMobileSidebarOpen(false)}>
             <X size={24} color="white" />
           </button>
-          <span className={styles.roleTag}>Admin</span>
         </div>
 
         <nav className={styles.nav}>

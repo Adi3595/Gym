@@ -20,9 +20,16 @@
 
 .sidebarHeader {
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  align-items: flex-start;
+  justify-content: space-between;
   margin-bottom: 3rem;
+}
+
+.sidebarHeaderLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
 }
 
 .logo {
@@ -223,7 +230,7 @@
   }
   
   .sidebarHeader {
-    flex-wrap: wrap;
+    align-items: center;
   }
 
   .roleTag {

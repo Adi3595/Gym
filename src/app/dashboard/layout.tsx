@@ -3,7 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Users, CreditCard, ShoppingBag, ShoppingCart, Settings, LogOut, Activity, Menu, X } from 'lucide-react'
+import { LayoutDashboard, Users, CreditCard, ShoppingBag, ShoppingCart, Settings, LogOut, Activity, Menu, X, Receipt } from 'lucide-react'
 import styles from './Dashboard.module.css'
 
 export default function DashboardLayout({
@@ -80,6 +80,10 @@ export default function DashboardLayout({
             <Link href="/dashboard/inventory" className={`${styles.navItem} ${pathname.includes('/inventory') ? styles.active : ''}`}>
               <ShoppingBag size={18} />
               Inventory
+            </Link>
+            <Link href="/dashboard/sales" className={`${styles.navItem} ${pathname.includes('/sales') ? styles.active : ''}`}>
+              <Receipt size={18} />
+              Sales History
             </Link>
           </div>
         </nav>

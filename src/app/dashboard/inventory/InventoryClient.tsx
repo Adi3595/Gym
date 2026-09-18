@@ -6,10 +6,13 @@ import { Button } from '@/components/ui/Button'
 import { Plus, X, Loader2, Package, AlertCircle, ShoppingBag } from 'lucide-react'
 import { SummaryGrid, SummaryCard } from '@/components/ui/SummaryCards'
 import { addProduct } from './actions'
+import { createClient } from '@/utils/supabase/client'
+import { Image as ImageIcon } from 'lucide-react'
 
 export default function InventoryClient({ initialProducts }: { initialProducts: any[] }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
+  const [isUploading, setIsUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const formatCurrency = (val: number) => {
@@ -20,6 +23,19 @@ export default function InventoryClient({ initialProducts }: { initialProducts: 
   }
 
   const columns = [
+    {
+      key: 'image',
+      header: 'Image',
+      cell: (item: any) => (
+        <div style={{ width: '40px', height: '40px', borderRadius: '6px', background: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+          {item.product_image ? (
+            <img src={item.product_image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          ) : (
+            <ImageIcon size={16} color="#aaa" />
+          )}
+        </div>
+      )
+    },
     { key: 'sku', header: 'SKU' },
     { key: 'name', header: 'Product Name' },
     { 
@@ -60,14 +76,48 @@ export default function InventoryClient({ initialProducts }: { initialProducts: 
 
   async function handleSubmit(formData: FormData) {
     setError(null)
-    startTransition(async () => {
-      const result = await addProduct(formData)
-      if (result?.error) {
-        setError(result.error)
-      } else {
-        setIsModalOpen(false)
+    setIsUploading(true)
+    
+    // We cannot use startTransition for async operations that block state updates if we want to show loading
+    // but we can just run it
+    
+    try {
+      const imageFile = formData.get('imageFile') as File
+      if (imageFile && imageFile.size > 0) {
+        const supabase = createClient()
+        const fileExt = imageFile.name.split('.').pop()
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
+        
+        const { error: uploadError } = await supabase.storage
+          .from('product-images')
+          .upload(fileName, imageFile)
+          
+        if (uploadError) {
+          setError(`Upload Error: ${uploadError.message}`)
+          setIsUploading(false)
+          return
+        }
+        
+        const { data: publicUrlData } = supabase.storage
+          .from('product-images')
+          .getPublicUrl(fileName)
+          
+        formData.append('product_image', publicUrlData.publicUrl)
       }
-    })
+
+      startTransition(async () => {
+        const result = await addProduct(formData)
+        if (result?.error) {
+          setError(result.error)
+        } else {
+          setIsModalOpen(false)
+        }
+        setIsUploading(false)
+      })
+    } catch (err: any) {
+      setError(err.message)
+      setIsUploading(false)
+    }
   }
 
   return (
@@ -173,22 +223,26 @@ export default function InventoryClient({ initialProducts }: { initialProducts: 
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+                <div style={{ flex: '1 1 120px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Initial Stock *</label>
                   <input type="number" name="current_stock" required defaultValue="0" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
                 </div>
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <div style={{ flex: '1 1 120px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Status</label>
                   <select name="status" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }}>
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
                 </div>
+                <div style={{ flex: '2 1 200px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Product Image</label>
+                  <input type="file" name="imageFile" accept="image/*" style={{ padding: '0.5rem', borderRadius: '8px', border: '1px dashed rgba(0,0,0,0.2)', background: 'white', cursor: 'pointer' }} />
+                </div>
               </div>
 
-              <Button type="submit" variant="primary" fullWidth disabled={isPending}>
-                {isPending ? <Loader2 className="animate-spin" /> : 'Save Product'}
+              <Button type="submit" variant="primary" fullWidth disabled={isPending || isUploading}>
+                {isPending || isUploading ? <Loader2 className="animate-spin" /> : 'Save Product'}
               </Button>
             </form>
           </div>

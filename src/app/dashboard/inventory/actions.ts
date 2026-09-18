@@ -14,6 +14,7 @@ export async function addProduct(formData: FormData) {
     mrp: parseFloat(formData.get('mrp') as string),
     current_stock: parseInt(formData.get('current_stock') as string, 10),
     status: formData.get('status') || 'Active',
+    product_image: formData.get('product_image') || null,
   }
 
   const { error } = await supabase.from('products').insert([data])

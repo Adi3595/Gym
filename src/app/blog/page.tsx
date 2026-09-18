@@ -8,12 +8,12 @@ import styles from './Blog.module.css';
 
 export default function BlogPage() {
   const articles = [
-    { title: 'Optimizing Protein Intake', cat: 'Nutrition', date: 'Oct 05' },
-    { title: 'Active Recovery Strategies', cat: 'Recovery', date: 'Sep 28' },
-    { title: 'Pre-Workout Ingredients Explained', cat: 'Supplements', date: 'Sep 20' },
-    { title: 'Mobility Drills for Squats', cat: 'Training', date: 'Sep 15' },
-    { title: 'Hydration for Performance', cat: 'Nutrition', date: 'Sep 02' },
-    { title: 'The Mental Game of Lifting', cat: 'Mindset', date: 'Aug 22' },
+    { title: 'Optimizing Protein Intake', cat: 'Nutrition', date: 'Oct 05', image: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&q=80&w=400' },
+    { title: 'Active Recovery Strategies', cat: 'Recovery', date: 'Sep 28', image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=400' },
+    { title: 'Pre-Workout Ingredients Explained', cat: 'Supplements', date: 'Sep 20', image: 'https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&q=80&w=400' },
+    { title: 'Mobility Drills for Squats', cat: 'Training', date: 'Sep 15', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&q=80&w=400' },
+    { title: 'Hydration for Performance', cat: 'Nutrition', date: 'Sep 02', image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=400' },
+    { title: 'The Mental Game of Lifting', cat: 'Mindset', date: 'Aug 22', image: 'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?auto=format&fit=crop&q=80&w=400' },
   ];
 
   return (
@@ -36,7 +36,7 @@ export default function BlogPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className={styles.featuredImage}></div>
+          <div className={styles.featuredImage} style={{ backgroundImage: "url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=800')" }}></div>
           <div className={styles.featuredContent}>
             <span className={styles.categoryTag}>Training Science</span>
             <h1 className={styles.featuredTitle}>The Science of Hypertrophy</h1>
@@ -67,7 +67,7 @@ export default function BlogPage() {
               transition={{ delay: i * 0.1 }}
             >
               <div className={styles.cardImage}>
-                <div className={styles.cardImageInner}></div>
+                <div className={styles.cardImageInner} style={{ backgroundImage: `url('${post.image}')` }}></div>
               </div>
               <div className={styles.cardMeta}>
                 <span style={{ color: 'var(--color-accent)', fontWeight: 600, textTransform: 'uppercase' }}>{post.cat}</span>

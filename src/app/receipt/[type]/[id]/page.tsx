@@ -1,6 +1,6 @@
 import React from 'react'
 import { createClient } from '@supabase/supabase-js'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Receipt as ReceiptIcon } from 'lucide-react'
 import Link from 'next/link'
 import PrintButton from './PrintButton'
 
@@ -103,92 +103,104 @@ export default async function ReceiptPage(props: { params: Promise<{ type: strin
       </div>
 
       {/* Receipt Paper */}
-      <div style={{ background: 'white', width: '100%', maxWidth: '600px', padding: '3rem', borderRadius: '4px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', position: 'relative' }}>
+      <div style={{ background: 'white', width: '100%', maxWidth: '600px', padding: 0, borderRadius: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.06)', position: 'relative', overflow: 'hidden' }}>
         
-        {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '3rem', borderBottom: '2px dashed #e5e7eb', paddingBottom: '2rem' }}>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', color: 'var(--color-primary)', margin: 0 }}>SMFITNESS GYM</h1>
-          <p style={{ color: '#6b7280', margin: '0.5rem 0 0 0' }}>123 Fitness Avenue, Mumbai, IN 400001</p>
-          <p style={{ color: '#6b7280', margin: '0.25rem 0 0 0' }}>Phone: +91 98765 43210</p>
-          <div style={{ marginTop: '1.5rem', background: '#f3f4f6', display: 'inline-block', padding: '0.5rem 1rem', borderRadius: '4px', fontWeight: 700, color: 'var(--text-dark)', letterSpacing: '1px' }}>
-            RECEIPT #{id.substring(0, 8).toUpperCase()}
-          </div>
-        </div>
+        {/* Top Accent Band */}
+        <div style={{ height: '8px', width: '100%', background: 'var(--color-primary)' }}></div>
 
-        {/* Info Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '3rem' }}>
-          <div>
-            <p style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: '#6b7280', fontWeight: 600, margin: '0 0 0.25rem 0' }}>Date & Time</p>
-            <p style={{ margin: 0, fontWeight: 500, color: 'var(--text-dark)' }}>{new Date(receiptData.created_at).toLocaleString()}</p>
-          </div>
-          <div>
-            <p style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: '#6b7280', fontWeight: 600, margin: '0 0 0.25rem 0' }}>Payment Method</p>
-            <p style={{ margin: 0, fontWeight: 500, color: 'var(--text-dark)' }}>{receiptData.payment_method || 'N/A'}</p>
-          </div>
-          {type === 'subscription' && receiptData.members && (
-            <div style={{ gridColumn: 'span 2' }}>
-              <p style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: '#6b7280', fontWeight: 600, margin: '0 0 0.25rem 0' }}>Billed To</p>
-              <p style={{ margin: 0, fontWeight: 600, color: 'var(--text-dark)', fontSize: '1.1rem' }}>{receiptData.members.first_name} {receiptData.members.last_name}</p>
-              <p style={{ margin: '0.25rem 0 0 0', color: '#6b7280' }}>{receiptData.members.phone}</p>
+        <div style={{ padding: '3rem' }}>
+          {/* Header */}
+          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(22, 105, 122, 0.08)', color: 'var(--color-primary)', marginBottom: '1.25rem' }}>
+              <ReceiptIcon size={28} />
             </div>
-          )}
-        </div>
-
-        {/* Items Table */}
-        <div style={{ marginBottom: '3rem' }}>
-          <div style={{ display: 'flex', borderBottom: '2px solid #e5e7eb', paddingBottom: '0.5rem', marginBottom: '1rem' }}>
-            <div style={{ flex: 3, fontWeight: 700, color: '#374151' }}>Description</div>
-            <div style={{ flex: 1, fontWeight: 700, color: '#374151', textAlign: 'right' }}>Total</div>
+            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.25rem', color: 'var(--text-dark)', margin: '0 0 0.5rem 0', letterSpacing: '-0.5px' }}>SMFITNESS GYM</h1>
+            <p style={{ color: '#6b7280', margin: '0 0 0.25rem 0', fontSize: '0.95rem' }}>123 Fitness Avenue, Mumbai, IN 400001</p>
+            <p style={{ color: '#6b7280', margin: 0, fontSize: '0.95rem' }}>Phone: +91 98765 43210</p>
           </div>
 
-          {type === 'subscription' && (
-            <div style={{ display: 'flex', padding: '0.5rem 0', borderBottom: '1px solid #f3f4f6' }}>
-              <div style={{ flex: 3, color: '#4b5563' }}>
-                <div style={{ fontWeight: 600, color: 'var(--text-dark)' }}>{receiptData.membership_plans?.name || 'Membership Subscription'}</div>
-                <div style={{ fontSize: '0.85rem' }}>{new Date(receiptData.start_date).toLocaleDateString()} - {new Date(receiptData.end_date).toLocaleDateString()}</div>
+          {/* Info Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', background: '#f9fafb', padding: '1.5rem', borderRadius: '12px', marginBottom: '3rem', border: '1px solid #f3f4f6' }}>
+            <div>
+              <p style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: '#9ca3af', fontWeight: 700, margin: '0 0 0.35rem 0', letterSpacing: '0.5px' }}>Receipt No.</p>
+              <p style={{ margin: 0, fontWeight: 700, color: 'var(--text-dark)', fontFamily: 'monospace', fontSize: '1.1rem' }}>#{id.substring(0, 8).toUpperCase()}</p>
+            </div>
+            <div>
+              <p style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: '#9ca3af', fontWeight: 700, margin: '0 0 0.35rem 0', letterSpacing: '0.5px' }}>Payment Method</p>
+              <p style={{ margin: 0, fontWeight: 600, color: 'var(--text-dark)' }}>{receiptData.payment_method || 'N/A'}</p>
+            </div>
+            <div>
+              <p style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: '#9ca3af', fontWeight: 700, margin: '0 0 0.35rem 0', letterSpacing: '0.5px' }}>Date & Time</p>
+              <p style={{ margin: 0, fontWeight: 600, color: 'var(--text-dark)' }}>{new Date(receiptData.created_at).toLocaleString()}</p>
+            </div>
+            {type === 'subscription' && receiptData.members && (
+              <div>
+                <p style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: '#9ca3af', fontWeight: 700, margin: '0 0 0.35rem 0', letterSpacing: '0.5px' }}>Billed To</p>
+                <p style={{ margin: 0, fontWeight: 600, color: 'var(--text-dark)' }}>{receiptData.members.first_name} {receiptData.members.last_name}</p>
               </div>
-              <div style={{ flex: 1, textAlign: 'right', fontWeight: 500 }}>{formatCurrency(receiptData.amount_paid)}</div>
-            </div>
-          )}
+            )}
+          </div>
 
-          {type === 'pos' && receiptData.sale_items?.map((item: any, idx: number) => (
-            <div key={idx} style={{ display: 'flex', padding: '0.5rem 0', borderBottom: '1px solid #f3f4f6' }}>
-              <div style={{ flex: 3, color: '#4b5563' }}>
-                <div style={{ fontWeight: 600, color: 'var(--text-dark)' }}>{item.products?.name || 'Product'}</div>
-                <div style={{ fontSize: '0.85rem' }}>{item.quantity} x {formatCurrency(item.price)}</div>
+          {/* Items Table */}
+          <div style={{ marginBottom: '3rem' }}>
+            <div style={{ display: 'flex', background: '#f3f4f6', padding: '0.85rem 1rem', borderRadius: '8px', marginBottom: '0.5rem' }}>
+              <div style={{ flex: 3, fontSize: '0.8rem', textTransform: 'uppercase', fontWeight: 700, color: '#6b7280', letterSpacing: '0.5px' }}>Description</div>
+              <div style={{ flex: 1, fontSize: '0.8rem', textTransform: 'uppercase', fontWeight: 700, color: '#6b7280', letterSpacing: '0.5px', textAlign: 'right' }}>Total</div>
+            </div>
+
+            {type === 'pos' && (!receiptData.sale_items || receiptData.sale_items.length === 0) && (
+              <div style={{ padding: '2rem', textAlign: 'center', color: '#9ca3af', fontStyle: 'italic', background: '#f9fafb', borderRadius: '8px', border: '1px dashed #e5e7eb', marginTop: '1rem' }}>
+                No line items were recorded for this transaction.
               </div>
-              <div style={{ flex: 1, textAlign: 'right', fontWeight: 500 }}>{formatCurrency(item.total)}</div>
-            </div>
-          ))}
-        </div>
+            )}
 
-        {/* Totals */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-end' }}>
-          {type === 'pos' && receiptData.discount > 0 && (
-            <div style={{ display: 'flex', width: '200px', justifyContent: 'space-between', color: '#6b7280' }}>
-              <span>Subtotal:</span>
-              <span>{formatCurrency(receiptData.total_amount)}</span>
+            {type === 'subscription' && (
+              <div style={{ display: 'flex', padding: '1rem', borderBottom: '1px solid #f3f4f6' }}>
+                <div style={{ flex: 3 }}>
+                  <div style={{ fontWeight: 600, color: 'var(--text-dark)', fontSize: '1.05rem', marginBottom: '0.25rem' }}>{receiptData.membership_plans?.name || 'Membership Subscription'}</div>
+                  <div style={{ fontSize: '0.85rem', color: '#6b7280' }}>{new Date(receiptData.start_date).toLocaleDateString()} - {new Date(receiptData.end_date).toLocaleDateString()}</div>
+                </div>
+                <div style={{ flex: 1, textAlign: 'right', fontWeight: 600, color: 'var(--text-dark)', fontSize: '1.05rem' }}>{formatCurrency(receiptData.amount_paid)}</div>
+              </div>
+            )}
+
+            {type === 'pos' && receiptData.sale_items?.map((item: any, idx: number) => (
+              <div key={idx} style={{ display: 'flex', padding: '1rem', borderBottom: '1px solid #f3f4f6', alignItems: 'center' }}>
+                <div style={{ flex: 3 }}>
+                  <div style={{ fontWeight: 600, color: 'var(--text-dark)', fontSize: '1.05rem', marginBottom: '0.25rem' }}>{item.products?.name || 'Product'}</div>
+                  <div style={{ fontSize: '0.85rem', color: '#6b7280' }}>{item.quantity} x {formatCurrency(item.price)}</div>
+                </div>
+                <div style={{ flex: 1, textAlign: 'right', fontWeight: 600, color: 'var(--text-dark)', fontSize: '1.05rem' }}>{formatCurrency(item.total)}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Totals */}
+          <div style={{ borderTop: '2px dashed #e5e7eb', paddingTop: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.75rem' }}>
+            {type === 'pos' && receiptData.discount > 0 && (
+              <div style={{ display: 'flex', width: '100%', maxWidth: '280px', justifyContent: 'space-between', color: '#6b7280', fontWeight: 500, padding: '0 1rem' }}>
+                <span>Subtotal:</span>
+                <span>{formatCurrency(receiptData.total_amount)}</span>
+              </div>
+            )}
+            {type === 'pos' && receiptData.discount > 0 && (
+              <div style={{ display: 'flex', width: '100%', maxWidth: '280px', justifyContent: 'space-between', color: '#EF4444', fontWeight: 500, padding: '0 1rem' }}>
+                <span>Discount:</span>
+                <span>-{formatCurrency(receiptData.discount)}</span>
+              </div>
+            )}
+            <div style={{ display: 'flex', width: '100%', maxWidth: '280px', justifyContent: 'space-between', fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-dark)', background: '#f9fafb', padding: '1.25rem 1rem', borderRadius: '12px', marginTop: '0.5rem', border: '1px solid #f3f4f6' }}>
+              <span>Total Amount</span>
+              <span style={{ color: 'var(--color-primary)' }}>{formatCurrency(type === 'pos' ? receiptData.final_amount : receiptData.amount_paid)}</span>
             </div>
-          )}
-          {type === 'pos' && receiptData.discount > 0 && (
-            <div style={{ display: 'flex', width: '200px', justifyContent: 'space-between', color: '#EF4444' }}>
-              <span>Discount:</span>
-              <span>-{formatCurrency(receiptData.discount)}</span>
-            </div>
-          )}
-          <div style={{ display: 'flex', width: '200px', justifyContent: 'space-between', fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-primary)', borderTop: '2px solid #e5e7eb', paddingTop: '1rem', marginTop: '0.5rem' }}>
-            <span>Total:</span>
-            <span>{formatCurrency(type === 'pos' ? receiptData.final_amount : receiptData.amount_paid)}</span>
+          </div>
+
+          {/* Footer */}
+          <div style={{ textAlign: 'center', marginTop: '4rem', color: '#9ca3af', fontSize: '0.85rem' }}>
+            <p style={{ margin: 0, fontWeight: 500 }}>Thank you for choosing SMFitness Gym!</p>
+            <p style={{ margin: '0.35rem 0 0 0' }}>This is a computer generated receipt.</p>
           </div>
         </div>
-
-        {/* Footer */}
-        <div style={{ textAlign: 'center', marginTop: '4rem', color: '#9ca3af', fontSize: '0.85rem' }}>
-          <p style={{ margin: 0 }}>Thank you for choosing SMFitness Gym!</p>
-          <p style={{ margin: '0.25rem 0 0 0' }}>This is a computer generated receipt.</p>
-        </div>
-
-      </div>
 
       <style dangerouslySetInnerHTML={{__html: `
         @media print {

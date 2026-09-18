@@ -1,5 +1,5 @@
 import React from 'react'
-import { createClient } from '@/utils/supabase/server'
+import { createClient } from '@supabase/supabase-js'
 import { Printer, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 
@@ -8,7 +8,30 @@ export const revalidate = 0
 
 export default async function ReceiptPage({ params, searchParams }: { params: { type: string, id: string }, searchParams?: { [key: string]: string | undefined } }) {
   const { type, id } = params
-  const supabase = createClient()
+  
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!serviceKey) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#f6f6f6' }}>
+        <div style={{ padding: '3rem', background: 'white', borderRadius: '12px', textAlign: 'center', maxWidth: '600px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
+          <h2 style={{ color: '#EF4444', fontFamily: 'var(--font-display)', marginBottom: '1rem' }}>Vercel Configuration Missing</h2>
+          <p style={{ color: '#374151', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+            To view receipts on your live site, you must add your Supabase Service Role Key to Vercel so the system can safely fetch the receipt data.
+          </p>
+          <div style={{ textAlign: 'left', background: '#f9fafb', padding: '1.5rem', borderRadius: '8px', border: '1px solid #e5e7eb', fontSize: '0.9rem', color: '#4b5563' }}>
+            <p style={{ margin: '0 0 0.5rem 0' }}>1. Go to your <strong>Supabase Dashboard</strong> → Project Settings → API.</p>
+            <p style={{ margin: '0 0 0.5rem 0' }}>2. Copy the <code>service_role</code> secret key.</p>
+            <p style={{ margin: '0 0 0.5rem 0' }}>3. Go to your <strong>Vercel Dashboard</strong> → Settings → Environment Variables.</p>
+            <p style={{ margin: '0 0 0.5rem 0' }}>4. Add a new variable named <code>SUPABASE_SERVICE_ROLE_KEY</code> and paste the key.</p>
+            <p style={{ margin: 0 }}>5. Go to Vercel Deployments and hit <strong>Redeploy</strong>.</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+  const supabase = createClient(supabaseUrl, serviceKey)
   
   let receiptData: any = null
   

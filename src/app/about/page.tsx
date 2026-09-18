@@ -29,7 +29,7 @@ export default function AboutPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          <div className={styles.featureImage}></div>
+          <div className={styles.featureImage} style={{ backgroundImage: "url('/images/about_standards.jpg')" }}></div>
           <div className={styles.featureContent}>
             <h2 className={styles.featureTitle}>Uncompromising Standards</h2>
             <p className={styles.featureText}>
@@ -57,7 +57,7 @@ export default function AboutPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          <div className={styles.featureImage} style={{ background: 'var(--color-secondary)' }}></div>
+          <div className={styles.featureImage} style={{ backgroundImage: "url('/images/goals/recover.jpg')" }}></div>
           <div className={styles.featureContent}>
             <h2 className={styles.featureTitle}>The Science of Recovery</h2>
             <p className={styles.featureText}>
@@ -85,7 +85,7 @@ export default function AboutPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          <div className={styles.featureImage} style={{ background: '#0a1f24' }}></div>
+          <div className={styles.featureImage} style={{ backgroundImage: "url('/images/goals/beginner.jpg')" }}></div>
           <div className={styles.featureContent}>
             <h2 className={styles.featureTitle}>In-House Nutrition</h2>
             <p className={styles.featureText}>

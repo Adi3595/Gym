@@ -32,7 +32,7 @@ export default function SupplementsPage() {
           animate={{ opacity: 1, y: 0 }}
         >
           <div className={styles.heroVisual}>
-            <Package size={150} color="var(--color-accent)" />
+            {/* Background image set in CSS */}
           </div>
           <div className={styles.heroContent}>
             <span className={styles.heroTag}>Best Seller</span>

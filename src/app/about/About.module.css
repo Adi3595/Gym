@@ -41,6 +41,8 @@
   flex: 1.2;
   aspect-ratio: 4/3;
   background: var(--color-primary);
+  background-size: cover;
+  background-position: center;
   border-radius: 8px;
   position: relative;
   overflow: hidden;

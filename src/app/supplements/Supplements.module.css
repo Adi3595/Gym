@@ -22,7 +22,9 @@
 
 .heroVisual {
   flex: 1;
-  background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent);
+  background-image: url('/images/goals/beginner.jpg');
+  background-size: cover;
+  background-position: center;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -1,13 +1,19 @@
 'use client'
 
-import React, { useState, useTransition } from 'react'
+import React, { useState, useEffect, useTransition } from 'react'
 import { DataTable } from '@/components/ui/DataTable'
 import { Button } from '@/components/ui/Button'
-import { Plus, X, Loader2, Users, UserCheck, TrendingUp } from 'lucide-react'
+import { Plus, X, Loader2, Users, UserCheck } from 'lucide-react'
 import { SummaryGrid, SummaryCard } from '@/components/ui/SummaryCards'
 import { addMember } from './actions'
 
 export default function MembersClient({ initialMembers }: { initialMembers: any[] }) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
@@ -66,28 +72,28 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
         </Button>
       </div>
 
-      <SummaryGrid>
-        <SummaryCard 
-          title="Total Members" 
-          value={initialMembers?.length || 0} 
-          icon={<Users size={20} />} 
-          trend="12%" trendUp={true} 
-          colorVariant="primary"
-        />
-        <SummaryCard 
-          title="Active Members" 
-          value={initialMembers?.filter(m => m.status === 'Active').length || 0} 
-          icon={<UserCheck size={20} />} 
-          trend="5%" trendUp={true} 
-          colorVariant="secondary"
-        />
-        <SummaryCard 
-          title="New This Month" 
-          value={initialMembers?.filter(m => new Date(m.join_date).getMonth() === new Date().getMonth()).length || 0} 
-          icon={<TrendingUp size={20} />} 
-          colorVariant="accent"
-        />
-      </SummaryGrid>
+      {mounted && (
+        <SummaryGrid>
+          <SummaryCard 
+            title="Total Members" 
+            value={initialMembers?.length || 0} 
+            icon={<Users size={20} />} 
+            colorVariant="primary"
+          />
+          <SummaryCard 
+            title="Active Members" 
+            value={initialMembers?.filter(m => m.status === 'Active').length || 0} 
+            icon={<UserCheck size={20} />} 
+            colorVariant="accent"
+          />
+          <SummaryCard 
+            title="New This Month" 
+            value={initialMembers?.filter(m => new Date(m.join_date).getMonth() === new Date().getMonth()).length || 0} 
+            icon={<Plus size={20} />} 
+            colorVariant="secondary"
+          />
+        </SummaryGrid>
+      )}
 
       <DataTable 
         data={initialMembers || []} 

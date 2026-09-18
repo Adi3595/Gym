@@ -1,9 +1,9 @@
 'use client'
 
-import React, { useState, useTransition } from 'react'
+import React, { useState, useEffect, useTransition } from 'react'
 import { DataTable } from '@/components/ui/DataTable'
 import { Button } from '@/components/ui/Button'
-import { Plus, X, Loader2, CreditCard, ArrowUpRight, Activity } from 'lucide-react'
+import { Plus, X, Loader2, CreditCard, ArrowUpRight, Activity, AlertCircle, CheckCircle, Clock } from 'lucide-react'
 import { SummaryGrid, SummaryCard } from '@/components/ui/SummaryCards'
 import { addSubscription } from './actions'
 
@@ -16,9 +16,14 @@ export default function BillingClient({
   members: any[], 
   plans: any[] 
 }) {
+  const [mounted, setMounted] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const formatCurrency = (val: number) => {
     return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(val || 0)
@@ -127,18 +132,29 @@ export default function BillingClient({
           colorVariant="primary"
         />
         <SummaryCard 
-          title="Active Subscriptions" 
-          value={initialSubscriptions?.filter((s: any) => new Date(s.end_date) >= new Date()).length || 0} 
-          icon={<Activity size={20} />} 
-          colorVariant="secondary"
-        />
-        <SummaryCard 
           title="Total Plans" 
           value={plans?.length || 0} 
           icon={<ArrowUpRight size={20} />} 
           colorVariant="light"
         />
       </SummaryGrid>
+
+      {mounted && (
+        <SummaryGrid>
+          <SummaryCard 
+            title="Active Subscriptions" 
+            value={initialSubscriptions?.filter((s: any) => new Date(s.end_date) >= new Date()).length || 0} 
+            icon={<CheckCircle size={20} />} 
+            colorVariant="primary"
+          />
+          <SummaryCard 
+            title="Expired / Overdue" 
+            value={initialSubscriptions?.filter((s: any) => new Date(s.end_date) < new Date()).length || 0} 
+            icon={<AlertCircle size={20} />} 
+            colorVariant="danger"
+          />
+        </SummaryGrid>
+      )}
 
       <DataTable 
         data={initialSubscriptions || []} 

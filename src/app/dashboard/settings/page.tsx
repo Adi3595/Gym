@@ -150,12 +150,23 @@ export default function SettingsPage() {
                   <>
                     <XCircle size={48} color="#ef4444" />
                     <h3 style={{ margin: 0, color: '#b91c1c', fontSize: '1.25rem' }}>Bot is Disconnected</h3>
-                    <p style={{ margin: 0, color: '#991b1b', textAlign: 'center' }}>
-                      {waStatus?.error || 'The microservice is offline or the WhatsApp session was logged out.'}
-                    </p>
-                    <p style={{ margin: 0, color: '#7f1d1d', fontSize: '0.875rem', marginTop: '0.5rem', textAlign: 'center' }}>
-                      To reconnect, run the microservice and scan the QR code in your terminal with your WhatsApp app.
-                    </p>
+                    {waStatus?.qr ? (
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+                        <p style={{ margin: 0, color: '#991b1b', textAlign: 'center', fontWeight: 600 }}>Scan this QR code with your Gym WhatsApp to reconnect!</p>
+                        <div style={{ padding: '1rem', background: 'white', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                          <img src={`https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=${encodeURIComponent(waStatus.qr)}`} alt="WhatsApp QR Code" width={256} height={256} />
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <p style={{ margin: 0, color: '#991b1b', textAlign: 'center' }}>
+                          {waStatus?.error || 'The microservice is offline or the WhatsApp session was logged out.'}
+                        </p>
+                        <p style={{ margin: 0, color: '#7f1d1d', fontSize: '0.875rem', marginTop: '0.5rem', textAlign: 'center' }}>
+                          To reconnect, make sure the microservice is running. The QR code will appear here once generated.
+                        </p>
+                      </>
+                    )}
                   </>
                 )}
               </div>

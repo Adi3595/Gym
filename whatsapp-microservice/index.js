@@ -15,25 +15,29 @@ const client = new Client({
     }
 });
 
+let currentQR = null;
+let isConnected = false;
+
 // Event: Generate QR Code for the gym owner to scan
 client.on('qr', (qr) => {
+    currentQR = qr;
     console.log('\n======================================================');
     console.log('📱 SCAN THIS QR CODE WITH YOUR GYM WHATSAPP ACCOUNT:');
     console.log('======================================================\n');
     qrcode.generate(qr, { small: true });
 });
 
-let isConnected = false;
-
 // Event: Client successfully connected
 client.on('ready', () => {
     isConnected = true;
+    currentQR = null;
     console.log('\n✅ Aura Gym WhatsApp Bot is READY and connected!');
 });
 
 // Event: Client disconnected
 client.on('disconnected', (reason) => {
     isConnected = false;
+    currentQR = null;
     console.log('❌ WhatsApp Client was disconnected:', reason);
 });
 
@@ -66,7 +70,8 @@ app.get('/api/status', (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.status(200).json({ 
         connected: isConnected,
-        status: isConnected ? 'connected' : 'disconnected'
+        status: isConnected ? 'connected' : 'disconnected',
+        qr: currentQR
     });
 });
 

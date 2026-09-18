@@ -75,7 +75,7 @@ export default function SalesClient({ initialSales }: { initialSales: any[] }) {
       header: 'Receipt',
       cell: (item: any) => (
         <Button 
-          variant="outline" 
+          variant="ghost" 
           size="sm"
           onClick={() => router.push(`/receipt/pos/${item.id}`)}
           icon={<ExternalLink size={14} />}

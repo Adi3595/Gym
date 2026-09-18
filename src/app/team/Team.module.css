@@ -60,16 +60,9 @@
 .coachImage {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: var(--color-secondary);
+  background-size: cover;
+  background-position: center;
   transition: transform var(--transition-slow);
-}
-
-/* Subtle pattern for the placeholder */
-.coachImage::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 8px);
 }
 
 .coachCard:hover .coachImage {

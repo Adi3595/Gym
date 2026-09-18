@@ -12,21 +12,21 @@ export default function TeamPage() {
       spec: 'Strength & Hypertrophy', 
       exp: '8 Years',
       clients: '300+',
-      color: 'var(--color-primary)' 
+      image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=600' 
     },
     { 
       name: 'Anita Desai', 
       spec: 'Mobility & Yoga', 
       exp: '5 Years',
       clients: '500+',
-      color: 'var(--color-secondary)' 
+      image: 'https://images.unsplash.com/photo-1518611012118-69b120a14d53?auto=format&fit=crop&q=80&w=600' 
     },
     { 
       name: 'Karan Singh', 
       spec: 'CrossFit & Athletics', 
       exp: '6 Years',
       clients: '200+',
-      color: 'var(--color-primary)' 
+      image: 'https://images.unsplash.com/photo-1599058917212-32b70f0e0dfb?auto=format&fit=crop&q=80&w=600' 
     }
   ];
 
@@ -65,7 +65,7 @@ export default function TeamPage() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
             >
-              <div className={styles.coachImage} style={{ background: coach.color }}></div>
+              <div className={styles.coachImage} style={{ backgroundImage: `url('${coach.image}')` }}></div>
               <div className={styles.coachInfo}>
                 <h3 className={styles.coachName}>{coach.name}</h3>
                 <span className={styles.coachSpec}>{coach.spec}</span>

@@ -10,7 +10,6 @@ app.use(express.json()); // Allow JSON payloads
 const client = new Client({
     authStrategy: new LocalAuth(), // Saves the login session so you don't have to scan QR every time
     puppeteer: {
-        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'] // Required for running on platforms like Render
     }
 });
@@ -92,11 +91,21 @@ app.post('/api/send', async (req, res) => {
         }
 
         // Format phone number for WhatsApp Web JS (requires country code + @c.us)
-        const cleanPhone = phone.replace(/\D/g, '');
-        const chatId = `${cleanPhone}@c.us`;
+        let cleanPhone = phone.replace(/\D/g, '');
+        
+        // Auto-prefix Indian country code (91) if it's exactly 10 digits
+        if (cleanPhone.length === 10) {
+            cleanPhone = '91' + cleanPhone;
+        }
+        
+        // CRITICAL FIX: We must call getNumberId first to resolve the user's LID in the new WhatsApp architecture
+        const numberDetails = await client.getNumberId(cleanPhone);
+        if (!numberDetails) {
+            return res.status(400).json({ error: 'Phone number is not registered on WhatsApp' });
+        }
 
-        // Send the message
-        await client.sendMessage(chatId, message);
+        // Send the message using the securely resolved serialized ID
+        await client.sendMessage(numberDetails._serialized, message);
         console.log(`📤 Sent message to ${cleanPhone}`);
 
         res.status(200).json({ success: true, message: 'Message sent!' });

@@ -2,6 +2,7 @@
 
 import React, { useState, useTransition } from 'react'
 import { processSale } from './actions'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/Button'
 import { ShoppingCart, Plus, Minus, X, CreditCard, Search, User, CheckCircle2 } from 'lucide-react'
 import styles from './POSClient.module.css'
@@ -11,6 +12,7 @@ export default function POSClient({ products, members }: { products: any[], memb
   const [selectedMember, setSelectedMember] = useState<string>('')
   const [paymentMethod, setPaymentMethod] = useState<string>('Card')
   const [searchQuery, setSearchQuery] = useState('')
+  const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -65,9 +67,9 @@ export default function POSClient({ products, members }: { products: any[], memb
         setSelectedMember('')
         setTimeout(() => setSuccess(false), 3000)
         
-        // Open receipt in new tab and trigger print
+        // Navigate to receipt page directly (prevents popup blockers)
         if (res.saleId) {
-          window.open(`/receipt/pos/${res.saleId}?autoPrint=true`, '_blank')
+          router.push(`/receipt/pos/${res.saleId}?autoPrint=true`)
         }
       }
     })

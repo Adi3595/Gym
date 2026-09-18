@@ -1,6 +1,6 @@
 import React from 'react'
 import { createClient } from '@supabase/supabase-js'
-import { Printer } from 'lucide-react'
+import { Printer, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 
 // Create a public client for the receipt (read-only)
@@ -56,7 +56,10 @@ export default async function ReceiptPage({ params, searchParams }: { params: { 
     <div style={{ background: '#f3f4f6', minHeight: '100vh', padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', fontFamily: 'var(--font-sans)' }}>
       
       {/* Print / Action Bar */}
-      <div className="no-print" style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', width: '100%', maxWidth: '600px', justifyContent: 'flex-end' }}>
+      <div className="no-print" style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', width: '100%', maxWidth: '600px', justifyContent: 'space-between' }}>
+        <Link href="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', color: 'var(--color-primary)', border: '1px solid var(--color-primary)', padding: '0.75rem 1.5rem', borderRadius: '8px', textDecoration: 'none', fontWeight: 600 }}>
+          <ArrowLeft size={18} /> Back to Dashboard
+        </Link>
         <button 
           onClick={() => window.print()}
           style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--color-primary)', color: 'white', border: 'none', padding: '0.75rem 1.5rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 600 }}

@@ -26,7 +26,7 @@ export async function requestWhatsAppPairingCode(phone: string) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        secret: process.env.MICROSERVICE_SECRET || 'smfitness_gym_whatsapp_secret_key_123',
+        secret: process.env.MICROSERVICE_SECRET || 'aura_gym_whatsapp_secret_key_123',
         phone
       })
     });

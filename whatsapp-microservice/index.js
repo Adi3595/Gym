@@ -18,10 +18,11 @@ let currentQR = null;
 let isConnected = false;
 let isQrReady = false;
 
-// Event: Generate QR Code (Ignored in favor of Pairing Code)
+// Event: Generate QR Code
 client.on('qr', (qr) => {
     isQrReady = true;
-    console.log('\n[WhatsApp] Waiting for pairing code request...');
+    qrcode.generate(qr, { small: true });
+    console.log('\n[WhatsApp] Please scan the QR code above to link your device, or use pairing code if it works.');
 });
 
 // Event: Client successfully connected

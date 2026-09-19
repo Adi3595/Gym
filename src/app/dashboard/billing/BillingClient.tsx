@@ -81,7 +81,6 @@ export default function BillingClient({
           {item.payment_status}
         </span>
       )
-    },
     }
   ]
 

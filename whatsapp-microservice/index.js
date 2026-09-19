@@ -136,6 +136,33 @@ app.post('/api/send', async (req, res) => {
     }
 });
 
+// ---------------------------------------------------------
+// LOGOUT ENDPOINT: Disconnect WhatsApp to link a new number
+// ---------------------------------------------------------
+app.post('/api/logout', async (req, res) => {
+    try {
+        const { secret } = req.body;
+        if (secret !== process.env.MICROSERVICE_SECRET) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+        
+        console.log('[WhatsApp] Logging out...');
+        await client.logout();
+        isConnected = false;
+        
+        // Wait a few seconds, then initialize again to allow a new connection
+        setTimeout(() => {
+            console.log('[WhatsApp] Reinitializing client after logout...');
+            client.initialize().catch(err => console.error(err));
+        }, 5000);
+        
+        res.status(200).json({ success: true });
+    } catch (error) {
+        console.error('Failed to logout:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Start the Express server
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {

@@ -36,7 +36,29 @@ export async function requestWhatsAppPairingCode(phone: string) {
       return { error: data.error || `Microservice returned status ${res.status}` };
     }
     return { code: data.code };
-  } catch (err: any) {
-    return { error: err.message };
+  } catch (err) {
+    return { error: 'Failed to request pairing code' };
+  }
+}
+
+export async function disconnectWhatsApp() {
+  const microserviceUrl = process.env.WHATSAPP_MICROSERVICE_URL || 'http://localhost:4000';
+  
+  try {
+    const res = await fetch(`${microserviceUrl}/api/logout`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        secret: process.env.MICROSERVICE_SECRET || 'aura_gym_whatsapp_secret_key_123'
+      })
+    });
+    
+    if (!res.ok) {
+      return { error: 'Failed to disconnect WhatsApp' };
+    }
+    
+    return { success: true };
+  } catch (error) {
+    return { error: 'Failed to connect to microservice' };
   }
 }

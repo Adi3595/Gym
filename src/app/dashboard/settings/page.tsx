@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Settings, Shield, Bell, Key, MessageCircle, CheckCircle2, XCircle } from 'lucide-react'
-import { checkWhatsAppStatus, requestWhatsAppPairingCode } from './actions'
+import { checkWhatsAppStatus, requestWhatsAppPairingCode, disconnectWhatsApp } from './actions'
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('general')
@@ -171,7 +171,20 @@ export default function SettingsPage() {
                   <>
                     <CheckCircle2 size={48} color="#22c55e" />
                     <h3 style={{ margin: 0, color: '#15803d', fontSize: '1.25rem' }}>Bot is Connected and Active!</h3>
-                    <p style={{ margin: 0, color: '#166534', textAlign: 'center' }}>The microservice is successfully communicating with WhatsApp Web.</p>
+                    <p style={{ margin: 0, color: '#166534', textAlign: 'center', marginBottom: '1rem' }}>The microservice is successfully communicating with WhatsApp Web.</p>
+                    <Button 
+                      variant="ghost" 
+                      onClick={async () => {
+                        if (confirm('Are you sure you want to disconnect the bot and link a new number?')) {
+                          setIsLoading(true);
+                          await disconnectWhatsApp();
+                          setTimeout(() => fetchWhatsAppStatus(false), 2000);
+                        }
+                      }}
+                      style={{ color: '#ef4444', border: '1px solid #ef4444' }}
+                    >
+                      Disconnect & Link New Number
+                    </Button>
                   </>
                 ) : (
                   <>

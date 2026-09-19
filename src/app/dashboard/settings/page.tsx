@@ -39,7 +39,7 @@ export default function SettingsPage() {
       const data = await checkWhatsAppStatus()
       setWaStatus(data)
       if (data.connected) {
-         setPairingCode(null)
+         setQrCodeData(null)
       }
     } catch (err) {
       setWaStatus({ connected: false, error: 'Failed to fetch status' })

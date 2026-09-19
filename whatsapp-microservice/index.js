@@ -156,6 +156,19 @@ app.post('/api/logout', async (req, res) => {
         
         isConnected = false;
         
+        console.log('[WhatsApp] Wiping corrupted session folders...');
+        const fs = require('fs');
+        try {
+            if (fs.existsSync('.wwebjs_auth')) {
+                fs.rmSync('.wwebjs_auth', { recursive: true, force: true });
+            }
+            if (fs.existsSync('.wwebjs_cache')) {
+                fs.rmSync('.wwebjs_cache', { recursive: true, force: true });
+            }
+        } catch (err) {
+            console.error('Failed to wipe session folders:', err.message);
+        }
+        
         // Wait a few seconds, then initialize again to allow a new connection
         setTimeout(() => {
             console.log('[WhatsApp] Reinitializing client after logout...');

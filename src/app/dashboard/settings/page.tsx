@@ -3,19 +3,27 @@
 import React, { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Settings, Shield, Bell, Key, MessageCircle, CheckCircle2, XCircle } from 'lucide-react'
-import { checkWhatsAppStatus } from './actions'
-import { QRCodeSVG } from 'qrcode.react'
+import { checkWhatsAppStatus, requestWhatsAppPairingCode } from './actions'
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('general')
   const [waStatus, setWaStatus] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(false)
+  
+  // Pairing Code States
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [pairingCode, setPairingCode] = useState<string | null>(null)
+  const [isRequestingPairing, setIsRequestingPairing] = useState(false)
+  const [pairingError, setPairingError] = useState<string | null>(null)
 
   const fetchWhatsAppStatus = async (isPolling = false) => {
     if (!isPolling) setIsLoading(true)
     try {
       const data = await checkWhatsAppStatus()
       setWaStatus(data)
+      if (data.connected) {
+         setPairingCode(null)
+      }
     } catch (err) {
       setWaStatus({ connected: false, error: 'Failed to fetch status' })
     } finally {
@@ -28,6 +36,24 @@ export default function SettingsPage() {
       fetchWhatsAppStatus(false)
     }
   }, [activeTab])
+
+  const handleRequestPairingCode = async () => {
+    if (!phoneNumber) {
+       setPairingError('Please enter your Gym WhatsApp number.');
+       return;
+    }
+    setPairingError(null)
+    setIsRequestingPairing(true)
+    
+    const res = await requestWhatsAppPairingCode(phoneNumber)
+    setIsRequestingPairing(false)
+    
+    if (res.error) {
+       setPairingError(res.error)
+    } else if (res.code) {
+       setPairingCode(res.code)
+    }
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -132,7 +158,7 @@ export default function SettingsPage() {
           {activeTab === 'whatsapp' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               <h2 style={{ fontSize: '1.5rem', color: 'var(--text-dark)', marginBottom: '0.5rem' }}>WhatsApp Bot Integration</h2>
-              <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>Check the connection status of your automated WhatsApp bot.</p>
+              <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>Link your Gym's WhatsApp account using a Phone Number Pairing Code.</p>
               
               <div style={{ 
                 background: waStatus?.connected ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)', 
@@ -151,22 +177,47 @@ export default function SettingsPage() {
                   <>
                     <XCircle size={48} color="#ef4444" />
                     <h3 style={{ margin: 0, color: '#b91c1c', fontSize: '1.25rem' }}>Bot is Disconnected</h3>
-                    {waStatus?.qr ? (
-                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
-                        <p style={{ margin: 0, color: '#991b1b', textAlign: 'center', fontWeight: 600 }}>Scan this QR code with your Gym WhatsApp to reconnect!</p>
-                        <div style={{ padding: '1rem', background: 'white', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-                          <QRCodeSVG value={waStatus.qr} size={256} />
-                        </div>
+                    
+                    {!pairingCode ? (
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', width: '100%', maxWidth: '400px' }}>
+                        <p style={{ margin: 0, color: '#991b1b', textAlign: 'center', fontWeight: 600 }}>Enter your WhatsApp number to link a device</p>
+                        <input 
+                          type="tel"
+                          placeholder="e.g. 9876543210"
+                          value={phoneNumber}
+                          onChange={(e) => setPhoneNumber(e.target.value)}
+                          style={{ width: '100%', padding: '0.875rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }}
+                        />
+                        {pairingError && <div style={{ color: '#ef4444', fontSize: '0.875rem' }}>{pairingError}</div>}
+                        <Button 
+                          variant="primary" 
+                          fullWidth 
+                          onClick={handleRequestPairingCode}
+                          disabled={isRequestingPairing}
+                        >
+                          {isRequestingPairing ? 'Requesting Code...' : 'Get Pairing Code'}
+                        </Button>
                       </div>
                     ) : (
-                      <>
-                        <p style={{ margin: 0, color: '#991b1b', textAlign: 'center' }}>
-                          {waStatus?.error || 'The microservice is offline or the WhatsApp session was logged out.'}
-                        </p>
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+                        <p style={{ margin: 0, color: '#991b1b', textAlign: 'center', fontWeight: 600 }}>Enter this code in WhatsApp (Linked Devices → Link with Phone Number)</p>
+                        <div style={{ 
+                          padding: '1rem 2rem', 
+                          background: 'white', 
+                          borderRadius: '12px', 
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                          fontSize: '2rem',
+                          letterSpacing: '0.5rem',
+                          fontWeight: 700,
+                          color: 'var(--text-dark)',
+                          fontFamily: 'monospace'
+                        }}>
+                          {pairingCode}
+                        </div>
                         <p style={{ margin: 0, color: '#7f1d1d', fontSize: '0.875rem', marginTop: '0.5rem', textAlign: 'center' }}>
-                          To reconnect, make sure the microservice is running. The QR code will appear here once generated.
+                          After entering the code, click Refresh Status below.
                         </p>
-                      </>
+                      </div>
                     )}
                   </>
                 )}

@@ -50,13 +50,13 @@ export default function BillingClient({
     { 
       key: 'start_date', 
       header: 'Start Date',
-      cell: (item: any) => new Date(item.start_date).toLocaleDateString()
+      cell: (item: any) => <span suppressHydrationWarning>{new Date(item.start_date).toLocaleDateString()}</span>
     },
     { 
       key: 'end_date', 
       header: 'End Date',
       cell: (item: any) => (
-        <span style={{
+        <span suppressHydrationWarning style={{
           color: new Date(item.end_date) < new Date() ? '#EF4444' : 'var(--text-dark)',
           fontWeight: new Date(item.end_date) < new Date() ? 700 : 500
         }}>

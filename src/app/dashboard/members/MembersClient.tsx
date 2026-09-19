@@ -59,7 +59,7 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
         if (!sub) return <span style={{ color: '#9ca3af' }}>No Plan</span>;
         const isExpired = new Date(sub.end_date) < new Date();
         return (
-          <span style={{ color: isExpired ? '#EF4444' : 'var(--text-dark)', fontWeight: isExpired ? 700 : 500 }}>
+          <span suppressHydrationWarning style={{ color: isExpired ? '#EF4444' : 'var(--text-dark)', fontWeight: isExpired ? 700 : 500 }}>
             {new Date(sub.end_date).toLocaleDateString()}
           </span>
         )
@@ -72,7 +72,7 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
     { 
       key: 'join_date', 
       header: 'Join Date',
-      cell: (item: any) => new Date(item.join_date).toLocaleDateString()
+      cell: (item: any) => <span suppressHydrationWarning>{new Date(item.join_date).toLocaleDateString()}</span>
     }
   ]
 

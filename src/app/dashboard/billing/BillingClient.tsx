@@ -5,7 +5,7 @@ import { DataTable } from '@/components/ui/DataTable'
 import { Button } from '@/components/ui/Button'
 import { Plus, X, Loader2, CreditCard, ArrowUpRight, Activity, AlertCircle, CheckCircle, Clock } from 'lucide-react'
 import { SummaryGrid, SummaryCard } from '@/components/ui/SummaryCards'
-import { addSubscription } from './actions'
+import { addSubscription, markSubscriptionAsPaid } from './actions'
 
 export default function BillingClient({ 
   initialSubscriptions, 
@@ -85,17 +85,39 @@ export default function BillingClient({
       key: 'actions',
       header: 'Actions',
       cell: (item: any) => (
-        <a 
-          href={`/receipt/subscription/${item.id}`} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          style={{
-            display: 'inline-block', padding: '6px 12px', background: 'var(--color-primary)', color: 'white',
-            borderRadius: '6px', fontSize: '0.75rem', fontWeight: 600, textDecoration: 'none'
-          }}
-        >
-          View Receipt
-        </a>
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+          <a 
+            href={`/receipt/subscription/${item.id}`} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-block', padding: '6px 12px', background: 'var(--color-primary)', color: 'white',
+              borderRadius: '6px', fontSize: '0.75rem', fontWeight: 600, textDecoration: 'none'
+            }}
+          >
+            Receipt
+          </a>
+          {item.payment_status === 'Pending' && (
+            <button
+              onClick={() => {
+                if (confirm('Mark this subscription as paid?')) {
+                  startTransition(() => {
+                    markSubscriptionAsPaid(item.id, item.membership_plans?.price || 0)
+                  })
+                }
+              }}
+              disabled={isPending}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '6px 12px', 
+                background: '#22C55E', color: 'white', border: 'none',
+                borderRadius: '6px', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer', opacity: isPending ? 0.7 : 1
+              }}
+            >
+              <CheckCircle size={14} />
+              Mark Paid
+            </button>
+          )}
+        </div>
       )
     }
   ]

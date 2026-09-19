@@ -5,7 +5,7 @@ import { DataTable } from '@/components/ui/DataTable'
 import { Button } from '@/components/ui/Button'
 import { Plus, X, Loader2, Users, UserCheck, MoreVertical, Trash } from 'lucide-react'
 import { SummaryGrid, SummaryCard } from '@/components/ui/SummaryCards'
-import { addMember, softDeleteMember, sendManualReminder } from './actions'
+import { addMember, deleteMember, sendManualReminder } from './actions'
 
 export default function MembersClient({ initialMembers }: { initialMembers: any[] }) {
   const [mounted, setMounted] = useState(false)
@@ -177,9 +177,9 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
                   onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                   onClick={(e) => {
                     e.stopPropagation();
-                    if (confirm('Are you sure you want to deactivate this member?')) {
+                    if (confirm('Are you sure you want to permanently delete this member?')) {
                       startTransition(() => {
-                        softDeleteMember(item.id);
+                        deleteMember(item.id);
                       });
                     }
                     setOpenDropdownId(null);

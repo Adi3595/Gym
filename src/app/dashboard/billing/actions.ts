@@ -75,3 +75,24 @@ export async function addSubscription(formData: FormData) {
   
   return { success: true }
 }
+
+export async function markSubscriptionAsPaid(subscriptionId: string, price: number) {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('subscriptions')
+    .update({ 
+      payment_status: 'Completed',
+      amount_paid: price 
+    })
+    .eq('id', subscriptionId)
+
+  if (error) {
+    return { error: error.message }
+  }
+
+  revalidatePath('/dashboard')
+  revalidatePath('/dashboard/billing')
+  
+  return { success: true }
+}

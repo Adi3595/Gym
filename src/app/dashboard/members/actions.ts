@@ -49,6 +49,12 @@ export async function editMember(id: string, formData: FormData) {
 export async function deleteMember(id: string) {
   const supabase = await createClient()
 
+  // Nullify member_id in sales to avoid foreign key constraint violations
+  await supabase
+    .from('sales')
+    .update({ member_id: null })
+    .eq('member_id', id)
+
   const { error } = await supabase
     .from('members')
     .delete()

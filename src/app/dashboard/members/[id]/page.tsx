@@ -5,14 +5,15 @@ import { notFound } from 'next/navigation'
 
 export const revalidate = 0
 
-export default async function MemberProfilePage({ params }: { params: { id: string } }) {
+export default async function MemberProfilePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const supabase = await createClient()
 
   // 1. Fetch Member Info
   const { data: member, error: memberError } = await supabase
     .from('members')
     .select('*')
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (memberError || !member) {
@@ -23,21 +24,21 @@ export default async function MemberProfilePage({ params }: { params: { id: stri
   const { data: subscriptions } = await supabase
     .from('subscriptions')
     .select('*, membership_plans(name)')
-    .eq('member_id', params.id)
+    .eq('member_id', id)
     .order('created_at', { ascending: false })
 
   // 3. Fetch POS History (Sales)
   const { data: sales } = await supabase
     .from('sales')
     .select('id, final_amount, created_at, payment_method, sale_items(quantity, total, products(name))')
-    .eq('member_id', params.id)
+    .eq('member_id', id)
     .order('created_at', { ascending: false })
 
   // 4. Fetch Attendance History
   const { data: attendance } = await supabase
     .from('attendance')
     .select('*')
-    .eq('member_id', params.id)
+    .eq('member_id', id)
     .order('check_in_time', { ascending: false })
     .limit(30) // Last 30 visits
 

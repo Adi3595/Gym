@@ -96,6 +96,18 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
     })
   }
 
+  function handleDelete(id: string) {
+    if (confirm('Are you sure you want to delete this member? All their history will also be deleted.')) {
+      startTransition(async () => {
+        const res = await deleteMember(id);
+        if (res?.error) {
+          alert('Error deleting member: ' + res.error);
+        }
+      });
+    }
+    setOpenDropdownId(null);
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       

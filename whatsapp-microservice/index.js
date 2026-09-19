@@ -1,6 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-const qrcode = require('qrcode-terminal');
 const { Client, LocalAuth } = require('whatsapp-web.js');
 
 const app = express();
@@ -9,6 +8,7 @@ app.use(express.json()); // Allow JSON payloads
 // Initialize WhatsApp Web Client
 const client = new Client({
     authStrategy: new LocalAuth(), // Saves the login session so you don't have to scan QR every time
+    authTimeoutMs: 120000, // 2 minutes timeout
     puppeteer: {
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'] // Required for running on platforms like Render
     }
@@ -18,16 +18,17 @@ let currentQR = null;
 let isConnected = false;
 let isQrReady = false;
 
-// Event: Generate QR Code
+// Event: Generate QR Code (Hidden)
 client.on('qr', (qr) => {
     isQrReady = true;
-    qrcode.generate(qr, { small: true });
-    console.log('\n[WhatsApp] Please scan the QR code above to link your device, or use pairing code if it works.');
+    currentQR = qr;
+    console.log('\n[WhatsApp] Waiting for pairing code... (QR code generation is hidden)');
 });
 
 // Event: Client successfully connected
 client.on('ready', () => {
     isConnected = true;
+    currentQR = null;
     console.log('\n✅ Aura Gym WhatsApp Bot is READY and connected!');
 });
 

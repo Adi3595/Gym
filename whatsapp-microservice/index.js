@@ -11,10 +11,6 @@ const client = new Client({
     authStrategy: new LocalAuth(), // Saves the login session so you don't have to scan QR every time
     puppeteer: {
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'] // Required for running on platforms like Render
-    },
-    webVersionCache: {
-        type: "remote",
-        remotePath: "https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2412.54.html"
     }
 });
 
@@ -151,7 +147,13 @@ app.post('/api/logout', async (req, res) => {
         }
         
         console.log('[WhatsApp] Logging out...');
-        await client.logout();
+        try {
+            await client.logout();
+        } catch (e) {
+            console.log('Logout failed, destroying client...', e.message);
+            await client.destroy();
+        }
+        
         isConnected = false;
         
         // Wait a few seconds, then initialize again to allow a new connection

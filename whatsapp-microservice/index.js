@@ -17,26 +17,22 @@ const client = new Client({
 let currentQR = null;
 let isConnected = false;
 
-// Event: Generate QR Code for the gym owner to scan
+// Event: Generate QR Code (Ignored in favor of Pairing Code)
 client.on('qr', (qr) => {
-    currentQR = qr;
-    console.log('\n======================================================');
-    console.log('📱 SCAN THIS QR CODE WITH YOUR GYM WHATSAPP ACCOUNT:');
-    console.log('======================================================\n');
-    qrcode.generate(qr, { small: true });
+    // We keep the qr event handler so whatsapp-web.js doesn't crash, 
+    // but we no longer generate or display a QR code.
+    console.log('\n[WhatsApp] Waiting for pairing code request...');
 });
 
 // Event: Client successfully connected
 client.on('ready', () => {
     isConnected = true;
-    currentQR = null;
     console.log('\n✅ Aura Gym WhatsApp Bot is READY and connected!');
 });
 
 // Event: Client disconnected
 client.on('disconnected', (reason) => {
     isConnected = false;
-    currentQR = null;
     console.log('❌ WhatsApp Client was disconnected:', reason);
 });
 
@@ -65,13 +61,38 @@ app.get('/', (req, res) => {
 // STATUS ENDPOINT: Check if WhatsApp is actually connected
 // ---------------------------------------------------------
 app.get('/api/status', (req, res) => {
-    // Enable CORS so the Next.js frontend can call this directly if needed
     res.header("Access-Control-Allow-Origin", "*");
     res.status(200).json({ 
         connected: isConnected,
-        status: isConnected ? 'connected' : 'disconnected',
-        qr: currentQR
+        status: isConnected ? 'connected' : 'disconnected'
     });
+});
+
+// ---------------------------------------------------------
+// PAIRING ENDPOINT: Request 8-character code
+// ---------------------------------------------------------
+app.post('/api/pair', async (req, res) => {
+    try {
+        const { secret, phone } = req.body;
+        if (secret !== process.env.MICROSERVICE_SECRET) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+        if (!phone) {
+            return res.status(400).json({ error: 'Missing phone' });
+        }
+
+        let cleanPhone = phone.replace(/\D/g, '');
+        if (cleanPhone.length === 10) cleanPhone = '91' + cleanPhone;
+
+        console.log(`[WhatsApp] Requesting pairing code for ${cleanPhone}...`);
+        const code = await client.requestPairingCode(cleanPhone);
+        console.log(`[WhatsApp] Pairing code generated: ${code}`);
+
+        res.status(200).json({ code });
+    } catch (error) {
+        console.error('Failed to request pairing code:', error);
+        res.status(500).json({ error: error.message });
+    }
 });
 
 // ---------------------------------------------------------

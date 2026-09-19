@@ -19,11 +19,8 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
   const [error, setError] = useState<string | null>(null)
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null)
 
-  useEffect(() => {
-    const handleClickOutside = () => setOpenDropdownId(null);
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, []);
+  // Use an overlay approach for clicking outside instead of document listener
+  // to avoid React event bubbling issues
 
   const getLatestSub = (member: any) => {
     if (!member.subscriptions || member.subscriptions.length === 0) return null;
@@ -140,11 +137,18 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
               <MoreVertical size={18} />
             </button>
             {openDropdownId === item.id && (
+              <>
+                {/* Invisible overlay for clicking outside */}
+                <div 
+                  style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 9998 }} 
+                  onClick={(e) => { e.stopPropagation(); setOpenDropdownId(null); }} 
+                />
               <div style={{
                 position: 'absolute', right: '100%', top: '0', 
                 background: 'white', border: '1px solid rgba(0,0,0,0.1)', 
-                borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                padding: '0.5rem', zIndex: 10, minWidth: '160px'
+                borderRadius: '8px', boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                padding: '0.5rem', zIndex: 9999, minWidth: '160px',
+                marginRight: '0.5rem'
               }}>
                 <button 
                   style={{
@@ -189,6 +193,7 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
                   Delete Member
                 </button>
               </div>
+              </>
             )}
           </div>
         )}

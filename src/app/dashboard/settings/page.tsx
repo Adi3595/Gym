@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/Button'
-import { Settings, Shield, Bell, Key, MessageCircle, CheckCircle2, XCircle } from 'lucide-react'
-import { checkWhatsAppStatus, requestWhatsAppPairingCode, disconnectWhatsApp, getSettings, updateSettings } from './actions'
+import { Settings, Shield, Bell, Key, MessageCircle, CheckCircle2, XCircle, Loader2 } from 'lucide-react'
+import { checkWhatsAppStatus, disconnectWhatsApp, getSettings, updateSettings, getWhatsAppQR } from './actions'
+import QRCode from 'react-qr-code'
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('general')
@@ -18,11 +19,9 @@ export default function SettingsPage() {
     physical_address: '123 Elite Fitness Blvd, Mumbai, MH 400001'
   })
   
-  // Pairing Code States
-  const [phoneNumber, setPhoneNumber] = useState('')
-  const [pairingCode, setPairingCode] = useState<string | null>(null)
-  const [isRequestingPairing, setIsRequestingPairing] = useState(false)
-  const [pairingError, setPairingError] = useState<string | null>(null)
+  // QR States
+  const [qrCodeData, setQrCodeData] = useState<string | null>(null)
+  const [qrStatus, setQrStatus] = useState<string>('waiting')
 
   useEffect(() => {
     async function loadSettings() {
@@ -55,23 +54,30 @@ export default function SettingsPage() {
     }
   }, [activeTab])
 
-  const handleRequestPairingCode = async () => {
-    if (!phoneNumber) {
-       setPairingError('Please enter your Gym WhatsApp number.');
-       return;
-    }
-    setPairingError(null)
-    setIsRequestingPairing(true)
+  // Poll for QR Code if we are not connected and on the whatsapp tab
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
     
-    const res = await requestWhatsAppPairingCode(phoneNumber)
-    setIsRequestingPairing(false)
-    
-    if (res.error) {
-       setPairingError(res.error)
-    } else if (res.code) {
-       setPairingCode(res.code)
+    if (activeTab === 'whatsapp' && !waStatus?.connected) {
+      interval = setInterval(async () => {
+        const qrRes = await getWhatsAppQR()
+        if (qrRes && qrRes.status === 'ready') {
+          setQrCodeData(qrRes.qr)
+          setQrStatus('ready')
+        } else if (qrRes && qrRes.status === 'connected') {
+          setWaStatus({ connected: true })
+          setQrCodeData(null)
+          setQrStatus('connected')
+        } else {
+          setQrStatus('waiting')
+        }
+      }, 3000)
     }
-  }
+    
+    return () => {
+      if (interval) clearInterval(interval)
+    }
+  }, [activeTab, waStatus?.connected])
 
   const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -224,47 +230,36 @@ export default function SettingsPage() {
                     <XCircle size={48} color="#ef4444" />
                     <h3 style={{ margin: 0, color: '#b91c1c', fontSize: '1.25rem' }}>Bot is Disconnected</h3>
                     
-                    {!pairingCode ? (
-                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', width: '100%', maxWidth: '400px' }}>
-                        <p style={{ margin: 0, color: '#991b1b', textAlign: 'center', fontWeight: 600 }}>Enter your WhatsApp number to link a device</p>
-                        <input 
-                          type="tel"
-                          placeholder="e.g. 9876543210"
-                          value={phoneNumber}
-                          onChange={(e) => setPhoneNumber(e.target.value)}
-                          style={{ width: '100%', padding: '0.875rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }}
-                        />
-                        {pairingError && <div style={{ color: '#ef4444', fontSize: '0.875rem' }}>{pairingError}</div>}
-                        <Button 
-                          variant="primary" 
-                          fullWidth 
-                          onClick={handleRequestPairingCode}
-                          disabled={isRequestingPairing}
-                        >
-                          {isRequestingPairing ? 'Requesting Code...' : 'Get Pairing Code'}
-                        </Button>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
+                      <p style={{ margin: 0, color: '#991b1b', textAlign: 'center', fontWeight: 600 }}>
+                        Open WhatsApp on your phone &rarr; Linked Devices &rarr; Link a Device
+                      </p>
+                      
+                      <div style={{ 
+                        background: 'white', 
+                        padding: '1.5rem', 
+                        borderRadius: '16px', 
+                        boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        minHeight: '280px',
+                        minWidth: '280px'
+                      }}>
+                        {qrStatus === 'ready' && qrCodeData ? (
+                          <QRCode value={qrCodeData} size={256} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
+                        ) : (
+                          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', color: 'var(--text-muted)' }}>
+                            <Loader2 className="animate-spin" size={32} />
+                            <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>Generating QR Code...</span>
+                          </div>
+                        )}
                       </div>
-                    ) : (
-                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
-                        <p style={{ margin: 0, color: '#991b1b', textAlign: 'center', fontWeight: 600 }}>Enter this code in WhatsApp (Linked Devices → Link with Phone Number)</p>
-                        <div style={{ 
-                          padding: '1rem 2rem', 
-                          background: 'white', 
-                          borderRadius: '12px', 
-                          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                          fontSize: '2rem',
-                          letterSpacing: '0.5rem',
-                          fontWeight: 700,
-                          color: 'var(--text-dark)',
-                          fontFamily: 'monospace'
-                        }}>
-                          {pairingCode}
-                        </div>
-                        <p style={{ margin: 0, color: '#7f1d1d', fontSize: '0.875rem', marginTop: '0.5rem', textAlign: 'center' }}>
-                          After entering the code, click Refresh Status below.
-                        </p>
-                      </div>
-                    )}
+                      
+                      <p style={{ margin: 0, color: '#7f1d1d', fontSize: '0.875rem', textAlign: 'center' }}>
+                        Scan the QR code above to instantly link the bot.
+                      </p>
+                    </div>
                   </>
                 )}
               </div>

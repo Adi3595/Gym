@@ -17,6 +17,22 @@ export async function checkWhatsAppStatus() {
   }
 }
 
+export async function getWhatsAppQR() {
+  const baseUrl = process.env.WHATSAPP_MICROSERVICE_URL || 'http://localhost:4000/api/send';
+  const qrUrl = baseUrl.replace(/\/api\/send$/, '/api/qr');
+  
+  try {
+    const res = await fetch(qrUrl, { cache: 'no-store' });
+    if (!res.ok) {
+      return { status: 'error', error: `Microservice returned status ${res.status}` };
+    }
+    const data = await res.json();
+    return data;
+  } catch (err: any) {
+    return { status: 'error', error: err.message };
+  }
+}
+
 export async function requestWhatsAppPairingCode(phone: string) {
   const baseUrl = process.env.WHATSAPP_MICROSERVICE_URL || 'http://localhost:4000/api/send';
   const pairUrl = baseUrl.replace(/\/api\/send$/, '/api/pair');

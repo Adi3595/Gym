@@ -26,7 +26,7 @@ export async function requestWhatsAppPairingCode(phone: string) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        secret: process.env.MICROSERVICE_SECRET || 'aura_gym_whatsapp_secret_key_123',
+        secret: process.env.MICROSERVICE_SECRET || 'sm_fitness_secure_cron_token_2025',
         phone
       })
     });
@@ -50,7 +50,7 @@ export async function disconnectWhatsApp() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        secret: process.env.MICROSERVICE_SECRET || 'aura_gym_whatsapp_secret_key_123'
+        secret: process.env.MICROSERVICE_SECRET || 'sm_fitness_secure_cron_token_2025'
       })
     });
     

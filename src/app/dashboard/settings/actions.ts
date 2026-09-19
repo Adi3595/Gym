@@ -42,10 +42,11 @@ export async function requestWhatsAppPairingCode(phone: string) {
 }
 
 export async function disconnectWhatsApp() {
-  const microserviceUrl = process.env.WHATSAPP_MICROSERVICE_URL || 'http://localhost:4000';
+  const baseUrl = process.env.WHATSAPP_MICROSERVICE_URL || 'http://localhost:4000/api/send';
+  const logoutUrl = baseUrl.replace(/\/api\/send$/, '/api/logout');
   
   try {
-    const res = await fetch(`${microserviceUrl}/api/logout`, {
+    const res = await fetch(logoutUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

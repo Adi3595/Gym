@@ -11,7 +11,7 @@ export async function addSubscription(formData: FormData) {
   const paymentMethod = formData.get('payment_method') as string
   
   // 1. Fetch plan details
-  const { data: planData } = await supabase.from('membership_plans').select('duration_days, price').eq('id', planId).single()
+  const { data: planData } = await supabase.from('membership_plans').select('name, duration_days, price').eq('id', planId).single()
   
   if (!planData) {
     return { error: 'Invalid Plan Selected' }
@@ -70,6 +70,18 @@ export async function addSubscription(formData: FormData) {
     return { error: error.message }
   }
 
+  // Fetch member phone to send notification
+  const { data: memberData } = await supabase.from('members').select('first_name, phone').eq('id', memberId).single()
+  if (memberData && memberData.phone) {
+    const { sendSubscriptionNotification } = await import('@/utils/messaging')
+    await sendSubscriptionNotification(memberData.phone, {
+      customerName: memberData.first_name,
+      planName: planData.name || 'Gym Plan',
+      endDate: endDate.toISOString(),
+      amount: paymentDone ? planData.price : 0
+    })
+  }
+
   revalidatePath('/dashboard')
   revalidatePath('/dashboard/billing')
   
@@ -94,5 +106,22 @@ export async function markSubscriptionAsPaid(subscriptionId: string, price: numb
   revalidatePath('/dashboard')
   revalidatePath('/dashboard/billing')
   
+  return { success: true }
+}
+
+export async function deleteSubscription(id: string) {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('subscriptions')
+    .delete()
+    .eq('id', id)
+
+  if (error) {
+    return { error: error.message }
+  }
+
+  revalidatePath('/dashboard')
+  revalidatePath('/dashboard/billing')
   return { success: true }
 }

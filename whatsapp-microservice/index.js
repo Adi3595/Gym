@@ -16,11 +16,11 @@ const client = new Client({
 
 let currentQR = null;
 let isConnected = false;
+let isQrReady = false;
 
 // Event: Generate QR Code (Ignored in favor of Pairing Code)
 client.on('qr', (qr) => {
-    // We keep the qr event handler so whatsapp-web.js doesn't crash, 
-    // but we no longer generate or display a QR code.
+    isQrReady = true;
     console.log('\n[WhatsApp] Waiting for pairing code request...');
 });
 
@@ -83,6 +83,10 @@ app.post('/api/pair', async (req, res) => {
 
         let cleanPhone = phone.replace(/\D/g, '');
         if (cleanPhone.length === 10) cleanPhone = '91' + cleanPhone;
+
+        if (!isQrReady) {
+            return res.status(400).json({ error: 'WhatsApp is not fully initialized yet. Please wait 10 seconds and try again.' });
+        }
 
         console.log(`[WhatsApp] Requesting pairing code for ${cleanPhone}...`);
         const code = await client.requestPairingCode(cleanPhone);

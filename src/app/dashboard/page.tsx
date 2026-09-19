@@ -2,6 +2,7 @@ import React from 'react'
 import { Users, TrendingUp, ShoppingBag, Activity } from 'lucide-react'
 import { createClient } from '@/utils/supabase/server'
 import { SummaryCard, SummaryGrid } from '@/components/ui/SummaryCards'
+import { PrintButton } from '@/components/ui/PrintButton'
 
 export const revalidate = 0 // always fetch live data
 
@@ -72,17 +73,7 @@ export default async function DashboardOverview() {
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'var(--color-primary)', lineHeight: 1 }}>Overview</h1>
           <p style={{ color: 'var(--text-muted)' }}>Welcome back. Here is the live data from your database.</p>
         </div>
-        <button style={{ 
-          background: 'var(--color-primary)', 
-          color: 'white', 
-          padding: '0.75rem 1.5rem', 
-          borderRadius: '8px', 
-          fontWeight: 600,
-          border: 'none',
-          cursor: 'pointer'
-        }}>
-          Generate Report
-        </button>
+        <PrintButton />
       </div>
 
       {/* KPI Cards */}

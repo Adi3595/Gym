@@ -3,11 +3,14 @@
 import React, { useState, useEffect, useTransition } from 'react'
 import { DataTable } from '@/components/ui/DataTable'
 import { Button } from '@/components/ui/Button'
-import { Plus, X, Loader2, Users, UserCheck, MoreVertical, Trash } from 'lucide-react'
+import { Plus, X, Loader2, Users, UserCheck, UserMinus, MoreVertical, Trash } from 'lucide-react'
 import { SummaryGrid, SummaryCard } from '@/components/ui/SummaryCards'
-import { addMember, deleteMember, sendManualReminder } from './actions'
+import { addMember, deleteMember, sendManualReminder, editMember } from './actions'
+
+import { useRouter } from 'next/navigation'
 
 export default function MembersClient({ initialMembers }: { initialMembers: any[] }) {
+  const router = useRouter()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -15,6 +18,7 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
   }, [])
 
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [editingMember, setEditingMember] = useState<any>(null)
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null)
@@ -76,11 +80,18 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
   async function handleSubmit(formData: FormData) {
     setError(null)
     startTransition(async () => {
-      const result = await addMember(formData)
+      let result;
+      if (editingMember) {
+        result = await editMember(editingMember.id, formData);
+      } else {
+        result = await addMember(formData);
+      }
+      
       if (result?.error) {
         setError(result.error)
       } else {
         setIsModalOpen(false)
+        setEditingMember(null)
       }
     })
   }
@@ -91,40 +102,39 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'var(--color-primary)', lineHeight: 1 }}>Members</h1>
-          <p style={{ color: 'var(--text-muted)' }}>Manage your gym's member database.</p>
+          <p style={{ color: 'var(--text-muted)' }}>Manage your gym members and their status.</p>
         </div>
-        <Button variant="primary" icon={<Plus size={18} />} onClick={() => setIsModalOpen(true)}>
+        <Button variant="primary" icon={<Plus size={18} />} onClick={() => { setEditingMember(null); setIsModalOpen(true); }}>
           Add Member
         </Button>
       </div>
 
-      {mounted && (
-        <SummaryGrid>
-          <SummaryCard 
-            title="Total Members" 
-            value={initialMembers?.length || 0} 
-            icon={<Users size={20} />} 
-            colorVariant="primary"
-          />
-          <SummaryCard 
-            title="Active Members" 
-            value={initialMembers?.filter(m => m.status === 'Active').length || 0} 
-            icon={<UserCheck size={20} />} 
-            colorVariant="accent"
-          />
-          <SummaryCard 
-            title="New This Month" 
-            value={initialMembers?.filter(m => new Date(m.join_date).getMonth() === new Date().getMonth()).length || 0} 
-            icon={<Plus size={20} />} 
-            colorVariant="secondary"
-          />
-        </SummaryGrid>
-      )}
+      <SummaryGrid>
+        <SummaryCard 
+          title="Total Members" 
+          value={initialMembers?.length || 0} 
+          icon={<Users size={20} />} 
+          colorVariant="primary"
+        />
+        <SummaryCard 
+          title="Active Members" 
+          value={initialMembers?.filter(m => m.status === 'Active').length || 0} 
+          icon={<UserCheck size={20} />} 
+          colorVariant="secondary"
+        />
+        <SummaryCard 
+          title="Inactive Members" 
+          value={initialMembers?.filter(m => m.status === 'Inactive').length || 0} 
+          icon={<UserMinus size={20} />} 
+          colorVariant="accent"
+        />
+      </SummaryGrid>
 
       <DataTable 
         data={initialMembers || []} 
         columns={columns} 
         searchPlaceholder="Search members by name or phone..."
+        onRowClick={(item) => router.push(`/dashboard/members/${item.id}`)}
         renderActions={(item) => (
           <div style={{ position: 'relative' }}>
             <button 
@@ -150,6 +160,24 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
                 padding: '0.5rem', zIndex: 9999, minWidth: '160px',
                 marginRight: '0.5rem'
               }}>
+                <button 
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '0.5rem', 
+                    width: '100%', padding: '0.5rem', background: 'none', border: 'none', 
+                    cursor: 'pointer', color: 'var(--text-dark)', fontSize: '0.875rem', fontWeight: 600,
+                    borderRadius: '4px', transition: 'background 0.2s', marginBottom: '4px'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0, 0, 0, 0.05)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setEditingMember(item);
+                    setIsModalOpen(true);
+                    setOpenDropdownId(null);
+                  }}
+                >
+                  Edit Member
+                </button>
                 <button 
                   style={{
                     display: 'flex', alignItems: 'center', gap: '0.5rem', 
@@ -229,7 +257,7 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
               <X size={24} color="var(--text-muted)" />
             </button>
             
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', color: 'var(--color-primary)', marginBottom: '1.5rem' }}>New Member</h2>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', color: 'var(--color-primary)', marginBottom: '1.5rem' }}>{editingMember ? 'Edit Member' : 'New Member'}</h2>
             
             {error && <div style={{ color: '#EF4444', marginBottom: '1rem', fontSize: '0.875rem' }}>{error}</div>}
 
@@ -237,34 +265,34 @@ export default function MembersClient({ initialMembers }: { initialMembers: any[
               <div style={{ display: 'flex', gap: '1rem' }}>
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>First Name *</label>
-                  <input type="text" name="first_name" required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
+                  <input type="text" name="first_name" defaultValue={editingMember?.first_name || ''} required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
                 </div>
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Last Name *</label>
-                  <input type="text" name="last_name" required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
+                  <input type="text" name="last_name" defaultValue={editingMember?.last_name || ''} required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
                 </div>
               </div>
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Email</label>
-                <input type="email" name="email" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
+                <input type="email" name="email" defaultValue={editingMember?.email || ''} style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Phone *</label>
-                <input type="tel" name="phone" required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
+                <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Phone Number *</label>
+                <input type="tel" name="phone" defaultValue={editingMember?.phone || ''} required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
                 <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Status</label>
-                <select name="status" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }}>
+                <select name="status" defaultValue={editingMember?.status || 'Active'} style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }}>
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
                 </select>
               </div>
 
-              <Button type="submit" variant="primary" fullWidth disabled={isPending}>
-                {isPending ? <Loader2 className="animate-spin" /> : 'Save Member'}
+              <Button variant="primary" disabled={isPending} fullWidth>
+                {isPending ? <Loader2 className="animate-spin" /> : (editingMember ? 'Save Changes' : 'Add Member')}
               </Button>
             </form>
           </div>

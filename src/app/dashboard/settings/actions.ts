@@ -63,3 +63,40 @@ export async function disconnectWhatsApp() {
     return { error: 'Failed to connect to microservice' };
   }
 }
+
+import { createClient } from '@/utils/supabase/server'
+import { revalidatePath } from 'next/cache'
+
+export async function getSettings() {
+  const supabase = await createClient()
+  const { data, error } = await supabase.from('settings').select('*').single()
+  if (error) {
+    return null
+  }
+  return data
+}
+
+export async function updateSettings(formData: FormData) {
+  const supabase = await createClient()
+  
+  const data = {
+    facility_name: formData.get('facility_name'),
+    contact_email: formData.get('contact_email'),
+    physical_address: formData.get('physical_address'),
+  }
+
+  // Assuming we just update the first row
+  const { data: settings } = await supabase.from('settings').select('id').single()
+  
+  if (settings) {
+    const { error } = await supabase.from('settings').update(data).eq('id', settings.id)
+    if (error) return { error: error.message }
+  } else {
+    // Should not happen with our migration, but just in case
+    const { error } = await supabase.from('settings').insert([data])
+    if (error) return { error: error.message }
+  }
+
+  revalidatePath('/dashboard/settings')
+  return { success: true }
+}

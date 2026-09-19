@@ -3,18 +3,36 @@
 import React, { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Settings, Shield, Bell, Key, MessageCircle, CheckCircle2, XCircle } from 'lucide-react'
-import { checkWhatsAppStatus, requestWhatsAppPairingCode, disconnectWhatsApp } from './actions'
+import { checkWhatsAppStatus, requestWhatsAppPairingCode, disconnectWhatsApp, getSettings, updateSettings } from './actions'
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('general')
   const [waStatus, setWaStatus] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
+  
+  // Settings States
+  const [settings, setSettings] = useState<any>({
+    facility_name: 'SMFitness Gym & Supplements',
+    contact_email: 'admin@smfitness.com',
+    physical_address: '123 Elite Fitness Blvd, Mumbai, MH 400001'
+  })
   
   // Pairing Code States
   const [phoneNumber, setPhoneNumber] = useState('')
   const [pairingCode, setPairingCode] = useState<string | null>(null)
   const [isRequestingPairing, setIsRequestingPairing] = useState(false)
   const [pairingError, setPairingError] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function loadSettings() {
+      const data = await getSettings()
+      if (data) {
+        setSettings(data)
+      }
+    }
+    loadSettings()
+  }, [])
 
   const fetchWhatsAppStatus = async (isPolling = false) => {
     if (!isPolling) setIsLoading(true)
@@ -52,6 +70,19 @@ export default function SettingsPage() {
        setPairingError(res.error)
     } else if (res.code) {
        setPairingCode(res.code)
+    }
+  }
+
+  const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setIsSaving(true)
+    const formData = new FormData(e.currentTarget)
+    const res = await updateSettings(formData)
+    setIsSaving(false)
+    if (res.success) {
+      alert('Settings saved successfully!')
+    } else {
+      alert(`Error saving settings: ${res.error}`)
     }
   }
 
@@ -100,25 +131,27 @@ export default function SettingsPage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               <h2 style={{ fontSize: '1.5rem', color: 'var(--text-dark)', marginBottom: '1rem' }}>Gym Details</h2>
               
-              <div style={{ display: 'flex', gap: '1rem' }}>
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <label style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>Facility Name</label>
-                  <input type="text" defaultValue="SMFitness Gym & Supplements" style={{ padding: '0.875rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }} />
+              <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <label style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>Facility Name</label>
+                    <input type="text" name="facility_name" defaultValue={settings?.facility_name || "SMFitness Gym & Supplements"} style={{ padding: '0.875rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }} />
+                  </div>
+                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <label style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>Contact Email</label>
+                    <input type="email" name="contact_email" defaultValue={settings?.contact_email || "admin@smfitness.com"} style={{ padding: '0.875rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }} />
+                  </div>
                 </div>
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <label style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>Contact Email</label>
-                  <input type="email" defaultValue="admin@smfitness.com" style={{ padding: '0.875rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }} />
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <label style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>Physical Address</label>
+                  <textarea name="physical_address" rows={3} defaultValue={settings?.physical_address || "123 Elite Fitness Blvd, Mumbai, MH 400001"} style={{ padding: '0.875rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white', resize: 'none' }}></textarea>
                 </div>
-              </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <label style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>Physical Address</label>
-                <textarea rows={3} defaultValue="123 Elite Fitness Blvd, Mumbai, MH 400001" style={{ padding: '0.875rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white', resize: 'none' }}></textarea>
-              </div>
-
-              <div style={{ marginTop: '1rem' }}>
-                <Button variant="primary">Save Changes</Button>
-              </div>
+                <div style={{ marginTop: '1rem' }}>
+                  <Button type="submit" variant="primary" disabled={isSaving}>{isSaving ? 'Saving...' : 'Save Changes'}</Button>
+                </div>
+              </form>
             </div>
           )}
 

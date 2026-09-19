@@ -3,14 +3,16 @@
 import React, { useState, useTransition } from 'react'
 import { DataTable } from '@/components/ui/DataTable'
 import { Button } from '@/components/ui/Button'
-import { Plus, X, Loader2, Package, AlertCircle, ShoppingBag } from 'lucide-react'
+import { Plus, X, Loader2, Package, AlertCircle, ShoppingBag, MoreVertical, Trash } from 'lucide-react'
 import { SummaryGrid, SummaryCard } from '@/components/ui/SummaryCards'
-import { addProduct } from './actions'
+import { addProduct, editProduct, deleteProduct } from './actions'
 import { createClient } from '@/utils/supabase/client'
 import { Image as ImageIcon } from 'lucide-react'
 
 export default function InventoryClient({ initialProducts }: { initialProducts: any[] }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [editingProduct, setEditingProduct] = useState<any>(null)
+  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
   const [isUploading, setIsUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -120,11 +122,18 @@ export default function InventoryClient({ initialProducts }: { initialProducts: 
       }
 
       startTransition(async () => {
-        const result = await addProduct(formData)
+        let result;
+        if (editingProduct) {
+          result = await editProduct(editingProduct.id, formData);
+        } else {
+          result = await addProduct(formData);
+        }
+
         if (result?.error) {
           setError(result.error)
         } else {
           setIsModalOpen(false)
+          setEditingProduct(null)
         }
         setIsUploading(false)
       })
@@ -142,7 +151,7 @@ export default function InventoryClient({ initialProducts }: { initialProducts: 
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'var(--color-primary)', lineHeight: 1 }}>Inventory</h1>
           <p style={{ color: 'var(--text-muted)' }}>Manage products and point of sale inventory.</p>
         </div>
-        <Button variant="primary" icon={<Plus size={18} />} onClick={() => setIsModalOpen(true)}>
+        <Button variant="primary" icon={<Plus size={18} />} onClick={() => { setEditingProduct(null); setIsModalOpen(true); }}>
           Add Product
         </Button>
       </div>
@@ -173,6 +182,79 @@ export default function InventoryClient({ initialProducts }: { initialProducts: 
         data={initialProducts || []} 
         columns={columns} 
         searchPlaceholder="Search products by SKU or Name..."
+        renderActions={(item) => (
+          <div style={{ position: 'relative' }}>
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpenDropdownId(openDropdownId === item.id ? null : item.id);
+              }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0.25rem', color: 'var(--text-muted)' }}
+            >
+              <MoreVertical size={20} />
+            </button>
+            
+            {openDropdownId === item.id && (
+              <>
+              <div 
+                style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 9998 }} 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenDropdownId(null);
+                }} 
+              />
+              <div style={{
+                position: 'absolute', right: 0, top: '100%', 
+                background: 'white', border: '1px solid rgba(0,0,0,0.1)', 
+                borderRadius: '8px', boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                padding: '0.5rem', zIndex: 9999, minWidth: '160px',
+                marginRight: '0.5rem'
+              }}>
+                <button 
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '0.5rem', 
+                    width: '100%', padding: '0.5rem', background: 'none', border: 'none', 
+                    cursor: 'pointer', color: 'var(--text-dark)', fontSize: '0.875rem', fontWeight: 600,
+                    borderRadius: '4px', transition: 'background 0.2s', marginBottom: '4px'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0, 0, 0, 0.05)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setEditingProduct(item);
+                    setIsModalOpen(true);
+                    setOpenDropdownId(null);
+                  }}
+                >
+                  Edit Product
+                </button>
+                <button 
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '0.5rem', 
+                    width: '100%', padding: '0.5rem', background: 'none', border: 'none', 
+                    cursor: 'pointer', color: '#EF4444', fontSize: '0.875rem', fontWeight: 600,
+                    borderRadius: '4px', transition: 'background 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (confirm('Are you sure you want to permanently delete this product?')) {
+                      startTransition(() => {
+                        deleteProduct(item.id);
+                      });
+                    }
+                    setOpenDropdownId(null);
+                  }}
+                >
+                  <Trash size={16} />
+                  Delete Product
+                </button>
+              </div>
+              </>
+            )}
+          </div>
+        )}
       />
 
       {/* Basic Modal */}
@@ -205,7 +287,7 @@ export default function InventoryClient({ initialProducts }: { initialProducts: 
               <X size={24} color="var(--text-muted)" />
             </button>
             
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', color: 'var(--color-primary)', marginBottom: '1.5rem' }}>New Product</h2>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', color: 'var(--color-primary)', marginBottom: '1.5rem' }}>{editingProduct ? 'Edit Product' : 'New Product'}</h2>
             
             {error && <div style={{ color: '#EF4444', marginBottom: '1rem', fontSize: '0.875rem' }}>{error}</div>}
 
@@ -214,37 +296,37 @@ export default function InventoryClient({ initialProducts }: { initialProducts: 
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                 <div style={{ flex: '1 1 120px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>SKU *</label>
-                  <input type="text" name="sku" required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
+                  <input type="text" name="sku" defaultValue={editingProduct?.sku || ''} required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
                 </div>
                 <div style={{ flex: '2 1 200px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Product Name *</label>
-                  <input type="text" name="name" required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
+                  <input type="text" name="name" defaultValue={editingProduct?.name || ''} required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
                 </div>
               </div>
 
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                 <div style={{ flex: '1 1 120px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Purchase Price *</label>
-                  <input type="number" step="0.01" name="purchase_price" required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
+                  <input type="number" step="0.01" name="purchase_price" defaultValue={editingProduct?.purchase_price || ''} required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
                 </div>
                 <div style={{ flex: '1 1 120px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Selling Price *</label>
-                  <input type="number" step="0.01" name="selling_price" required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
+                  <input type="number" step="0.01" name="selling_price" defaultValue={editingProduct?.selling_price || ''} required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
                 </div>
                 <div style={{ flex: '1 1 120px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>MRP *</label>
-                  <input type="number" step="0.01" name="mrp" required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
+                  <input type="number" step="0.01" name="mrp" defaultValue={editingProduct?.mrp || ''} required style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
                 </div>
               </div>
 
               <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
                 <div style={{ flex: '1 1 120px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Initial Stock *</label>
-                  <input type="number" name="current_stock" required defaultValue="0" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
+                  <input type="number" name="current_stock" required defaultValue={editingProduct?.current_stock ?? "0"} style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)' }} />
                 </div>
                 <div style={{ flex: '1 1 120px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Status</label>
-                  <select name="status" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }}>
+                  <select name="status" defaultValue={editingProduct?.status || 'Active'} style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: 'white' }}>
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
@@ -256,7 +338,7 @@ export default function InventoryClient({ initialProducts }: { initialProducts: 
               </div>
 
               <Button type="submit" variant="primary" fullWidth disabled={isPending || isUploading}>
-                {isPending || isUploading ? <Loader2 className="animate-spin" /> : 'Save Product'}
+                {isPending || isUploading ? <Loader2 className="animate-spin" /> : (editingProduct ? 'Save Changes' : 'Save Product')}
               </Button>
             </form>
           </div>

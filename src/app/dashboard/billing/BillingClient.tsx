@@ -3,9 +3,9 @@
 import React, { useState, useEffect, useTransition } from 'react'
 import { DataTable } from '@/components/ui/DataTable'
 import { Button } from '@/components/ui/Button'
-import { Plus, X, Loader2, CreditCard, ArrowUpRight, Activity, AlertCircle, CheckCircle, Clock } from 'lucide-react'
+import { Plus, X, Loader2, CreditCard, ArrowUpRight, Activity, AlertCircle, CheckCircle, Clock, MoreVertical, Trash, FileText } from 'lucide-react'
 import { SummaryGrid, SummaryCard } from '@/components/ui/SummaryCards'
-import { addSubscription, markSubscriptionAsPaid } from './actions'
+import { addSubscription, markSubscriptionAsPaid, deleteSubscription } from './actions'
 
 export default function BillingClient({ 
   initialSubscriptions, 
@@ -18,6 +18,7 @@ export default function BillingClient({
 }) {
   const [mounted, setMounted] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
 
@@ -81,44 +82,6 @@ export default function BillingClient({
         </span>
       )
     },
-    {
-      key: 'actions',
-      header: 'Actions',
-      cell: (item: any) => (
-        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-          <a 
-            href={`/receipt/subscription/${item.id}`} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-block', padding: '6px 12px', background: 'var(--color-primary)', color: 'white',
-              borderRadius: '6px', fontSize: '0.75rem', fontWeight: 600, textDecoration: 'none'
-            }}
-          >
-            Receipt
-          </a>
-          {item.payment_status === 'Pending' && (
-            <button
-              onClick={() => {
-                if (confirm('Mark this subscription as paid?')) {
-                  startTransition(() => {
-                    markSubscriptionAsPaid(item.id, item.membership_plans?.price || 0)
-                  })
-                }
-              }}
-              disabled={isPending}
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '6px 12px', 
-                background: '#22C55E', color: 'white', border: 'none',
-                borderRadius: '6px', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer', opacity: isPending ? 0.7 : 1
-              }}
-            >
-              <CheckCircle size={14} />
-              Mark Paid
-            </button>
-          )}
-        </div>
-      )
     }
   ]
 
@@ -184,6 +147,103 @@ export default function BillingClient({
         data={initialSubscriptions || []} 
         columns={columns} 
         searchPlaceholder="Search subscriptions..."
+        renderActions={(item) => (
+          <div style={{ position: 'relative' }}>
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpenDropdownId(openDropdownId === item.id ? null : item.id);
+              }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0.25rem', color: 'var(--text-muted)' }}
+            >
+              <MoreVertical size={20} />
+            </button>
+            
+            {openDropdownId === item.id && (
+              <>
+              <div 
+                style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 9998 }} 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenDropdownId(null);
+                }} 
+              />
+              <div style={{
+                position: 'absolute', right: 0, top: '100%', 
+                background: 'white', border: '1px solid rgba(0,0,0,0.1)', 
+                borderRadius: '8px', boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                padding: '0.5rem', zIndex: 9999, minWidth: '160px',
+                marginRight: '0.5rem'
+              }}>
+                <a 
+                  href={`/receipt/subscription/${item.id}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '0.5rem', 
+                    width: '100%', padding: '0.5rem', background: 'none', border: 'none', 
+                    cursor: 'pointer', color: 'var(--text-dark)', fontSize: '0.875rem', fontWeight: 600,
+                    borderRadius: '4px', transition: 'background 0.2s', marginBottom: '4px', textDecoration: 'none'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0, 0, 0, 0.05)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                >
+                  <FileText size={16} />
+                  View Receipt
+                </a>
+                
+                {item.payment_status === 'Pending' && (
+                  <button 
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: '0.5rem', 
+                      width: '100%', padding: '0.5rem', background: 'none', border: 'none', 
+                      cursor: 'pointer', color: '#22C55E', fontSize: '0.875rem', fontWeight: 600,
+                      borderRadius: '4px', transition: 'background 0.2s', marginBottom: '4px'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(34, 197, 94, 0.1)'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (confirm('Mark this subscription as paid?')) {
+                        startTransition(() => {
+                          markSubscriptionAsPaid(item.id, item.membership_plans?.price || 0);
+                        });
+                      }
+                      setOpenDropdownId(null);
+                    }}
+                  >
+                    <CheckCircle size={16} />
+                    Mark Paid
+                  </button>
+                )}
+
+                <button 
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '0.5rem', 
+                    width: '100%', padding: '0.5rem', background: 'none', border: 'none', 
+                    cursor: 'pointer', color: '#EF4444', fontSize: '0.875rem', fontWeight: 600,
+                    borderRadius: '4px', transition: 'background 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (confirm('Are you sure you want to permanently delete this plan?')) {
+                      startTransition(() => {
+                        deleteSubscription(item.id);
+                      });
+                    }
+                    setOpenDropdownId(null);
+                  }}
+                >
+                  <Trash size={16} />
+                  Delete Plan
+                </button>
+              </div>
+              </>
+            )}
+          </div>
+        )}
       />
 
       {/* Modal */}
